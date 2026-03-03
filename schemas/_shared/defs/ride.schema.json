@@ -1,0 +1,77 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cobblemon-schema.local/_shared/defs/ride.schema.json",
+  "title": "Cobblemon Shared Riding Definitions",
+  "type": "object",
+  "$defs": {
+    "seatOffset": {
+      "type": "object",
+      "properties": {
+        "poseTypes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "offset": {
+          "$ref": "./vectors.schema.json#/$defs/vec3"
+        }
+      },
+      "required": [
+        "poseTypes",
+        "offset"
+      ],
+      "additionalProperties": false
+    },
+    "seat": {
+      "type": "object",
+      "properties": {
+        "locator": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "offset": {
+          "$ref": "./vectors.schema.json#/$defs/vec3"
+        },
+        "poseOffsets": {
+          "type": "array",
+          "items": {
+            "$ref": "./ride.schema.json#/$defs/seatOffset"
+          }
+        },
+        "poseAnimations": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "poseTypes": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "animations": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              }
+            },
+            "required": [
+              "poseTypes",
+              "animations"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "handsBusy": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

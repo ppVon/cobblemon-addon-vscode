@@ -1,0 +1,83 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cobblemon-schema.local/dex_entries/schema.json",
+  "title": "Cobblemon Dex Entry",
+  "type": "object",
+  "properties": {
+    "id": {
+      "$ref": "../_shared/defs/identifiers.schema.json#/$defs/identifier"
+    },
+    "speciesId": {
+      "$ref": "../_shared/defs/identifiers.schema.json#/$defs/identifier"
+    },
+    "displayAspects": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "conditionAspects": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "forms": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "displayForm": {
+            "type": "string"
+          },
+          "unlockForms": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "displayForm",
+          "unlockForms"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "variations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "displayName": {
+            "type": "string"
+          },
+          "icon": {
+            "type": "string"
+          },
+          "aspects": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "displayName",
+          "icon",
+          "aspects"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "id",
+    "speciesId",
+    "displayAspects",
+    "conditionAspects",
+    "forms",
+    "variations"
+  ],
+  "additionalProperties": false
+}

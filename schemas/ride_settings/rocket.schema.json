@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cobblemon-schema.local/ride_settings/rocket.schema.json",
+  "title": "Cobblemon Ride Settings: Rocket",
+  "type": "object",
+  "properties": {
+    "infiniteStamina": {
+      "$ref": "../_shared/defs/expressions.schema.json#/$defs/expressionLike"
+    },
+    "boostSpeedMod": {
+      "$ref": "../_shared/defs/expressions.schema.json#/$defs/expressionLike"
+    },
+    "boostHandlingMod": {
+      "$ref": "../_shared/defs/expressions.schema.json#/$defs/expressionLike"
+    },
+    "maxTurnRate": {
+      "$ref": "../_shared/defs/expressions.schema.json#/$defs/expressionLike"
+    },
+    "speedExpr": {
+      "$ref": "../_shared/defs/expressions.schema.json#/$defs/expressionLike"
+    },
+    "accelerationExpr": {
+      "$ref": "../_shared/defs/expressions.schema.json#/$defs/expressionLike"
+    },
+    "staminaExpr": {
+      "$ref": "../_shared/defs/expressions.schema.json#/$defs/expressionLike"
+    },
+    "jumpExpr": {
+      "$ref": "../_shared/defs/expressions.schema.json#/$defs/expressionLike"
+    },
+    "handlingExpr": {
+      "$ref": "../_shared/defs/expressions.schema.json#/$defs/expressionLike"
+    }
+  },
+  "additionalProperties": false
+}

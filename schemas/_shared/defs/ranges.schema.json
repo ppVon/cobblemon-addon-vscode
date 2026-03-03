@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cobblemon-schema.local/_shared/defs/ranges.schema.json",
+  "title": "Cobblemon Shared Ranges",
+  "type": "object",
+  "$defs": {
+    "intRangeString": {
+      "type": "string",
+      "pattern": "^-?\\d+(?:--?\\d+)?$"
+    },
+    "intRange": {
+      "oneOf": [
+        {
+          "type": "integer"
+        },
+        {
+          "$ref": "./ranges.schema.json#/$defs/intRangeString"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "min": {
+              "type": "integer"
+            },
+            "max": {
+              "type": "integer"
+            }
+          },
+          "required": [
+            "min",
+            "max"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "intMinMax": {
+      "type": "object",
+      "properties": {
+        "min": {
+          "type": "integer"
+        },
+        "max": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "min",
+        "max"
+      ],
+      "additionalProperties": false
+    },
+    "numberMinMax": {
+      "type": "object",
+      "properties": {
+        "min": {
+          "type": "number"
+        },
+        "max": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "min",
+        "max"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

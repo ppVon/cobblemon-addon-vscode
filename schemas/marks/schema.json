@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cobblemon-schema.local/marks/schema.json",
+  "title": "Cobblemon Mark",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "titleColor": {
+      "type": "string"
+    },
+    "titleColour": {
+      "type": "string"
+    },
+    "texture": {
+      "$ref": "../_shared/defs/identifiers.schema.json#/$defs/identifier"
+    },
+    "replace": {
+      "type": "array",
+      "items": {
+        "$ref": "../_shared/defs/identifiers.schema.json#/$defs/identifier"
+      }
+    },
+    "group": {
+      "type": "string"
+    },
+    "chance": {
+      "type": "number",
+      "minimum": 0
+    },
+    "indexNumber": {
+      "type": "integer",
+      "minimum": 0
+    }
+  },
+  "required": [
+    "name",
+    "description",
+    "texture"
+  ],
+  "additionalProperties": false
+}

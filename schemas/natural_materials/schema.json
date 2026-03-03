@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cobblemon-schema.local/natural_materials/schema.json",
+  "title": "Cobblemon Natural Materials",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "properties": {
+      "content": {
+        "type": "integer",
+        "minimum": 0
+      },
+      "item": {
+        "$ref": "../_shared/defs/identifiers.schema.json#/$defs/identifier"
+      },
+      "tag": {
+        "$ref": "../_shared/defs/identifiers.schema.json#/$defs/tagIdentifier"
+      },
+      "returnItem": {
+        "$ref": "../_shared/defs/identifiers.schema.json#/$defs/identifier"
+      }
+    },
+    "required": [
+      "content"
+    ],
+    "anyOf": [
+      {
+        "required": [
+          "item"
+        ]
+      },
+      {
+        "required": [
+          "tag"
+        ]
+      }
+    ],
+    "additionalProperties": false
+  }
+}

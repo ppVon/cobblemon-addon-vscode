@@ -1,0 +1,15 @@
+.vscode/**
+src/**
+scripts/**
+tsconfig.json
+schemas/**/README.md
+node_modules/**/.bin/**
+node_modules/**/test/**
+node_modules/**/tests/**
+node_modules/**/benchmark/**
+node_modules/**/examples/**
+node_modules/**/docs/**
+node_modules/**/README*
+node_modules/**/LICENSE*
+node_modules/ajv/lib/**
+**/*.tsbuildinfo

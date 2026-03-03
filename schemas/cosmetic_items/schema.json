@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cobblemon-schema.local/cosmetic_items/schema.json",
+  "title": "Cobblemon Cosmetic Item Assignment",
+  "type": "object",
+  "properties": {
+    "pokemon": {
+      "type": "array",
+      "items": {
+        "$ref": "../_shared/defs/pokemon.schema.json#/$defs/pokemonProperties"
+      }
+    },
+    "cosmeticItems": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "consumedItem": {
+            "$ref": "../_shared/defs/pokemon.schema.json#/$defs/registryLikeCondition"
+          },
+          "item": {
+            "$ref": "../_shared/defs/pokemon.schema.json#/$defs/registryLikeCondition"
+          },
+          "aspects": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "aspects"
+        ],
+        "anyOf": [
+          {
+            "required": [
+              "consumedItem"
+            ]
+          },
+          {
+            "required": [
+              "item"
+            ]
+          }
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "pokemon",
+    "cosmeticItems"
+  ],
+  "additionalProperties": false
+}

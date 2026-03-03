@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cobblemon-schema.local/mechanics/aprijuices.schema.json",
+  "title": "Cobblemon Mechanics: Aprijuices",
+  "type": "object",
+  "properties": {
+    "apricornStatEffects": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": { "type": "integer" }
+      }
+    },
+    "statPointFlavourThresholds": {
+      "type": "object",
+      "additionalProperties": { "type": "integer" }
+    },
+    "cookingQualityPointThresholds": {
+      "type": "object",
+      "additionalProperties": { "type": "string" }
+    }
+  },
+  "required": ["apricornStatEffects", "statPointFlavourThresholds", "cookingQualityPointThresholds"],
+  "additionalProperties": false
+}

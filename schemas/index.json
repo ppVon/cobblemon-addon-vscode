@@ -1,0 +1,384 @@
+{
+  "schemas": [
+    {
+      "name": "action_effects",
+      "path": "schemas/action_effects/schema.json",
+      "$id": "https://cobblemon-schema.local/action_effects/schema.json",
+      "sourceGlobs": [
+        "../cobblemon/common/src/main/resources/data/cobblemon/action_effects/**/*.json"
+      ]
+    },
+    {
+      "name": "behaviours",
+      "path": "schemas/behaviours/schema.json",
+      "$id": "https://cobblemon-schema.local/behaviours/schema.json",
+      "sourceGlobs": [
+        "../cobblemon/common/src/main/resources/data/cobblemon/behaviours/**/*.json"
+      ]
+    },
+    {
+      "name": "berries",
+      "path": "schemas/berries/schema.json",
+      "$id": "https://cobblemon-schema.local/berries/schema.json",
+      "sourceGlobs": [
+        "../cobblemon/common/src/main/resources/data/cobblemon/berries/**/*.json"
+      ]
+    },
+    {
+      "name": "cosmetic_items",
+      "path": "schemas/cosmetic_items/schema.json",
+      "$id": "https://cobblemon-schema.local/cosmetic_items/schema.json",
+      "sourceGlobs": [
+        "../cobblemon/common/src/main/resources/data/cobblemon/cosmetic_items/**/*.json"
+      ]
+    },
+    {
+      "name": "dex_entries",
+      "path": "schemas/dex_entries/schema.json",
+      "$id": "https://cobblemon-schema.local/dex_entries/schema.json",
+      "sourceGlobs": [
+        "../cobblemon/common/src/main/resources/data/cobblemon/dex_entries/**/*.json"
+      ]
+    },
+    {
+      "name": "dexes",
+      "path": "schemas/dexes/schema.json",
+      "$id": "https://cobblemon-schema.local/dexes/schema.json",
+      "sourceGlobs": [
+        "../cobblemon/common/src/main/resources/data/cobblemon/dexes/**/*.json"
+      ]
+    },
+    {
+      "name": "dialogues",
+      "path": "schemas/dialogues/schema.json",
+      "$id": "https://cobblemon-schema.local/dialogues/schema.json",
+      "sourceGlobs": [
+        "../cobblemon/common/src/main/resources/data/cobblemon/dialogues/**/*.json"
+      ]
+    },
+    {
+      "name": "fossils",
+      "path": "schemas/fossils/schema.json",
+      "$id": "https://cobblemon-schema.local/fossils/schema.json",
+      "sourceGlobs": [
+        "../cobblemon/common/src/main/resources/data/cobblemon/fossils/**/*.json"
+      ]
+    },
+    {
+      "name": "global_species_features",
+      "path": "schemas/global_species_features/schema.json",
+      "$id": "https://cobblemon-schema.local/global_species_features/schema.json",
+      "sourceGlobs": [
+        "../cobblemon/common/src/main/resources/data/cobblemon/global_species_features/**/*.json"
+      ]
+    },
+    {
+      "name": "marks",
+      "path": "schemas/marks/schema.json",
+      "$id": "https://cobblemon-schema.local/marks/schema.json",
+      "sourceGlobs": [
+        "../cobblemon/common/src/main/resources/data/cobblemon/marks/**/*.json"
+      ]
+    },
+    {
+      "name": "mechanics_aprijuices",
+      "path": "schemas/mechanics/aprijuices.schema.json",
+      "$id": "https://cobblemon-schema.local/mechanics/aprijuices.schema.json",
+      "sourceGlobs": [
+        "../cobblemon/common/src/main/resources/data/cobblemon/mechanics/aprijuices.json"
+      ]
+    },
+    {
+      "name": "mechanics_berries",
+      "path": "schemas/mechanics/berries.schema.json",
+      "$id": "https://cobblemon-schema.local/mechanics/berries.schema.json",
+      "sourceGlobs": [
+        "../cobblemon/common/src/main/resources/data/cobblemon/mechanics/berries.json"
+      ]
+    },
+    {
+      "name": "mechanics_potions",
+      "path": "schemas/mechanics/potions.schema.json",
+      "$id": "https://cobblemon-schema.local/mechanics/potions.schema.json",
+      "sourceGlobs": [
+        "../cobblemon/common/src/main/resources/data/cobblemon/mechanics/potions.json"
+      ]
+    },
+    {
+      "name": "mechanics_remedies",
+      "path": "schemas/mechanics/remedies.schema.json",
+      "$id": "https://cobblemon-schema.local/mechanics/remedies.schema.json",
+      "sourceGlobs": [
+        "../cobblemon/common/src/main/resources/data/cobblemon/mechanics/remedies.json"
+      ]
+    },
+    {
+      "name": "mechanics_slowpoke_tails",
+      "path": "schemas/mechanics/slowpoke_tails.schema.json",
+      "$id": "https://cobblemon-schema.local/mechanics/slowpoke_tails.schema.json",
+      "sourceGlobs": [
+        "../cobblemon/common/src/main/resources/data/cobblemon/mechanics/slowpoke_tails.json"
+      ]
+    },
+    {
+      "name": "natural_materials",
+      "path": "schemas/natural_materials/schema.json",
+      "$id": "https://cobblemon-schema.local/natural_materials/schema.json",
+      "sourceGlobs": [
+        "../cobblemon/common/src/main/resources/data/cobblemon/natural_materials/**/*.json"
+      ]
+    },
+    {
+      "name": "npc_presets",
+      "path": "schemas/npc_presets/schema.json",
+      "$id": "https://cobblemon-schema.local/npc_presets/schema.json",
+      "sourceGlobs": [
+        "../cobblemon/common/src/main/resources/data/cobblemon/npc_presets/**/*.json"
+      ]
+    },
+    {
+      "name": "npcs",
+      "path": "schemas/npcs/schema.json",
+      "$id": "https://cobblemon-schema.local/npcs/schema.json",
+      "sourceGlobs": [
+        "../cobblemon/common/src/main/resources/data/cobblemon/npcs/**/*.json"
+      ]
+    },
+    {
+      "name": "pokemon_interactions",
+      "path": "schemas/pokemon_interactions/schema.json",
+      "$id": "https://cobblemon-schema.local/pokemon_interactions/schema.json",
+      "sourceGlobs": [
+        "../cobblemon/common/src/main/resources/data/cobblemon/pokemon_interactions/**/*.json"
+      ]
+    },
+    {
+      "name": "pokerods",
+      "path": "schemas/pokerods/schema.json",
+      "$id": "https://cobblemon-schema.local/pokerods/schema.json",
+      "sourceGlobs": [
+        "../cobblemon/common/src/main/resources/data/cobblemon/pokerods/**/*.json"
+      ]
+    },
+    {
+      "name": "ride_settings_bird",
+      "path": "schemas/ride_settings/bird.schema.json",
+      "$id": "https://cobblemon-schema.local/ride_settings/bird.schema.json",
+      "sourceGlobs": [
+        "../cobblemon/common/src/main/resources/data/cobblemon/ride_settings/bird.json"
+      ]
+    },
+    {
+      "name": "ride_settings_boat",
+      "path": "schemas/ride_settings/boat.schema.json",
+      "$id": "https://cobblemon-schema.local/ride_settings/boat.schema.json",
+      "sourceGlobs": [
+        "../cobblemon/common/src/main/resources/data/cobblemon/ride_settings/boat.json"
+      ]
+    },
+    {
+      "name": "ride_settings_burst",
+      "path": "schemas/ride_settings/burst.schema.json",
+      "$id": "https://cobblemon-schema.local/ride_settings/burst.schema.json",
+      "sourceGlobs": [
+        "../cobblemon/common/src/main/resources/data/cobblemon/ride_settings/burst.json"
+      ]
+    },
+    {
+      "name": "ride_settings_dolphin",
+      "path": "schemas/ride_settings/dolphin.schema.json",
+      "$id": "https://cobblemon-schema.local/ride_settings/dolphin.schema.json",
+      "sourceGlobs": [
+        "../cobblemon/common/src/main/resources/data/cobblemon/ride_settings/dolphin.json"
+      ]
+    },
+    {
+      "name": "ride_settings_glider",
+      "path": "schemas/ride_settings/glider.schema.json",
+      "$id": "https://cobblemon-schema.local/ride_settings/glider.schema.json",
+      "sourceGlobs": [
+        "../cobblemon/common/src/main/resources/data/cobblemon/ride_settings/glider.json"
+      ]
+    },
+    {
+      "name": "ride_settings_helicopter",
+      "path": "schemas/ride_settings/helicopter.schema.json",
+      "$id": "https://cobblemon-schema.local/ride_settings/helicopter.schema.json",
+      "sourceGlobs": [
+        "../cobblemon/common/src/main/resources/data/cobblemon/ride_settings/helicopter.json"
+      ]
+    },
+    {
+      "name": "ride_settings_horse",
+      "path": "schemas/ride_settings/horse.schema.json",
+      "$id": "https://cobblemon-schema.local/ride_settings/horse.schema.json",
+      "sourceGlobs": [
+        "../cobblemon/common/src/main/resources/data/cobblemon/ride_settings/horse.json"
+      ]
+    },
+    {
+      "name": "ride_settings_hover",
+      "path": "schemas/ride_settings/hover.schema.json",
+      "$id": "https://cobblemon-schema.local/ride_settings/hover.schema.json",
+      "sourceGlobs": [
+        "../cobblemon/common/src/main/resources/data/cobblemon/ride_settings/hover.json"
+      ]
+    },
+    {
+      "name": "ride_settings_jet",
+      "path": "schemas/ride_settings/jet.schema.json",
+      "$id": "https://cobblemon-schema.local/ride_settings/jet.schema.json",
+      "sourceGlobs": [
+        "../cobblemon/common/src/main/resources/data/cobblemon/ride_settings/jet.json"
+      ]
+    },
+    {
+      "name": "ride_settings_minekart",
+      "path": "schemas/ride_settings/minekart.schema.json",
+      "$id": "https://cobblemon-schema.local/ride_settings/minekart.schema.json",
+      "sourceGlobs": [
+        "../cobblemon/common/src/main/resources/data/cobblemon/ride_settings/minekart.json"
+      ]
+    },
+    {
+      "name": "ride_settings_rocket",
+      "path": "schemas/ride_settings/rocket.schema.json",
+      "$id": "https://cobblemon-schema.local/ride_settings/rocket.schema.json",
+      "sourceGlobs": [
+        "../cobblemon/common/src/main/resources/data/cobblemon/ride_settings/rocket.json"
+      ]
+    },
+    {
+      "name": "ride_settings_submarine",
+      "path": "schemas/ride_settings/submarine.schema.json",
+      "$id": "https://cobblemon-schema.local/ride_settings/submarine.schema.json",
+      "sourceGlobs": [
+        "../cobblemon/common/src/main/resources/data/cobblemon/ride_settings/submarine.json"
+      ]
+    },
+    {
+      "name": "ride_settings_vehicle",
+      "path": "schemas/ride_settings/vehicle.schema.json",
+      "$id": "https://cobblemon-schema.local/ride_settings/vehicle.schema.json",
+      "sourceGlobs": [
+        "../cobblemon/common/src/main/resources/data/cobblemon/ride_settings/vehicle.json"
+      ]
+    },
+    {
+      "name": "seasonings",
+      "path": "schemas/seasonings/schema.json",
+      "$id": "https://cobblemon-schema.local/seasonings/schema.json",
+      "sourceGlobs": [
+        "../cobblemon/common/src/main/resources/data/cobblemon/seasonings/**/*.json"
+      ]
+    },
+    {
+      "name": "spawn_bait_effects",
+      "path": "schemas/spawn_bait_effects/schema.json",
+      "$id": "https://cobblemon-schema.local/spawn_bait_effects/schema.json",
+      "sourceGlobs": [
+        "../cobblemon/common/src/main/resources/data/cobblemon/spawn_bait_effects/**/*.json"
+      ]
+    },
+    {
+      "name": "spawn_detail_presets",
+      "path": "schemas/spawn_detail_presets/schema.json",
+      "$id": "https://cobblemon-schema.local/spawn_detail_presets/schema.json",
+      "sourceGlobs": [
+        "../cobblemon/common/src/main/resources/data/cobblemon/spawn_detail_presets/**/*.json"
+      ]
+    },
+    {
+      "name": "spawn_pool_world",
+      "path": "schemas/spawn_pool_world/schema.json",
+      "$id": "https://cobblemon-schema.local/spawn_pool_world/schema.json",
+      "sourceGlobs": [
+        "../cobblemon/common/src/main/resources/data/cobblemon/spawn_pool_world/**/*.json"
+      ]
+    },
+    {
+      "name": "spawn_rules",
+      "path": "schemas/spawn_rules/schema.json",
+      "$id": "https://cobblemon-schema.local/spawn_rules/schema.json",
+      "sourceGlobs": [
+        "../cobblemon/common/src/main/resources/data/cobblemon/spawn_rules/**/*.json"
+      ]
+    },
+    {
+      "name": "species",
+      "path": "schemas/species/schema.json",
+      "$id": "https://cobblemon-schema.local/species/schema.json",
+      "sourceGlobs": [
+        "../cobblemon/common/src/main/resources/data/cobblemon/species/**/*.json"
+      ]
+    },
+    {
+      "name": "species_feature_assignments",
+      "path": "schemas/species_feature_assignments/schema.json",
+      "$id": "https://cobblemon-schema.local/species_feature_assignments/schema.json",
+      "sourceGlobs": [
+        "../cobblemon/common/src/main/resources/data/cobblemon/species_feature_assignments/**/*.json"
+      ]
+    },
+    {
+      "name": "species_features",
+      "path": "schemas/species_features/schema.json",
+      "$id": "https://cobblemon-schema.local/species_features/schema.json",
+      "sourceGlobs": [
+        "../cobblemon/common/src/main/resources/data/cobblemon/species_features/**/*.json"
+      ]
+    },
+    {
+      "name": "unlockable_pc_box_wallpapers",
+      "path": "schemas/unlockable_pc_box_wallpapers/schema.json",
+      "$id": "https://cobblemon-schema.local/unlockable_pc_box_wallpapers/schema.json",
+      "sourceGlobs": [
+        "../cobblemon/common/src/main/resources/data/cobblemon/unlockable_pc_box_wallpapers/**/*.json"
+      ]
+    },
+    {
+      "name": "species_additions",
+      "path": "schemas/species_additions/schema.json",
+      "$id": "https://cobblemon-schema.local/species_additions/schema.json",
+      "sourceGlobs": []
+    },
+    {
+      "name": "dex_additions",
+      "path": "schemas/dex_additions/schema.json",
+      "$id": "https://cobblemon-schema.local/dex_additions/schema.json",
+      "sourceGlobs": []
+    },
+    {
+      "name": "dex_entry_additions",
+      "path": "schemas/dex_entry_additions/schema.json",
+      "$id": "https://cobblemon-schema.local/dex_entry_additions/schema.json",
+      "sourceGlobs": []
+    },
+    {
+      "name": "starters",
+      "path": "schemas/starters/schema.json",
+      "$id": "https://cobblemon-schema.local/starters/schema.json",
+      "sourceGlobs": []
+    },
+    {
+      "name": "bedrock_pokemon_resolvers",
+      "path": "schemas/bedrock_pokemon_resolvers/schema.json",
+      "$id": "https://cobblemon-schema.local/bedrock_pokemon_resolvers/schema.json",
+      "sourceGlobs": [
+        "../cobblemon/common/src/main/resources/assets/cobblemon/bedrock/pokemon/resolvers/**/*.json"
+      ]
+    },
+    {
+      "name": "bedrock_posers",
+      "path": "schemas/bedrock_posers/schema.json",
+      "$id": "https://cobblemon-schema.local/bedrock_posers/schema.json",
+      "sourceGlobs": [
+        "../cobblemon/common/src/main/resources/assets/cobblemon/bedrock/pokemon/posers/**/*.json",
+        "../cobblemon/common/src/main/resources/assets/cobblemon/bedrock/npcs/posers/**/*.json",
+        "../cobblemon/common/src/main/resources/assets/cobblemon/bedrock/fossils/posers/**/*.json",
+        "../cobblemon/common/src/main/resources/assets/cobblemon/bedrock/block_entities/posers/**/*.json",
+        "../cobblemon/common/src/main/resources/assets/cobblemon/bedrock/generic/posers/**/*.json"
+      ]
+    }
+  ]
+}

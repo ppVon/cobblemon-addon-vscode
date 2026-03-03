@@ -1,0 +1,139 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cobblemon-schema.local/species_features/schema.json",
+  "title": "Cobblemon Species Feature Provider",
+  "type": "object",
+  "properties": {
+    "type": {
+      "type": "string",
+      "enum": [
+        "choice",
+        "flag",
+        "integer"
+      ]
+    },
+    "keys": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string"
+      }
+    },
+    "default": {
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "integer"
+        },
+        {
+          "type": "boolean"
+        }
+      ]
+    },
+    "visible": {
+      "type": "boolean"
+    },
+    "needsKey": {
+      "type": "boolean"
+    },
+    "choices": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "isAspect": {
+      "type": "boolean"
+    },
+    "aspectFormat": {
+      "type": "string"
+    },
+    "min": {
+      "type": "integer"
+    },
+    "max": {
+      "type": "integer"
+    },
+    "display": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "colour": {
+          "type": "array",
+          "minItems": 3,
+          "maxItems": 3,
+          "items": {
+            "type": "number"
+          }
+        },
+        "color": {
+          "type": "array",
+          "minItems": 3,
+          "maxItems": 3,
+          "items": {
+            "type": "number"
+          }
+        },
+        "underlay": {
+          "$ref": "../_shared/defs/identifiers.schema.json#/$defs/identifier"
+        },
+        "overlay": {
+          "$ref": "../_shared/defs/identifiers.schema.json#/$defs/identifier"
+        }
+      },
+      "additionalProperties": false
+    },
+    "itemPoints": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "integer"
+      }
+    }
+  },
+  "required": [
+    "type",
+    "keys"
+  ],
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "type": {
+            "const": "choice"
+          }
+        },
+        "required": [
+          "type"
+        ]
+      },
+      "then": {
+        "required": [
+          "choices"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "type": {
+            "const": "integer"
+          }
+        },
+        "required": [
+          "type"
+        ]
+      },
+      "then": {
+        "required": [
+          "min",
+          "max"
+        ]
+      }
+    }
+  ],
+  "additionalProperties": false
+}

@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cobblemon-schema.local/spawn_bait_effects/schema.json",
+  "title": "Cobblemon Spawn Bait",
+  "type": "object",
+  "properties": {
+    "item": {
+      "$ref": "../_shared/defs/identifiers.schema.json#/$defs/identifier"
+    },
+    "effects": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string"
+          },
+          "subcategory": {
+            "type": "string"
+          },
+          "chance": {
+            "type": "number",
+            "minimum": 0
+          },
+          "value": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "type",
+          "chance"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "item",
+    "effects"
+  ],
+  "additionalProperties": false
+}

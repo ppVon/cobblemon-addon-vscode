@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cobblemon-schema.local/species_feature_assignments/schema.json",
+  "title": "Cobblemon Species Feature Assignment",
+  "type": "object",
+  "properties": {
+    "pokemon": {
+      "type": "array",
+      "items": {
+        "$ref": "../_shared/defs/pokemon.schema.json#/$defs/pokemonProperties"
+      }
+    },
+    "features": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [
+    "pokemon",
+    "features"
+  ],
+  "additionalProperties": false
+}

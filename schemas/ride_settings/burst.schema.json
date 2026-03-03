@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cobblemon-schema.local/ride_settings/burst.schema.json",
+  "title": "Cobblemon Ride Settings: Burst",
+  "type": "object",
+  "properties": {
+    "dashSpeed": { "type": "integer" }
+  },
+  "required": ["dashSpeed"],
+  "additionalProperties": false
+}

@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cobblemon-schema.local/fossils/schema.json",
+  "title": "Cobblemon Fossil Revival",
+  "type": "object",
+  "properties": {
+    "result": {
+      "$ref": "../_shared/defs/pokemon.schema.json#/$defs/pokemonProperties"
+    },
+    "fossils": {
+      "type": "array",
+      "items": {
+        "$ref": "../_shared/defs/pokemon.schema.json#/$defs/itemPredicate"
+      }
+    }
+  },
+  "required": [
+    "result",
+    "fossils"
+  ],
+  "additionalProperties": false
+}

@@ -1,0 +1,6 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cobblemon-schema.local/npc_presets/schema.json",
+  "title": "Cobblemon NPC Preset",
+  "$ref": "../npcs/schema.json"
+}

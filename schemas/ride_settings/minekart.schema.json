@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cobblemon-schema.local/ride_settings/minekart.schema.json",
+  "title": "Cobblemon Ride Settings: Minekart",
+  "type": "object",
+  "properties": {
+    "infiniteStamina": {
+      "$ref": "../_shared/defs/expressions.schema.json#/$defs/expressionLike"
+    },
+    "canJump": {
+      "$ref": "../_shared/defs/expressions.schema.json#/$defs/expressionLike"
+    },
+    "boostLimit": {
+      "$ref": "../_shared/defs/expressions.schema.json#/$defs/expressionLike"
+    },
+    "speedExpr": {
+      "$ref": "../_shared/defs/expressions.schema.json#/$defs/expressionLike"
+    },
+    "accelerationExpr": {
+      "$ref": "../_shared/defs/expressions.schema.json#/$defs/expressionLike"
+    },
+    "staminaExpr": {
+      "$ref": "../_shared/defs/expressions.schema.json#/$defs/expressionLike"
+    },
+    "jumpExpr": {
+      "$ref": "../_shared/defs/expressions.schema.json#/$defs/expressionLike"
+    },
+    "handlingExpr": {
+      "$ref": "../_shared/defs/expressions.schema.json#/$defs/expressionLike"
+    }
+  },
+  "additionalProperties": false
+}

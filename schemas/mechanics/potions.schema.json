@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cobblemon-schema.local/mechanics/potions.schema.json",
+  "title": "Cobblemon Mechanics: Potions",
+  "type": "object",
+  "properties": {
+    "potionRestoreAmount": {
+      "$ref": "../_shared/defs/expressions.schema.json#/$defs/expressionLike"
+    },
+    "superPotionRestoreAmount": {
+      "$ref": "../_shared/defs/expressions.schema.json#/$defs/expressionLike"
+    },
+    "hyperPotionRestoreAmount": {
+      "$ref": "../_shared/defs/expressions.schema.json#/$defs/expressionLike"
+    }
+  },
+  "required": [
+    "potionRestoreAmount",
+    "superPotionRestoreAmount",
+    "hyperPotionRestoreAmount"
+  ],
+  "additionalProperties": false
+}

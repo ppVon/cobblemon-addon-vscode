@@ -1,0 +1,123 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cobblemon-schema.local/action_effects/schema.json",
+  "title": "Cobblemon Action Effects",
+  "type": "object",
+  "properties": {
+    "timeline": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/keyframe"
+      }
+    },
+    "condition": {
+      "$ref": "../_shared/defs/expressions.schema.json#/$defs/expressionLike"
+    }
+  },
+  "required": [
+    "timeline"
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "keyframe": {
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string"
+            },
+            "animation": {
+              "oneOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              ]
+            },
+            "expressions": {
+              "$ref": "../_shared/defs/expressions.schema.json#/$defs/expressionLike"
+            },
+            "pause": {
+              "type": "number"
+            },
+            "delay": {
+              "oneOf": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "string"
+                }
+              ]
+            },
+            "effect": {
+              "type": "string"
+            },
+            "sound": {
+              "type": "string"
+            },
+            "locators": {
+              "oneOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              ]
+            },
+            "targetLocators": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "holds": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "variables": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "entityCondition": {
+              "$ref": "../_shared/defs/expressions.schema.json#/$defs/expressionLike"
+            },
+            "condition": {
+              "$ref": "../_shared/defs/expressions.schema.json#/$defs/expressionLike"
+            },
+            "locator": {
+              "type": "string"
+            },
+            "keyframes": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/keyframe"
+              }
+            }
+          },
+          "required": [
+            "type"
+          ],
+          "additionalProperties": true
+        }
+      ]
+    }
+  }
+}

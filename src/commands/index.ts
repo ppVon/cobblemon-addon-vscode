@@ -1,0 +1,31 @@
+import * as vscode from 'vscode';
+import { generateSpawnPoolWorldCommand } from './generate-spawn-pool-world.command';
+import { scaffoldPokemonAssetsCommand } from './pokemon-builder.command';
+import { scaffoldDataFileCommand } from './scaffold-data-file.command';
+import { validateWorkspaceCommand } from './validate-workspace.command';
+import { type CommandExecutionContext, type CommandDefinition } from './types';
+
+const COMMAND_DEFINITIONS: CommandDefinition[] = [
+  validateWorkspaceCommand,
+  scaffoldPokemonAssetsCommand,
+  scaffoldDataFileCommand,
+  generateSpawnPoolWorldCommand,
+];
+
+export function registerCommands(
+  extensionContext: vscode.ExtensionContext,
+  commandContext: Omit<CommandExecutionContext, 'extensionContext'>
+): void {
+  const fullContext: CommandExecutionContext = {
+    extensionContext,
+    ...commandContext,
+  };
+
+  for (const command of COMMAND_DEFINITIONS) {
+    extensionContext.subscriptions.push(
+      vscode.commands.registerCommand(command.id, async () => {
+        await command.run(fullContext);
+      })
+    );
+  }
+}

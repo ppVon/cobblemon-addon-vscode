@@ -1,0 +1,89 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cobblemon-schema.local/_shared/common.schema.json",
+  "title": "Cobblemon Shared Definitions",
+  "type": "object",
+  "$defs": {
+    "nonEmptyString": {
+      "$ref": "./defs/identifiers.schema.json#/$defs/nonEmptyString"
+    },
+    "resourceLocation": {
+      "$ref": "./defs/identifiers.schema.json#/$defs/resourceLocation"
+    },
+    "identifier": {
+      "$ref": "./defs/identifiers.schema.json#/$defs/identifier"
+    },
+    "booleanLike": {
+      "$ref": "./defs/expressions.schema.json#/$defs/booleanLike"
+    },
+    "expressionLike": {
+      "$ref": "./defs/expressions.schema.json#/$defs/expressionLike"
+    },
+    "tagIdentifier": {
+      "$ref": "./defs/identifiers.schema.json#/$defs/tagIdentifier"
+    },
+    "actionList": {
+      "$ref": "./defs/expressions.schema.json#/$defs/actionList"
+    },
+    "intRangeString": {
+      "$ref": "./defs/ranges.schema.json#/$defs/intRangeString"
+    },
+    "intRange": {
+      "$ref": "./defs/ranges.schema.json#/$defs/intRange"
+    },
+    "intMinMax": {
+      "$ref": "./defs/ranges.schema.json#/$defs/intMinMax"
+    },
+    "numberMinMax": {
+      "$ref": "./defs/ranges.schema.json#/$defs/numberMinMax"
+    },
+    "vec3": {
+      "$ref": "./defs/vectors.schema.json#/$defs/vec3"
+    },
+    "positioning": {
+      "$ref": "./defs/vectors.schema.json#/$defs/positioning"
+    },
+    "stringList": {
+      "$ref": "./defs/collections.schema.json#/$defs/stringList"
+    },
+    "stringIntMap": {
+      "$ref": "./defs/collections.schema.json#/$defs/stringIntMap"
+    },
+    "stringNumberMap": {
+      "$ref": "./defs/collections.schema.json#/$defs/stringNumberMap"
+    },
+    "stringStringMap": {
+      "$ref": "./defs/collections.schema.json#/$defs/stringStringMap"
+    },
+    "pokemonProperties": {
+      "$ref": "./defs/pokemon.schema.json#/$defs/pokemonProperties"
+    },
+    "itemPredicate": {
+      "$ref": "./defs/pokemon.schema.json#/$defs/itemPredicate"
+    },
+    "registryLikeCondition": {
+      "$ref": "./defs/pokemon.schema.json#/$defs/registryLikeCondition"
+    },
+    "dropEntry": {
+      "$ref": "./defs/drops.schema.json#/$defs/dropEntry"
+    },
+    "dropTable": {
+      "$ref": "./defs/drops.schema.json#/$defs/dropTable"
+    },
+    "spawningCondition": {
+      "$ref": "./defs/spawning.schema.json#/$defs/spawningCondition"
+    },
+    "weightMultiplier": {
+      "$ref": "./defs/spawning.schema.json#/$defs/weightMultiplier"
+    },
+    "variableDefinition": {
+      "$ref": "./defs/npc.schema.json#/$defs/variableDefinition"
+    },
+    "seatOffset": {
+      "$ref": "./defs/ride.schema.json#/$defs/seatOffset"
+    },
+    "seat": {
+      "$ref": "./defs/ride.schema.json#/$defs/seat"
+    }
+  }
+}

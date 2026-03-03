@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cobblemon-schema.local/ride_settings/boat.schema.json",
+  "title": "Cobblemon Ride Settings: Boat",
+  "type": "object",
+  "properties": {
+    "infiniteStamina": {
+      "$ref": "../_shared/defs/expressions.schema.json#/$defs/expressionLike"
+    },
+    "terminalVelocity": {
+      "$ref": "../_shared/defs/expressions.schema.json#/$defs/expressionLike"
+    },
+    "rotatePokemonHead": {
+      "$ref": "../_shared/defs/expressions.schema.json#/$defs/expressionLike"
+    },
+    "stamReplenishTimeSeconds": {
+      "$ref": "../_shared/defs/expressions.schema.json#/$defs/expressionLike"
+    },
+    "staminaExpr": {
+      "$ref": "../_shared/defs/expressions.schema.json#/$defs/expressionLike"
+    },
+    "rotationSpeedModifierExpr": {
+      "$ref": "../_shared/defs/expressions.schema.json#/$defs/expressionLike"
+    },
+    "jumpStrengthExpr": {
+      "$ref": "../_shared/defs/expressions.schema.json#/$defs/expressionLike"
+    },
+    "speedExpr": {
+      "$ref": "../_shared/defs/expressions.schema.json#/$defs/expressionLike"
+    },
+    "accelerationExpr": {
+      "$ref": "../_shared/defs/expressions.schema.json#/$defs/expressionLike"
+    },
+    "sprintSpeedModifier": {
+      "$ref": "../_shared/defs/expressions.schema.json#/$defs/expressionLike"
+    },
+    "sprintFovModifier": {
+      "$ref": "../_shared/defs/expressions.schema.json#/$defs/expressionLike"
+    },
+    "surfaceLevelOffset": {
+      "$ref": "../_shared/defs/expressions.schema.json#/$defs/expressionLike"
+    }
+  },
+  "additionalProperties": false
+}

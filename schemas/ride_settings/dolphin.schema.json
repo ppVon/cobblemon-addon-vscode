@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cobblemon-schema.local/ride_settings/dolphin.schema.json",
+  "title": "Cobblemon Ride Settings: Dolphin",
+  "type": "object",
+  "properties": {
+    "infiniteStamina": {
+      "$ref": "../_shared/defs/expressions.schema.json#/$defs/expressionLike"
+    },
+    "canJump": {
+      "$ref": "../_shared/defs/expressions.schema.json#/$defs/expressionLike"
+    },
+    "reverseDriveFactor": {
+      "$ref": "../_shared/defs/expressions.schema.json#/$defs/expressionLike"
+    },
+    "strafeFactor": {
+      "$ref": "../_shared/defs/expressions.schema.json#/$defs/expressionLike"
+    },
+    "timeToRollCorrect": {
+      "$ref": "../_shared/defs/expressions.schema.json#/$defs/expressionLike"
+    },
+    "jumpExpr": {
+      "$ref": "../_shared/defs/expressions.schema.json#/$defs/expressionLike"
+    },
+    "handlingExpr": {
+      "$ref": "../_shared/defs/expressions.schema.json#/$defs/expressionLike"
+    },
+    "horizontalPitchExpr": {
+      "$ref": "../_shared/defs/expressions.schema.json#/$defs/expressionLike"
+    },
+    "mouseInputMult": {
+      "$ref": "../_shared/defs/expressions.schema.json#/$defs/expressionLike"
+    },
+    "speedExpr": {
+      "$ref": "../_shared/defs/expressions.schema.json#/$defs/expressionLike"
+    },
+    "accelerationExpr": {
+      "$ref": "../_shared/defs/expressions.schema.json#/$defs/expressionLike"
+    },
+    "staminaExpr": {
+      "$ref": "../_shared/defs/expressions.schema.json#/$defs/expressionLike"
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,455 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cobblemon-schema.local/spawn_pool_world/schema.json",
+  "title": "Cobblemon Spawn Pool Set",
+  "type": "object",
+  "properties": {
+    "comment": {
+      "type": "string"
+    },
+    "enabled": {
+      "type": "boolean"
+    },
+    "neededInstalledMods": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "neededUninstalledMods": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "spawns": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/spawnDetail"
+      }
+    }
+  },
+  "required": [
+    "enabled",
+    "neededInstalledMods",
+    "neededUninstalledMods",
+    "spawns"
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "conditionOrList": {
+      "oneOf": [
+        {
+          "$ref": "../_shared/defs/spawning.schema.json#/$defs/spawningCondition"
+        },
+        {
+          "type": "array",
+          "items": {
+            "$ref": "../_shared/defs/spawning.schema.json#/$defs/spawningCondition"
+          }
+        }
+      ]
+    },
+    "compositeCondition": {
+      "type": "object",
+      "properties": {
+        "conditions": {
+          "type": "array",
+          "items": {
+            "$ref": "../_shared/defs/spawning.schema.json#/$defs/spawningCondition"
+          }
+        },
+        "anticonditions": {
+          "type": "array",
+          "items": {
+            "$ref": "../_shared/defs/spawning.schema.json#/$defs/spawningCondition"
+          }
+        }
+      },
+      "additionalProperties": true
+    },
+    "possibleHeldItem": {
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "item": {
+              "type": "string"
+            },
+            "percentage": {
+              "type": "number"
+            },
+            "nbt": {
+              "type": "object",
+              "additionalProperties": true
+            }
+          },
+          "required": [
+            "item"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "spawnDetailBase": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "pokemon",
+            "pokemon-herd",
+            "npc"
+          ]
+        },
+        "displayName": {
+          "type": "string"
+        },
+        "spawnablePositionType": {
+          "type": "string",
+          "enum": [
+            "grounded",
+            "seafloor",
+            "lavafloor",
+            "submerged",
+            "surface",
+            "fishing"
+          ]
+        },
+        "context": {
+          "type": "string",
+          "enum": [
+            "grounded",
+            "seafloor",
+            "lavafloor",
+            "submerged",
+            "surface",
+            "fishing"
+          ]
+        },
+        "bucket": {
+          "type": "string"
+        },
+        "preset": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          ]
+        },
+        "presets": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "condition": {
+          "$ref": "#/$defs/conditionOrList"
+        },
+        "conditions": {
+          "type": "array",
+          "items": {
+            "$ref": "../_shared/defs/spawning.schema.json#/$defs/spawningCondition"
+          }
+        },
+        "anticondition": {
+          "$ref": "#/$defs/conditionOrList"
+        },
+        "anticonditions": {
+          "type": "array",
+          "items": {
+            "$ref": "../_shared/defs/spawning.schema.json#/$defs/spawningCondition"
+          }
+        },
+        "compositeCondition": {
+          "$ref": "#/$defs/compositeCondition"
+        },
+        "weightMultiplier": {
+          "$ref": "../_shared/defs/spawning.schema.json#/$defs/weightMultiplier"
+        },
+        "weightMultipliers": {
+          "type": "array",
+          "items": {
+            "$ref": "../_shared/defs/spawning.schema.json#/$defs/weightMultiplier"
+          }
+        },
+        "width": {
+          "type": "integer"
+        },
+        "height": {
+          "type": "integer"
+        },
+        "weight": {
+          "type": "number"
+        },
+        "percentage": {
+          "type": "number"
+        },
+        "labels": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "neededInstalledMods": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "neededUninstalledMods": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "id",
+        "type",
+        "bucket",
+        "weight"
+      ],
+      "anyOf": [
+        {
+          "required": [
+            "spawnablePositionType"
+          ]
+        },
+        {
+          "required": [
+            "context"
+          ]
+        }
+      ],
+      "additionalProperties": true
+    },
+    "pokemonSpawn": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/spawnDetailBase"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "const": "pokemon"
+            },
+            "pokemon": {
+              "$ref": "../_shared/defs/pokemon.schema.json#/$defs/pokemonProperties"
+            },
+            "level": {
+              "$ref": "../_shared/defs/ranges.schema.json#/$defs/intRange"
+            },
+            "levelRange": {
+              "$ref": "../_shared/defs/ranges.schema.json#/$defs/intRange"
+            },
+            "drops": {
+              "$ref": "../_shared/defs/drops.schema.json#/$defs/dropTable"
+            },
+            "heldItems": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/possibleHeldItem"
+              }
+            }
+          },
+          "required": [
+            "pokemon"
+          ],
+          "anyOf": [
+            {
+              "required": [
+                "level"
+              ]
+            },
+            {
+              "required": [
+                "levelRange"
+              ]
+            }
+          ],
+          "additionalProperties": true
+        }
+      ]
+    },
+    "pokemonHerdSpawn": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/spawnDetailBase"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "const": "pokemon-herd"
+            },
+            "level": {
+              "$ref": "../_shared/defs/ranges.schema.json#/$defs/intRange"
+            },
+            "levelRange": {
+              "$ref": "../_shared/defs/ranges.schema.json#/$defs/intRange"
+            },
+            "maxHerdSize": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "minDistanceBetweenSpawns": {
+              "type": "number",
+              "minimum": 0
+            },
+            "herdablePokemon": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "pokemon": {
+                    "$ref": "../_shared/defs/pokemon.schema.json#/$defs/pokemonProperties"
+                  },
+                  "levelRange": {
+                    "$ref": "../_shared/defs/ranges.schema.json#/$defs/intRange"
+                  },
+                  "levelRangeOffset": {
+                    "$ref": "../_shared/defs/ranges.schema.json#/$defs/intRange"
+                  },
+                  "dropTable": {
+                    "$ref": "../_shared/defs/drops.schema.json#/$defs/dropTable"
+                  },
+                  "isLeader": {
+                    "type": "boolean"
+                  },
+                  "weight": {
+                    "type": "number"
+                  },
+                  "maxTimes": {
+                    "type": "integer"
+                  }
+                },
+                "required": [
+                  "pokemon"
+                ],
+                "additionalProperties": false
+              }
+            }
+          },
+          "required": [
+            "herdablePokemon"
+          ],
+          "anyOf": [
+            {
+              "required": [
+                "level"
+              ]
+            },
+            {
+              "required": [
+                "levelRange"
+              ]
+            }
+          ],
+          "additionalProperties": true
+        }
+      ]
+    },
+    "npcSpawn": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/spawnDetailBase"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "const": "npc"
+            },
+            "npcClass": {
+              "oneOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "$ref": "../npcs/schema.json"
+                }
+              ]
+            },
+            "class": {
+              "oneOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "$ref": "../npcs/schema.json"
+                }
+              ]
+            },
+            "npc": {
+              "oneOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "$ref": "../npcs/schema.json"
+                }
+              ]
+            },
+            "aspects": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "minLevel": {
+              "$ref": "../_shared/defs/expressions.schema.json#/$defs/expressionLike"
+            },
+            "maxLevel": {
+              "$ref": "../_shared/defs/expressions.schema.json#/$defs/expressionLike"
+            }
+          },
+          "anyOf": [
+            {
+              "required": [
+                "npcClass"
+              ]
+            },
+            {
+              "required": [
+                "class"
+              ]
+            },
+            {
+              "required": [
+                "npc"
+              ]
+            }
+          ],
+          "additionalProperties": true
+        }
+      ]
+    },
+    "spawnDetail": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/pokemonSpawn"
+        },
+        {
+          "$ref": "#/$defs/pokemonHerdSpawn"
+        },
+        {
+          "$ref": "#/$defs/npcSpawn"
+        }
+      ]
+    }
+  }
+}

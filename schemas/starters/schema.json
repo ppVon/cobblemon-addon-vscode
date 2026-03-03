@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cobblemon-schema.local/starters/schema.json",
+  "title": "Cobblemon Starter Category",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "displayName": {
+      "type": "string",
+      "minLength": 1
+    },
+    "pokemon": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "../_shared/defs/pokemon.schema.json#/$defs/pokemonProperties"
+      }
+    }
+  },
+  "required": [
+    "name",
+    "pokemon"
+  ],
+  "additionalProperties": false
+}

@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cobblemon-schema.local/_shared/defs/vectors.schema.json",
+  "title": "Cobblemon Shared Vectors",
+  "type": "object",
+  "$defs": {
+    "vec3": {
+      "type": "object",
+      "properties": {
+        "x": {
+          "type": "number"
+        },
+        "y": {
+          "type": "number"
+        },
+        "z": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "x",
+        "y",
+        "z"
+      ],
+      "additionalProperties": false
+    },
+    "positioning": {
+      "type": "object",
+      "properties": {
+        "position": {
+          "$ref": "./vectors.schema.json#/$defs/vec3"
+        },
+        "rotation": {
+          "$ref": "./vectors.schema.json#/$defs/vec3"
+        }
+      },
+      "required": [
+        "position",
+        "rotation"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

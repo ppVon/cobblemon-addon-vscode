@@ -1,0 +1,443 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cobblemon-schema.local/npcs/schema.json",
+  "title": "Cobblemon NPC Class",
+  "type": "object",
+  "properties": {
+    "presets": {
+      "type": "array",
+      "items": {
+        "$ref": "../_shared/defs/identifiers.schema.json#/$defs/identifier"
+      }
+    },
+    "resourceIdentifier": {
+      "$ref": "../_shared/defs/identifiers.schema.json#/$defs/identifier"
+    },
+    "name": {
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      ]
+    },
+    "names": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "aspects": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "variation": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/$defs/variationProvider"
+      }
+    },
+    "variations": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/$defs/variationProvider"
+      }
+    },
+    "hitbox": {
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "width": {
+              "type": "number"
+            },
+            "height": {
+              "type": "number"
+            },
+            "fixed": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "width",
+            "height"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "battleConfiguration": {
+      "type": "object",
+      "properties": {
+        "canChallenge": {
+          "type": "boolean"
+        },
+        "simultaneousBattles": {
+          "type": "boolean"
+        },
+        "healAfterwards": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false
+    },
+    "interaction": {
+      "$ref": "#/$defs/interactionConfig"
+    },
+    "canDespawn": {
+      "type": "boolean"
+    },
+    "config": {
+      "type": "array",
+      "items": {
+        "$ref": "../_shared/defs/npc.schema.json#/$defs/variableDefinition"
+      }
+    },
+    "party": {
+      "$ref": "#/$defs/partyProvider"
+    },
+    "skill": {
+      "type": "integer"
+    },
+    "autoHealParty": {
+      "type": "boolean"
+    },
+    "randomizePartyOrder": {
+      "type": "boolean"
+    },
+    "battleTheme": {
+      "$ref": "../_shared/defs/identifiers.schema.json#/$defs/identifier"
+    },
+    "behaviours": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/behaviourConfig"
+      }
+    },
+    "behaviors": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/behaviourConfig"
+      }
+    },
+    "ai": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/behaviourConfig"
+      }
+    },
+    "isMovable": {
+      "type": "boolean"
+    },
+    "isInvulnerable": {
+      "type": "boolean"
+    },
+    "isLeashable": {
+      "type": "boolean"
+    },
+    "allowProjectileHits": {
+      "type": "boolean"
+    },
+    "hideNameTag": {
+      "type": "boolean"
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "behaviourConfig": {
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "type"
+          ],
+          "additionalProperties": true
+        }
+      ]
+    },
+    "interactionConfig": {
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": [
+                "script",
+                "custom_script",
+                "dialogue",
+                "none"
+              ]
+            },
+            "script": {
+              "$ref": "../_shared/defs/expressions.schema.json#/$defs/expressionLike"
+            },
+            "dialogue": {
+              "$ref": "../_shared/defs/identifiers.schema.json#/$defs/identifier"
+            }
+          },
+          "required": [
+            "type"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "weightedAspect": {
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "aspect": {
+              "oneOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              ]
+            },
+            "aspects": {
+              "oneOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              ]
+            },
+            "weight": {
+              "type": "number"
+            }
+          },
+          "additionalProperties": false,
+          "anyOf": [
+            {
+              "required": [
+                "aspect"
+              ]
+            },
+            {
+              "required": [
+                "aspects"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "variationProvider": {
+      "oneOf": [
+        {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/weightedAspect"
+          }
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": [
+                "weighted",
+                "random"
+              ]
+            },
+            "aspects": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "options": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/weightedAspect"
+              }
+            }
+          },
+          "required": [
+            "type"
+          ],
+          "additionalProperties": true
+        }
+      ]
+    },
+    "partyProvider": {
+      "oneOf": [
+        {
+          "type": "string",
+          "enum": [
+            "simple",
+            "pool",
+            "script"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": [
+                "simple",
+                "pool",
+                "script"
+              ]
+            },
+            "isStatic": {
+              "type": "boolean"
+            },
+            "pokemon": {
+              "type": "array",
+              "items": {
+                "$ref": "../_shared/defs/pokemon.schema.json#/$defs/pokemonProperties"
+              }
+            },
+            "minPokemon": {
+              "$ref": "../_shared/defs/expressions.schema.json#/$defs/expressionLike"
+            },
+            "maxPokemon": {
+              "$ref": "../_shared/defs/expressions.schema.json#/$defs/expressionLike"
+            },
+            "useFixedRandom": {
+              "type": "boolean"
+            },
+            "pool": {
+              "type": "array",
+              "items": {
+                "oneOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "pokemon": {
+                        "$ref": "../_shared/defs/pokemon.schema.json#/$defs/pokemonProperties"
+                      },
+                      "levelVariation": {
+                        "$ref": "../_shared/defs/expressions.schema.json#/$defs/expressionLike"
+                      },
+                      "level": {
+                        "$ref": "../_shared/defs/expressions.schema.json#/$defs/expressionLike"
+                      },
+                      "npcLevels": {
+                        "$ref": "../_shared/defs/ranges.schema.json#/$defs/intRange"
+                      },
+                      "selectableTimes": {
+                        "$ref": "../_shared/defs/expressions.schema.json#/$defs/expressionLike"
+                      },
+                      "weight": {
+                        "$ref": "../_shared/defs/expressions.schema.json#/$defs/expressionLike"
+                      }
+                    },
+                    "required": [
+                      "pokemon"
+                    ],
+                    "additionalProperties": false
+                  }
+                ]
+              }
+            },
+            "script": {
+              "$ref": "../_shared/defs/identifiers.schema.json#/$defs/identifier"
+            }
+          },
+          "required": [
+            "type"
+          ],
+          "additionalProperties": false,
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "type": {
+                    "const": "simple"
+                  }
+                },
+                "required": [
+                  "type"
+                ]
+              },
+              "then": {
+                "required": [
+                  "pokemon"
+                ]
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "type": {
+                    "const": "pool"
+                  }
+                },
+                "required": [
+                  "type"
+                ]
+              },
+              "then": {
+                "required": [
+                  "minPokemon",
+                  "maxPokemon",
+                  "pool",
+                  "isStatic"
+                ]
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "type": {
+                    "const": "script"
+                  }
+                },
+                "required": [
+                  "type"
+                ]
+              },
+              "then": {
+                "required": [
+                  "script"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

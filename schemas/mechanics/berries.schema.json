@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cobblemon-schema.local/mechanics/berries.schema.json",
+  "title": "Cobblemon Mechanics: Berries",
+  "type": "object",
+  "properties": {
+    "portionHealRatio": {
+      "$ref": "../_shared/defs/expressions.schema.json#/$defs/expressionLike"
+    },
+    "sitrusHealAmount": {
+      "$ref": "../_shared/defs/expressions.schema.json#/$defs/expressionLike"
+    },
+    "friendshipRaiseAmount": {
+      "$ref": "../_shared/defs/expressions.schema.json#/$defs/expressionLike"
+    },
+    "evLowerAmount": {
+      "$ref": "../_shared/defs/expressions.schema.json#/$defs/expressionLike"
+    },
+    "ppRestoreAmount": {
+      "$ref": "../_shared/defs/expressions.schema.json#/$defs/expressionLike"
+    },
+    "oranRestoreAmount": {
+      "$ref": "../_shared/defs/expressions.schema.json#/$defs/expressionLike"
+    }
+  },
+  "required": [
+    "portionHealRatio",
+    "sitrusHealAmount",
+    "friendshipRaiseAmount",
+    "evLowerAmount",
+    "ppRestoreAmount",
+    "oranRestoreAmount"
+  ],
+  "additionalProperties": false
+}

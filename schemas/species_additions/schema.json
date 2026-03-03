@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cobblemon-schema.local/species_additions/schema.json",
+  "title": "Cobblemon Species Addition",
+  "type": "object",
+  "properties": {
+    "target": {
+      "$ref": "../_shared/defs/identifiers.schema.json#/$defs/identifier"
+    }
+  },
+  "required": [
+    "target"
+  ],
+  "additionalProperties": true,
+  "allOf": [
+    {
+      "not": {
+        "maxProperties": 1
+      }
+    }
+  ]
+}

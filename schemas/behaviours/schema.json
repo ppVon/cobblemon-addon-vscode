@@ -1,0 +1,145 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cobblemon-schema.local/behaviours/schema.json",
+  "title": "Cobblemon Behaviours",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "visible": {
+      "type": "boolean"
+    },
+    "entityType": {
+      "type": "string"
+    },
+    "onAdd": {
+      "$ref": "../_shared/defs/expressions.schema.json#/$defs/actionList"
+    },
+    "onRemove": {
+      "$ref": "../_shared/defs/expressions.schema.json#/$defs/actionList"
+    },
+    "undo": {
+      "$ref": "../_shared/defs/expressions.schema.json#/$defs/actionList"
+    },
+    "configurations": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/configuration"
+      }
+    }
+  },
+  "required": [
+    "configurations"
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "task": {
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string"
+            },
+            "condition": {
+              "$ref": "../_shared/defs/expressions.schema.json#/$defs/expressionLike"
+            },
+            "activity": {
+              "type": "string"
+            },
+            "script": {
+              "$ref": "../_shared/defs/expressions.schema.json#/$defs/actionList"
+            },
+            "variables": {
+              "type": "array",
+              "items": {
+                "$ref": "../_shared/defs/npc.schema.json#/$defs/variableDefinition"
+              }
+            }
+          },
+          "additionalProperties": true
+        }
+      ]
+    },
+    "configuration": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string"
+        },
+        "activity": {
+          "type": "string"
+        },
+        "condition": {
+          "$ref": "../_shared/defs/expressions.schema.json#/$defs/expressionLike"
+        },
+        "executeEarly": {
+          "type": "boolean"
+        },
+        "script": {
+          "$ref": "../_shared/defs/expressions.schema.json#/$defs/actionList"
+        },
+        "behaviours": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "memories": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "variables": {
+          "type": "array",
+          "items": {
+            "$ref": "../_shared/defs/npc.schema.json#/$defs/variableDefinition"
+          }
+        },
+        "variableValues": {
+          "type": "object",
+          "additionalProperties": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "integer"
+              },
+              {
+                "type": "boolean"
+              }
+            ]
+          }
+        },
+        "tasksByPriority": {
+          "type": "object",
+          "patternProperties": {
+            "^[0-9]+$": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/task"
+              }
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "additionalProperties": true
+    }
+  }
+}

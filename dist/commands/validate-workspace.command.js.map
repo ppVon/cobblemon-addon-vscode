@@ -1,0 +1,1 @@
+{"version":3,"file":"validate-workspace.command.js","sourceRoot":"","sources":["../../src/commands/validate-workspace.command.ts"],"names":[],"mappings":";;;AAAA,6EAA4E;AAG/D,QAAA,wBAAwB,GAAsB;IACzD,EAAE,EAAE,wCAAwC;IAC5C,GAAG,EAAE,KAAK,EAAE,EAAE,MAAM,EAAE,WAAW,EAAE,EAAE,EAAE;QACrC,MAAM,IAAA,6CAAsB,EAAC,MAAM,EAAE,WAAW,EAAE,IAAI,CAAC,CAAC;IAC1D,CAAC;CACF,CAAC"}

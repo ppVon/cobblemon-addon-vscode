@@ -1,0 +1,6 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cobblemon-schema.local/global_species_features/schema.json",
+  "title": "Cobblemon Global Species Feature Provider",
+  "$ref": "../species_features/schema.json"
+}

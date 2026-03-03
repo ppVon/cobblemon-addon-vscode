@@ -1,0 +1,184 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cobblemon-schema.local/bedrock_pokemon_resolvers/schema.json",
+  "title": "Cobblemon Bedrock Pokemon Resolver",
+  "type": "object",
+  "properties": {
+    "species": {
+      "$ref": "../_shared/defs/identifiers.schema.json#/$defs/resourceLocation"
+    },
+    "name": {
+      "$ref": "../_shared/defs/identifiers.schema.json#/$defs/resourceLocation"
+    },
+    "pokeball": {
+      "$ref": "../_shared/defs/identifiers.schema.json#/$defs/resourceLocation"
+    },
+    "order": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "variations": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/variation"
+      }
+    }
+  },
+  "required": [
+    "order",
+    "variations"
+  ],
+  "anyOf": [
+    {
+      "required": [
+        "species"
+      ]
+    },
+    {
+      "required": [
+        "name"
+      ]
+    },
+    {
+      "required": [
+        "pokeball"
+      ]
+    }
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "textureSupplier": {
+      "anyOf": [
+        {
+          "$ref": "../_shared/defs/identifiers.schema.json#/$defs/identifier"
+        },
+        {
+          "type": "string",
+          "const": "variable"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "loop": {
+              "type": "boolean"
+            },
+            "fps": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            },
+            "frames": {
+              "type": "array",
+              "items": {
+                "$ref": "../_shared/defs/identifiers.schema.json#/$defs/identifier"
+              },
+              "minItems": 1
+            },
+            "interpolation": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "frames"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "scrollingSettings": {
+      "type": "object",
+      "properties": {
+        "speedU": {
+          "type": "number"
+        },
+        "speedV": {
+          "type": "number"
+        }
+      },
+      "additionalProperties": false
+    },
+    "layer": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "enabled": {
+          "$ref": "../_shared/defs/expressions.schema.json#/$defs/booleanLike"
+        },
+        "tint": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          },
+          "minItems": 4,
+          "maxItems": 4
+        },
+        "texture": {
+          "$ref": "#/$defs/textureSupplier"
+        },
+        "emissive": {
+          "$ref": "../_shared/defs/expressions.schema.json#/$defs/booleanLike"
+        },
+        "translucent": {
+          "$ref": "../_shared/defs/expressions.schema.json#/$defs/booleanLike"
+        },
+        "translucent_cull": {
+          "$ref": "../_shared/defs/expressions.schema.json#/$defs/booleanLike"
+        },
+        "scrolling": {
+          "$ref": "#/$defs/scrollingSettings"
+        }
+      },
+      "additionalProperties": false
+    },
+    "sprites": {
+      "type": "object",
+      "properties": {
+        "PORTRAIT": {
+          "$ref": "../_shared/defs/identifiers.schema.json#/$defs/identifier"
+        },
+        "PROFILE": {
+          "$ref": "../_shared/defs/identifiers.schema.json#/$defs/identifier"
+        }
+      },
+      "additionalProperties": false
+    },
+    "variation": {
+      "type": "object",
+      "properties": {
+        "aspects": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "condition": {
+          "$ref": "../_shared/defs/expressions.schema.json#/$defs/expressionLike"
+        },
+        "poser": {
+          "$ref": "../_shared/defs/identifiers.schema.json#/$defs/identifier"
+        },
+        "model": {
+          "$ref": "../_shared/defs/identifiers.schema.json#/$defs/identifier"
+        },
+        "texture": {
+          "$ref": "#/$defs/textureSupplier"
+        },
+        "layers": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/layer"
+          }
+        },
+        "sprites": {
+          "$ref": "#/$defs/sprites"
+        }
+      },
+      "required": [
+        "aspects"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

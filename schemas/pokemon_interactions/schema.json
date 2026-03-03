@@ -1,0 +1,169 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cobblemon-schema.local/pokemon_interactions/schema.json",
+  "title": "Cobblemon Pokemon Interaction Set",
+  "type": "object",
+  "properties": {
+    "requirements": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/requirement"
+      }
+    },
+    "interactions": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/interaction"
+      }
+    }
+  },
+  "required": [
+    "requirements",
+    "interactions"
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "requirement": {
+      "type": "object",
+      "properties": {
+        "variant": {
+          "type": "string"
+        },
+        "target": {
+          "type": "string"
+        },
+        "itemCondition": {
+          "$ref": "../_shared/defs/pokemon.schema.json#/$defs/itemPredicate"
+        }
+      },
+      "required": [
+        "variant"
+      ],
+      "additionalProperties": true
+    },
+    "effect": {
+      "type": "object",
+      "properties": {
+        "variant": {
+          "type": "string",
+          "enum": [
+            "drop_item",
+            "give_item",
+            "play_sound",
+            "shrink_item",
+            "script"
+          ]
+        },
+        "item": {
+          "type": "string"
+        },
+        "sound": {
+          "type": "string"
+        },
+        "amount": {
+          "oneOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "string"
+            }
+          ]
+        },
+        "script": {
+          "$ref": "../_shared/defs/expressions.schema.json#/$defs/expressionLike"
+        }
+      },
+      "required": [
+        "variant"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "variant": {
+                "enum": [
+                  "drop_item",
+                  "give_item"
+                ]
+              }
+            },
+            "required": [
+              "variant"
+            ]
+          },
+          "then": {
+            "required": [
+              "item"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "variant": {
+                "const": "play_sound"
+              }
+            },
+            "required": [
+              "variant"
+            ]
+          },
+          "then": {
+            "required": [
+              "sound"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "variant": {
+                "const": "script"
+              }
+            },
+            "required": [
+              "variant"
+            ]
+          },
+          "then": {
+            "required": [
+              "script"
+            ]
+          }
+        }
+      ]
+    },
+    "interaction": {
+      "type": "object",
+      "properties": {
+        "grouping": {
+          "type": "string"
+        },
+        "requirements": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/requirement"
+          }
+        },
+        "effects": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/effect"
+          }
+        },
+        "cooldown": {
+          "$ref": "../_shared/defs/expressions.schema.json#/$defs/expressionLike"
+        }
+      },
+      "required": [
+        "grouping",
+        "requirements",
+        "effects",
+        "cooldown"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

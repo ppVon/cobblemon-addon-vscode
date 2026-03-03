@@ -1,0 +1,217 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cobblemon-schema.local/spawn_rules/schema.json",
+  "title": "Cobblemon Spawn Rule",
+  "type": "object",
+  "properties": {
+    "displayName": {
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "object",
+          "additionalProperties": true
+        }
+      ]
+    },
+    "enabled": {
+      "$ref": "../_shared/defs/expressions.schema.json#/$defs/booleanLike"
+    },
+    "components": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/component"
+      }
+    }
+  },
+  "required": [
+    "displayName",
+    "enabled",
+    "components"
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "spawnDetailSelector": {
+      "oneOf": [
+        {
+          "$ref": "../_shared/defs/expressions.schema.json#/$defs/expressionLike"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": [
+                "expression"
+              ]
+            },
+            "expression": {
+              "$ref": "../_shared/defs/expressions.schema.json#/$defs/expressionLike"
+            }
+          },
+          "required": [
+            "type"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "spawnablePositionSelector": {
+      "oneOf": [
+        {
+          "$ref": "../_shared/defs/expressions.schema.json#/$defs/expressionLike"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": [
+                "expression",
+                "conditional"
+              ]
+            },
+            "expression": {
+              "$ref": "../_shared/defs/expressions.schema.json#/$defs/expressionLike"
+            },
+            "conditions": {
+              "type": "array",
+              "items": {
+                "$ref": "../_shared/defs/spawning.schema.json#/$defs/spawningCondition"
+              }
+            },
+            "anticonditions": {
+              "type": "array",
+              "items": {
+                "$ref": "../_shared/defs/spawning.schema.json#/$defs/spawningCondition"
+              }
+            }
+          },
+          "additionalProperties": false,
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "type": {
+                    "const": "expression"
+                  }
+                },
+                "required": [
+                  "type"
+                ]
+              },
+              "then": {
+                "required": [
+                  "expression"
+                ]
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "type": {
+                    "const": "conditional"
+                  }
+                },
+                "required": [
+                  "type"
+                ]
+              },
+              "then": {
+                "anyOf": [
+                  {
+                    "required": [
+                      "conditions"
+                    ]
+                  },
+                  {
+                    "required": [
+                      "anticonditions"
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "componentBase": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "weight",
+            "filter",
+            "location"
+          ]
+        },
+        "spawnDetailSelector": {
+          "$ref": "#/$defs/spawnDetailSelector"
+        },
+        "spawnSelector": {
+          "$ref": "#/$defs/spawnDetailSelector"
+        },
+        "spawnablePositionSelector": {
+          "$ref": "#/$defs/spawnablePositionSelector"
+        },
+        "contextSelector": {
+          "$ref": "#/$defs/spawnablePositionSelector"
+        },
+        "allow": {
+          "$ref": "../_shared/defs/expressions.schema.json#/$defs/expressionLike"
+        },
+        "weight": {
+          "$ref": "../_shared/defs/expressions.schema.json#/$defs/expressionLike"
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "component": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/componentBase"
+        },
+        {
+          "oneOf": [
+            {
+              "properties": {
+                "type": {
+                  "const": "weight"
+                }
+              },
+              "required": [
+                "weight"
+              ]
+            },
+            {
+              "properties": {
+                "type": {
+                  "const": "filter"
+                }
+              },
+              "required": [
+                "allow"
+              ]
+            },
+            {
+              "properties": {
+                "type": {
+                  "const": "location"
+                }
+              },
+              "required": [
+                "allow"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

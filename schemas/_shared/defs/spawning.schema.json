@@ -1,0 +1,183 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cobblemon-schema.local/_shared/defs/spawning.schema.json",
+  "title": "Cobblemon Shared Spawning",
+  "type": "object",
+  "$defs": {
+    "spawningCondition": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "basic",
+            "area",
+            "grounded",
+            "surface",
+            "submerged",
+            "seafloor",
+            "fishing"
+          ]
+        },
+        "dimensions": {
+          "$ref": "./collections.schema.json#/$defs/stringList"
+        },
+        "biomes": {
+          "$ref": "./collections.schema.json#/$defs/stringList"
+        },
+        "moonPhase": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "integer"
+            }
+          ]
+        },
+        "canSeeSky": {
+          "type": "boolean"
+        },
+        "minX": {
+          "type": "number"
+        },
+        "minY": {
+          "type": "number"
+        },
+        "minZ": {
+          "type": "number"
+        },
+        "maxX": {
+          "type": "number"
+        },
+        "maxY": {
+          "type": "number"
+        },
+        "maxZ": {
+          "type": "number"
+        },
+        "minLight": {
+          "type": "integer"
+        },
+        "maxLight": {
+          "type": "integer"
+        },
+        "minSkyLight": {
+          "type": "integer"
+        },
+        "maxSkyLight": {
+          "type": "integer"
+        },
+        "isRaining": {
+          "type": "boolean"
+        },
+        "isThundering": {
+          "type": "boolean"
+        },
+        "timeRange": {
+          "anyOf": [
+            {
+              "$ref": "./ranges.schema.json#/$defs/intRange"
+            },
+            {
+              "type": "string",
+              "enum": [
+                "any",
+                "day",
+                "night",
+                "morning",
+                "noon",
+                "afternoon",
+                "evening",
+                "midnight",
+                "predawn",
+                "dawn",
+                "dusk",
+                "twilight"
+              ]
+            }
+          ]
+        },
+        "structures": {
+          "$ref": "./collections.schema.json#/$defs/stringList"
+        },
+        "isSlimeChunk": {
+          "type": "boolean"
+        },
+        "markers": {
+          "$ref": "./collections.schema.json#/$defs/stringList"
+        },
+        "minHeight": {
+          "type": "integer"
+        },
+        "maxHeight": {
+          "type": "integer"
+        },
+        "neededNearbyBlocks": {
+          "$ref": "./collections.schema.json#/$defs/stringList"
+        },
+        "neededBaseBlocks": {
+          "$ref": "./collections.schema.json#/$defs/stringList"
+        },
+        "minDepth": {
+          "type": "integer"
+        },
+        "maxDepth": {
+          "type": "integer"
+        },
+        "fluidIsSource": {
+          "type": "boolean"
+        },
+        "fluid": {
+          "$ref": "./pokemon.schema.json#/$defs/registryLikeCondition"
+        },
+        "rod": {
+          "$ref": "./pokemon.schema.json#/$defs/registryLikeCondition"
+        },
+        "minLureLevel": {
+          "type": "integer"
+        },
+        "maxLureLevel": {
+          "type": "integer"
+        },
+        "bait": {
+          "$ref": "./identifiers.schema.json#/$defs/identifier"
+        },
+        "rodType": {
+          "$ref": "./identifiers.schema.json#/$defs/identifier"
+        }
+      },
+      "additionalProperties": true
+    },
+    "weightMultiplier": {
+      "type": "object",
+      "properties": {
+        "condition": {
+          "$ref": "./spawning.schema.json#/$defs/spawningCondition"
+        },
+        "conditions": {
+          "type": "array",
+          "items": {
+            "$ref": "./spawning.schema.json#/$defs/spawningCondition"
+          }
+        },
+        "anticondition": {
+          "$ref": "./spawning.schema.json#/$defs/spawningCondition"
+        },
+        "anticonditions": {
+          "type": "array",
+          "items": {
+            "$ref": "./spawning.schema.json#/$defs/spawningCondition"
+          }
+        },
+        "multiplier": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "multiplier"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

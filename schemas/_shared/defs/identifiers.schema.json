@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cobblemon-schema.local/_shared/defs/identifiers.schema.json",
+  "title": "Cobblemon Shared Identifiers",
+  "type": "object",
+  "$defs": {
+    "nonEmptyString": {
+      "type": "string",
+      "minLength": 1
+    },
+    "resourceLocation": {
+      "type": "string",
+      "pattern": "^[a-z0-9_.-]+:[a-z0-9_./-]+$"
+    },
+    "identifier": {
+      "type": "string",
+      "pattern": "^(?:[a-z0-9_.-]+:)?[a-z0-9_./-]+$"
+    },
+    "tagIdentifier": {
+      "type": "string",
+      "pattern": "^#(?:[a-z0-9_.-]+:)?[a-z0-9_./-]+$"
+    }
+  }
+}

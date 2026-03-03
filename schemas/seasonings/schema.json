@@ -1,0 +1,124 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cobblemon-schema.local/seasonings/schema.json",
+  "title": "Cobblemon Seasoning",
+  "type": "object",
+  "properties": {
+    "ingredient": {
+      "$ref": "../_shared/defs/identifiers.schema.json#/$defs/identifier"
+    },
+    "colour": {
+      "type": "string"
+    },
+    "color": {
+      "type": "string"
+    },
+    "flavours": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "integer"
+      }
+    },
+    "flavors": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "integer"
+      }
+    },
+    "baitEffects": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string"
+          },
+          "subcategory": {
+            "type": "string"
+          },
+          "chance": {
+            "type": "number"
+          },
+          "value": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "type",
+          "chance",
+          "value"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "food": {
+      "type": "object",
+      "properties": {
+        "hunger": {
+          "type": "integer"
+        },
+        "saturation": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "hunger",
+        "saturation"
+      ],
+      "additionalProperties": false
+    },
+    "mobEffects": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "effect": {
+            "$ref": "../_shared/defs/identifiers.schema.json#/$defs/identifier"
+          },
+          "duration": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "amplifier": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "ambient": {
+            "type": "boolean"
+          },
+          "visible": {
+            "type": "boolean"
+          },
+          "showIcon": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "effect",
+          "duration",
+          "amplifier",
+          "ambient",
+          "visible",
+          "showIcon"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "ingredient"
+  ],
+  "additionalProperties": false,
+  "oneOf": [
+    {
+      "required": [
+        "colour"
+      ]
+    },
+    {
+      "required": [
+        "color"
+      ]
+    }
+  ]
+}

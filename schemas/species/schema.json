@@ -1,0 +1,1001 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cobblemon-schema.local/species/schema.json",
+  "title": "Cobblemon Species",
+  "type": "object",
+  "properties": {
+    "nationalPokedexNumber": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "name": {
+      "type": "string"
+    },
+    "primaryType": {
+      "type": "string"
+    },
+    "secondaryType": {
+      "type": "string"
+    },
+    "maleRatio": {
+      "type": "number"
+    },
+    "height": {
+      "type": "number",
+      "minimum": 0
+    },
+    "weight": {
+      "type": "number",
+      "minimum": 0
+    },
+    "pokedex": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "labels": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "aspects": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "abilities": {
+      "oneOf": [
+        {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": true
+        }
+      ]
+    },
+    "eggGroups": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "baseStats": {
+      "$ref": "#/$defs/stats"
+    },
+    "evYield": {
+      "$ref": "#/$defs/stats"
+    },
+    "baseExperienceYield": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "experienceGroup": {
+      "type": "string"
+    },
+    "catchRate": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "eggCycles": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "baseFriendship": {
+      "type": "integer"
+    },
+    "baseScale": {
+      "type": "number",
+      "exclusiveMinimum": 0
+    },
+    "hitbox": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "width": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            },
+            "height": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            },
+            "fixed": {
+              "type": "boolean"
+            },
+            "standingEyeHeight": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "width",
+            "height"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "string"
+        }
+      ]
+    },
+    "shoulderMountable": {
+      "type": "boolean"
+    },
+    "shoulderEffects": {
+      "type": "array",
+      "items": {
+        "oneOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "object",
+            "additionalProperties": true
+          }
+        ]
+      }
+    },
+    "moves": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "features": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "standingEyeHeight": {
+      "type": "number"
+    },
+    "swimmingEyeHeight": {
+      "type": "number"
+    },
+    "flyingEyeHeight": {
+      "type": "number"
+    },
+    "behaviour": {
+      "$ref": "#/$defs/pokemonBehaviour"
+    },
+    "drops": {
+      "$ref": "../_shared/defs/drops.schema.json#/$defs/dropTable"
+    },
+    "dynamaxBlocked": {
+      "type": "boolean"
+    },
+    "implemented": {
+      "type": "boolean"
+    },
+    "battleOnly": {
+      "type": "boolean"
+    },
+    "baseAI": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/behaviourConfig"
+      }
+    },
+    "ai": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/behaviourConfig"
+      }
+    },
+    "forms": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/form"
+      }
+    },
+    "riding": {
+      "$ref": "#/$defs/riding"
+    },
+    "evolutions": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/evolution"
+      }
+    },
+    "preEvolution": {
+      "$ref": "../_shared/defs/pokemon.schema.json#/$defs/pokemonProperties"
+    },
+    "battleTheme": {
+      "$ref": "../_shared/defs/identifiers.schema.json#/$defs/identifier"
+    },
+    "lightingData": {
+      "type": "object",
+      "properties": {
+        "lightLevel": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 15
+        },
+        "liquidGlowMode": {
+          "type": "string",
+          "enum": [
+            "LAND",
+            "UNDERWATER",
+            "BOTH"
+          ]
+        }
+      },
+      "required": [
+        "lightLevel",
+        "liquidGlowMode"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "nationalPokedexNumber",
+    "name",
+    "primaryType",
+    "maleRatio",
+    "height",
+    "weight",
+    "pokedex",
+    "labels",
+    "aspects",
+    "abilities",
+    "eggGroups",
+    "baseStats",
+    "evYield",
+    "baseExperienceYield",
+    "experienceGroup",
+    "catchRate",
+    "eggCycles",
+    "baseFriendship",
+    "behaviour",
+    "moves",
+    "evolutions"
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "stats": {
+      "type": "object",
+      "properties": {
+        "hp": {
+          "type": "integer"
+        },
+        "attack": {
+          "type": "integer"
+        },
+        "defence": {
+          "type": "integer"
+        },
+        "special_attack": {
+          "type": "integer"
+        },
+        "special_defence": {
+          "type": "integer"
+        },
+        "speed": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "hp",
+        "attack",
+        "defence",
+        "special_attack",
+        "special_defence",
+        "speed"
+      ],
+      "additionalProperties": false
+    },
+    "behaviourConfig": {
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "type"
+          ],
+          "additionalProperties": true
+        }
+      ]
+    },
+    "pokemonBehaviour": {
+      "type": "object",
+      "properties": {
+        "resting": {
+          "type": "object",
+          "properties": {
+            "canSleep": {
+              "type": "boolean"
+            },
+            "times": {
+              "oneOf": [
+                {
+                  "$ref": "../_shared/defs/ranges.schema.json#/$defs/intRange"
+                },
+                {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              ]
+            },
+            "blocks": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "biomes": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "fluids": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "light": {
+              "$ref": "../_shared/defs/ranges.schema.json#/$defs/intRange"
+            },
+            "depth": {
+              "oneOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "canSeeSky": {
+              "type": "boolean"
+            },
+            "skyLight": {
+              "$ref": "../_shared/defs/ranges.schema.json#/$defs/intRange"
+            },
+            "drowsyChance": {
+              "$ref": "../_shared/defs/expressions.schema.json#/$defs/expressionLike"
+            },
+            "rouseChance": {
+              "$ref": "../_shared/defs/expressions.schema.json#/$defs/expressionLike"
+            },
+            "willSleepOnBed": {
+              "type": "boolean"
+            },
+            "sleepChance": {
+              "$ref": "../_shared/defs/expressions.schema.json#/$defs/expressionLike"
+            }
+          },
+          "additionalProperties": true
+        },
+        "moving": {
+          "type": "object",
+          "properties": {
+            "walk": {
+              "type": "object",
+              "properties": {
+                "canWalk": {
+                  "type": "boolean"
+                },
+                "avoidsLand": {
+                  "type": "boolean"
+                },
+                "walkSpeed": {
+                  "$ref": "../_shared/defs/expressions.schema.json#/$defs/expressionLike"
+                }
+              },
+              "additionalProperties": true
+            },
+            "walking": {
+              "type": "object",
+              "additionalProperties": true
+            },
+            "swim": {
+              "type": "object",
+              "properties": {
+                "avoidsWater": {
+                  "type": "boolean"
+                },
+                "canSwimInWater": {
+                  "type": "boolean"
+                },
+                "swimSpeed": {
+                  "$ref": "../_shared/defs/expressions.schema.json#/$defs/expressionLike"
+                },
+                "canBreatheUnderwater": {
+                  "type": "boolean"
+                },
+                "canWalkOnWater": {
+                  "type": "boolean"
+                },
+                "canSwimInLava": {
+                  "type": "boolean"
+                },
+                "canBreatheUnderlava": {
+                  "type": "boolean"
+                },
+                "canWalkOnLava": {
+                  "type": "boolean"
+                }
+              },
+              "additionalProperties": true
+            },
+            "fly": {
+              "type": "object",
+              "properties": {
+                "canFly": {
+                  "type": "boolean"
+                },
+                "flySpeedHorizontal": {
+                  "$ref": "../_shared/defs/expressions.schema.json#/$defs/expressionLike"
+                }
+              },
+              "additionalProperties": true
+            },
+            "stepHeight": {
+              "type": "number"
+            },
+            "wanderChance": {
+              "$ref": "../_shared/defs/expressions.schema.json#/$defs/expressionLike"
+            },
+            "wanderSpeed": {
+              "type": "number"
+            },
+            "canLook": {
+              "type": "boolean"
+            }
+          },
+          "additionalProperties": true
+        },
+        "idle": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "fireImmune": {
+          "type": "boolean"
+        },
+        "dampensVibrations": {
+          "type": "boolean"
+        },
+        "entityInteract": {
+          "type": "object",
+          "properties": {
+            "avoidedByCreeper": {
+              "type": "boolean"
+            },
+            "avoidedByPhantom": {
+              "type": "boolean"
+            },
+            "avoidedByFox": {
+              "type": "boolean"
+            },
+            "avoidedBySkeleton": {
+              "type": "boolean"
+            }
+          },
+          "additionalProperties": true
+        },
+        "lightningHit": {
+          "type": "object",
+          "properties": {
+            "rotateFeatures": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "key": {
+                    "type": "string"
+                  },
+                  "chain": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "required": [
+                  "key",
+                  "chain"
+                ],
+                "additionalProperties": false
+              }
+            }
+          },
+          "additionalProperties": true
+        },
+        "blockInteract": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "combat": {
+          "type": "object",
+          "properties": {
+            "willDefendSelf": {
+              "type": "boolean"
+            },
+            "willFlee": {
+              "type": "boolean"
+            },
+            "willDefendOwner": {
+              "type": "boolean"
+            },
+            "fightsMelee": {
+              "type": "boolean"
+            }
+          },
+          "additionalProperties": true
+        },
+        "herd": {
+          "type": "object",
+          "properties": {
+            "toleratedLeaders": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "pokemon": {
+                    "$ref": "../_shared/defs/pokemon.schema.json#/$defs/pokemonProperties"
+                  },
+                  "tier": {
+                    "type": "integer"
+                  },
+                  "ignoresLevel": {
+                    "type": "boolean"
+                  },
+                  "followDistance": {
+                    "$ref": "../_shared/defs/ranges.schema.json#/$defs/intRange"
+                  }
+                },
+                "required": [
+                  "pokemon",
+                  "tier"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "maxSize": {
+              "$ref": "../_shared/defs/expressions.schema.json#/$defs/expressionLike"
+            },
+            "followDistance": {
+              "$ref": "../_shared/defs/ranges.schema.json#/$defs/intRange"
+            }
+          },
+          "additionalProperties": true
+        },
+        "characteristicRainbow": {
+          "type": "boolean"
+        },
+        "itemInteract": {
+          "type": "object",
+          "properties": {
+            "desiredItems": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "item": {
+                    "oneOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "object",
+                        "additionalProperties": true
+                      }
+                    ]
+                  },
+                  "pickupPriority": {
+                    "type": "integer"
+                  },
+                  "fullnessValue": {
+                    "type": "integer"
+                  },
+                  "returnItem": {
+                    "$ref": "../_shared/defs/identifiers.schema.json#/$defs/identifier"
+                  },
+                  "onUseEffect": {
+                    "$ref": "../_shared/defs/expressions.schema.json#/$defs/expressionLike"
+                  }
+                },
+                "additionalProperties": true
+              }
+            }
+          },
+          "additionalProperties": true
+        }
+      },
+      "required": [],
+      "additionalProperties": true
+    },
+    "riding": {
+      "type": "object",
+      "properties": {
+        "seats": {
+          "type": "array",
+          "items": {
+            "$ref": "../_shared/defs/ride.schema.json#/$defs/seat"
+          }
+        },
+        "conditions": {
+          "type": "array",
+          "items": {
+            "$ref": "../_shared/defs/expressions.schema.json#/$defs/expressionLike"
+          }
+        },
+        "behaviour": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "object",
+              "properties": {
+                "key": {
+                  "$ref": "../_shared/defs/identifiers.schema.json#/$defs/identifier"
+                },
+                "transitionStrategy": {
+                  "$ref": "../_shared/defs/identifiers.schema.json#/$defs/identifier"
+                },
+                "defaultBehaviour": {
+                  "type": "object",
+                  "additionalProperties": true
+                },
+                "alternateBehaviour": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              },
+              "required": [
+                "key"
+              ],
+              "additionalProperties": true
+            }
+          ]
+        },
+        "behaviours": {
+          "type": "object",
+          "properties": {
+            "LAND": {
+              "type": "object",
+              "additionalProperties": true
+            },
+            "AIR": {
+              "type": "object",
+              "additionalProperties": true
+            },
+            "LIQUID": {
+              "type": "object",
+              "additionalProperties": true
+            }
+          },
+          "additionalProperties": true
+        },
+        "stats": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "displayName": {
+                "type": "string"
+              },
+              "description": {
+                "type": "string"
+              },
+              "ranges": {
+                "oneOf": [
+                  {
+                    "$ref": "../_shared/defs/ranges.schema.json#/$defs/intRange"
+                  },
+                  {
+                    "type": "object",
+                    "additionalProperties": {
+                      "$ref": "../_shared/defs/ranges.schema.json#/$defs/intRange"
+                    }
+                  }
+                ]
+              }
+            },
+            "required": [
+              "ranges"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": [],
+      "additionalProperties": false
+    },
+    "requirement": {
+      "type": "object",
+      "properties": {
+        "variant": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "variant"
+      ],
+      "additionalProperties": true
+    },
+    "evolution": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "variant": {
+          "type": "string",
+          "enum": [
+            "level_up",
+            "passive",
+            "trade",
+            "item_interact",
+            "block_click"
+          ]
+        },
+        "result": {
+          "$ref": "../_shared/defs/pokemon.schema.json#/$defs/pokemonProperties"
+        },
+        "shedder": {
+          "$ref": "../_shared/defs/pokemon.schema.json#/$defs/pokemonProperties"
+        },
+        "requiredContext": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "object",
+              "additionalProperties": true
+            }
+          ]
+        },
+        "optional": {
+          "type": "boolean"
+        },
+        "consumeHeldItem": {
+          "type": "boolean"
+        },
+        "requirements": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/requirement"
+          }
+        },
+        "learnableMoves": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "drops": {
+          "$ref": "../_shared/defs/drops.schema.json#/$defs/dropTable"
+        },
+        "permanent": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "id",
+        "variant",
+        "result",
+        "consumeHeldItem",
+        "learnableMoves"
+      ],
+      "additionalProperties": false
+    },
+    "form": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "primaryType": {
+          "type": "string"
+        },
+        "secondaryType": {
+          "type": "string"
+        },
+        "maleRatio": {
+          "type": "number"
+        },
+        "height": {
+          "type": "number"
+        },
+        "weight": {
+          "type": "number"
+        },
+        "labels": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "aspects": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "battleOnly": {
+          "type": "boolean"
+        },
+        "baseStats": {
+          "$ref": "#/$defs/stats"
+        },
+        "abilities": {
+          "oneOf": [
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            {
+              "type": "object",
+              "additionalProperties": true
+            }
+          ]
+        },
+        "behaviour": {
+          "$ref": "#/$defs/pokemonBehaviour"
+        },
+        "moves": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "evolutions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/evolution"
+          }
+        },
+        "pokedex": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "drops": {
+          "$ref": "../_shared/defs/drops.schema.json#/$defs/dropTable"
+        },
+        "evYield": {
+          "$ref": "#/$defs/stats"
+        },
+        "baseScale": {
+          "type": "number"
+        },
+        "hitbox": {
+          "oneOf": [
+            {
+              "type": "object",
+              "properties": {
+                "width": {
+                  "type": "number"
+                },
+                "height": {
+                  "type": "number"
+                },
+                "fixed": {
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "width",
+                "height"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "string"
+            }
+          ]
+        },
+        "dynamaxBlocked": {
+          "type": "boolean"
+        },
+        "baseExperienceYield": {
+          "type": "integer"
+        },
+        "preEvolution": {
+          "$ref": "../_shared/defs/pokemon.schema.json#/$defs/pokemonProperties"
+        },
+        "lightingData": {
+          "type": "object",
+          "properties": {
+            "lightLevel": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 15
+            },
+            "liquidGlowMode": {
+              "type": "string",
+              "enum": [
+                "LAND",
+                "UNDERWATER",
+                "BOTH"
+              ]
+            }
+          },
+          "required": [
+            "lightLevel",
+            "liquidGlowMode"
+          ],
+          "additionalProperties": false
+        },
+        "riding": {
+          "$ref": "#/$defs/riding"
+        },
+        "eggCycles": {
+          "type": "integer"
+        },
+        "eggGroups": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "catchRate": {
+          "type": "integer"
+        },
+        "baseFriendship": {
+          "type": "integer"
+        },
+        "standingEyeHeight": {
+          "type": "number"
+        },
+        "shoulderMountable": {
+          "type": "boolean"
+        },
+        "requiredMove": {
+          "type": "string"
+        },
+        "requiredItem": {
+          "type": "string"
+        },
+        "requiredItems": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "gigantamaxMove": {
+          "type": "string"
+        },
+        "battleTheme": {
+          "$ref": "../_shared/defs/identifiers.schema.json#/$defs/identifier"
+        }
+      },
+      "required": [
+        "name",
+        "primaryType",
+        "maleRatio",
+        "height",
+        "weight",
+        "labels",
+        "aspects",
+        "evolutions"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

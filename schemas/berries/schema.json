@@ -1,0 +1,178 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cobblemon-schema.local/berries/schema.json",
+  "title": "Cobblemon Berry",
+  "type": "object",
+  "properties": {
+    "baseYield": {
+      "$ref": "../_shared/defs/ranges.schema.json#/$defs/intMinMax"
+    },
+    "preferredBiomeTags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "growthTime": {
+      "$ref": "../_shared/defs/ranges.schema.json#/$defs/intMinMax"
+    },
+    "refreshRate": {
+      "$ref": "../_shared/defs/ranges.schema.json#/$defs/intMinMax"
+    },
+    "favoriteMulches": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "growthFactors": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "variant": {
+            "type": "string",
+            "enum": [
+              "cobblemon:preferred_biome",
+              "cobblemon:biome_downfall",
+              "cobblemon:biome_temperature"
+            ]
+          },
+          "bonusYield": {
+            "$ref": "../_shared/defs/ranges.schema.json#/$defs/intMinMax"
+          }
+        },
+        "required": [
+          "variant",
+          "bonusYield"
+        ],
+        "additionalProperties": true
+      }
+    },
+    "spawnConditions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "variant": {
+            "type": "string",
+            "enum": [
+              "cobblemon:preferred_biome",
+              "cobblemon:all_biome",
+              "cobblemon:specific_biome"
+            ]
+          },
+          "biome": {
+            "type": "string"
+          },
+          "minGroveSize": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "maxGroveSize": {
+            "type": "integer",
+            "minimum": 1
+          }
+        },
+        "required": [
+          "variant",
+          "minGroveSize",
+          "maxGroveSize"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "growthPoints": {
+      "type": "array",
+      "items": {
+        "$ref": "../_shared/defs/vectors.schema.json#/$defs/positioning"
+      }
+    },
+    "randomizedGrowthPoints": {
+      "type": "boolean"
+    },
+    "mutations": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "sproutShape": {
+      "type": "string"
+    },
+    "matureShape": {
+      "type": "string"
+    },
+    "flavours": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "integer"
+      }
+    },
+    "colour": {
+      "type": "string"
+    },
+    "tintIndexes": {
+      "type": "array",
+      "items": {
+        "type": "integer"
+      }
+    },
+    "flowerModel": {
+      "type": "string"
+    },
+    "flowerTexture": {
+      "type": "string"
+    },
+    "fruitModel": {
+      "type": "string"
+    },
+    "fruitTexture": {
+      "type": "string"
+    },
+    "stageOnePositioning": {
+      "$ref": "../_shared/defs/vectors.schema.json#/$defs/positioning"
+    },
+    "pokeSnackPositionings": {
+      "type": "array",
+      "items": {
+        "$ref": "../_shared/defs/vectors.schema.json#/$defs/positioning"
+      }
+    },
+    "weight": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "boneMealChance": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    }
+  },
+  "required": [
+    "baseYield",
+    "preferredBiomeTags",
+    "growthTime",
+    "refreshRate",
+    "favoriteMulches",
+    "growthFactors",
+    "spawnConditions",
+    "growthPoints",
+    "randomizedGrowthPoints",
+    "mutations",
+    "sproutShape",
+    "matureShape",
+    "flavours",
+    "colour",
+    "tintIndexes",
+    "flowerModel",
+    "flowerTexture",
+    "fruitModel",
+    "fruitTexture",
+    "stageOnePositioning",
+    "pokeSnackPositionings",
+    "weight",
+    "boneMealChance"
+  ],
+  "additionalProperties": false
+}

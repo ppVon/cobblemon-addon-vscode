@@ -1,0 +1,65 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cobblemon-schema.local/dex_entry_additions/schema.json",
+  "title": "Cobblemon Dex Entry Addition",
+  "type": "object",
+  "properties": {
+    "entryId": {
+      "$ref": "../_shared/defs/identifiers.schema.json#/$defs/identifier"
+    },
+    "forms": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "displayForm": {
+            "type": "string"
+          },
+          "unlockForms": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "displayForm",
+          "unlockForms"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "variations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "displayName": {
+            "type": "string"
+          },
+          "icon": {
+            "type": "string"
+          },
+          "aspects": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "displayName",
+          "icon",
+          "aspects"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "entryId",
+    "forms",
+    "variations"
+  ],
+  "additionalProperties": false
+}

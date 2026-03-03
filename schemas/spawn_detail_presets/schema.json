@@ -1,0 +1,79 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cobblemon-schema.local/spawn_detail_presets/schema.json",
+  "title": "Cobblemon Spawn Detail Preset",
+  "type": "object",
+  "properties": {
+    "type": {
+      "type": "string",
+      "enum": [
+        "basic",
+        "pokemon"
+      ]
+    },
+    "bucket": {
+      "type": "string"
+    },
+    "spawnDetailType": {
+      "type": "string"
+    },
+    "spawnablePositionType": {
+      "type": "string",
+      "enum": [
+        "grounded",
+        "seafloor",
+        "lavafloor",
+        "submerged",
+        "surface",
+        "fishing"
+      ]
+    },
+    "context": {
+      "type": "string",
+      "enum": [
+        "grounded",
+        "seafloor",
+        "lavafloor",
+        "submerged",
+        "surface",
+        "fishing"
+      ]
+    },
+    "condition": {
+      "$ref": "../_shared/defs/spawning.schema.json#/$defs/spawningCondition"
+    },
+    "anticondition": {
+      "$ref": "../_shared/defs/spawning.schema.json#/$defs/spawningCondition"
+    },
+    "weightMultipliers": {
+      "type": "array",
+      "items": {
+        "$ref": "../_shared/defs/spawning.schema.json#/$defs/weightMultiplier"
+      }
+    },
+    "weight": {
+      "type": "number"
+    },
+    "percentage": {
+      "type": "number"
+    },
+    "mergeMode": {
+      "type": "string",
+      "enum": [
+        "REPLACE",
+        "INSERT",
+        "KEEP",
+        "replace",
+        "insert",
+        "keep"
+      ]
+    },
+    "pokemon": {
+      "$ref": "../_shared/defs/pokemon.schema.json#/$defs/pokemonProperties"
+    },
+    "levelRange": {
+      "$ref": "../_shared/defs/ranges.schema.json#/$defs/intRange"
+    }
+  },
+  "additionalProperties": false
+}

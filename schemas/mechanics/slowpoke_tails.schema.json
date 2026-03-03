@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cobblemon-schema.local/mechanics/slowpoke_tails.schema.json",
+  "title": "Cobblemon Mechanics: Slowpoke Tails",
+  "type": "object",
+  "properties": {
+    "canShearSlowpoke": { "type": "boolean" },
+    "onlyRegrowWhenSentOut": { "type": "boolean" },
+    "regrowthSeconds": { "type": "integer", "minimum": 0 },
+    "aspectThresholds": {
+      "type": "object",
+      "additionalProperties": { "type": "string" }
+    }
+  },
+  "required": ["canShearSlowpoke", "onlyRegrowWhenSentOut", "regrowthSeconds", "aspectThresholds"],
+  "additionalProperties": false
+}

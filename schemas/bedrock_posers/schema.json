@@ -1,0 +1,367 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cobblemon-schema.local/bedrock_posers/schema.json",
+  "title": "Cobblemon Bedrock Poser",
+  "type": "object",
+  "properties": {
+    "rootBone": {
+      "type": "string"
+    },
+    "portraitScale": {
+      "type": "number"
+    },
+    "portraitTranslation": {
+      "$ref": "#/$defs/vec3"
+    },
+    "profileScale": {
+      "type": "number"
+    },
+    "profileTranslation": {
+      "$ref": "#/$defs/vec3"
+    },
+    "maxScale": {
+      "type": "number"
+    },
+    "yTranslation": {
+      "type": "number"
+    },
+    "yGrowthPoint": {
+      "type": "number"
+    },
+    "firstPersonCameraOffset": {
+      "$ref": "#/$defs/cameraOffsetMap"
+    },
+    "thirdPersonCameraOffset": {
+      "$ref": "#/$defs/cameraOffsetMap"
+    },
+    "thirdPersonCameraOffsetNoViewBobbing": {
+      "$ref": "#/$defs/cameraOffsetMap"
+    },
+    "thirdPersonPivotOffset": {
+      "$ref": "#/$defs/cameraOffsetMap"
+    },
+    "properties": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "animations": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "../_shared/defs/expressions.schema.json#/$defs/expressionLike"
+      }
+    },
+    "transformedParts": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/transformedPart"
+      }
+    },
+    "faint": {
+      "$ref": "../_shared/defs/expressions.schema.json#/$defs/expressionLike"
+    },
+    "head": {
+      "$ref": "../_shared/defs/expressions.schema.json#/$defs/expressionLike"
+    },
+    "poses": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/$defs/pose"
+      },
+      "minProperties": 1
+    }
+  },
+  "required": [
+    "poses"
+  ],
+  "additionalProperties": true,
+  "$defs": {
+    "vec3": {
+      "type": "array",
+      "items": {
+        "type": "number"
+      },
+      "minItems": 3,
+      "maxItems": 3
+    },
+    "poseType": {
+      "type": "string",
+      "enum": [
+        "STAND",
+        "WALK",
+        "SLEEP",
+        "HOVER",
+        "FLY",
+        "FLOAT",
+        "SWIM",
+        "GLIDE",
+        "SHOULDER_LEFT",
+        "SHOULDER_RIGHT",
+        "PROFILE",
+        "PORTRAIT",
+        "OPEN",
+        "NONE"
+      ]
+    },
+    "cameraOffsetMap": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/$defs/vec3"
+      }
+    },
+    "animationRef": {
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "animation": {
+              "type": "string"
+            },
+            "condition": {
+              "type": "string"
+            },
+            "namedAnimations": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "string"
+              }
+            }
+          },
+          "anyOf": [
+            {
+              "required": [
+                "animation"
+              ]
+            },
+            {
+              "required": [
+                "namedAnimations"
+              ]
+            }
+          ],
+          "additionalProperties": true
+        }
+      ]
+    },
+    "transformedPart": {
+      "type": "object",
+      "properties": {
+        "part": {
+          "type": "string",
+          "minLength": 1
+        },
+        "position": {
+          "$ref": "#/$defs/vec3"
+        },
+        "rotation": {
+          "$ref": "#/$defs/vec3"
+        },
+        "scale": {
+          "$ref": "#/$defs/vec3"
+        },
+        "isVisible": {
+          "$ref": "../_shared/defs/expressions.schema.json#/$defs/expressionLike"
+        },
+        "visible": {
+          "$ref": "../_shared/defs/expressions.schema.json#/$defs/expressionLike"
+        },
+        "comment": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "part"
+      ],
+      "additionalProperties": true
+    },
+    "quirk": {
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "animation": {
+              "type": "string"
+            },
+            "animations": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "name": {
+              "type": "string"
+            },
+            "condition": {
+              "type": "string"
+            },
+            "loopTimes": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "minSecondsBetweenOccurrences": {
+              "type": "number",
+              "minimum": 0
+            },
+            "maxSecondsBetweenOccurrences": {
+              "type": "number",
+              "minimum": 0
+            }
+          },
+          "anyOf": [
+            {
+              "required": [
+                "animation"
+              ]
+            },
+            {
+              "required": [
+                "animations"
+              ]
+            }
+          ],
+          "additionalProperties": true
+        }
+      ]
+    },
+    "pose": {
+      "type": "object",
+      "properties": {
+        "poseName": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "minItems": 1
+            }
+          ]
+        },
+        "poseTypes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/poseType"
+          },
+          "minItems": 1
+        },
+        "allPoseTypes": {
+          "type": "boolean"
+        },
+        "condition": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "minItems": 1
+            }
+          ]
+        },
+        "conditions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1
+        },
+        "transformTicks": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "transformToTicks": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "animations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/animationRef"
+          }
+        },
+        "namedAnimations": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "transitions": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "transformedParts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/transformedPart"
+          }
+        },
+        "quirks": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/quirk"
+          }
+        },
+        "isBattle": {
+          "$ref": "../_shared/defs/expressions.schema.json#/$defs/booleanLike"
+        },
+        "isDusk": {
+          "$ref": "../_shared/defs/expressions.schema.json#/$defs/booleanLike"
+        },
+        "isWild": {
+          "$ref": "../_shared/defs/expressions.schema.json#/$defs/booleanLike"
+        },
+        "isTouchingWater": {
+          "$ref": "../_shared/defs/expressions.schema.json#/$defs/booleanLike"
+        },
+        "isInWaterOrRain": {
+          "$ref": "../_shared/defs/expressions.schema.json#/$defs/booleanLike"
+        },
+        "isUnderWater": {
+          "$ref": "../_shared/defs/expressions.schema.json#/$defs/booleanLike"
+        },
+        "isRideStyle": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "minItems": 1
+            }
+          ]
+        }
+      },
+      "anyOf": [
+        {
+          "required": [
+            "allPoseTypes"
+          ]
+        },
+        {
+          "required": [
+            "poseTypes"
+          ]
+        }
+      ],
+      "additionalProperties": true
+    }
+  }
+}

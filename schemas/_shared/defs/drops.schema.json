@@ -1,0 +1,89 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cobblemon-schema.local/_shared/defs/drops.schema.json",
+  "title": "Cobblemon Shared Drop Tables",
+  "type": "object",
+  "$defs": {
+    "dropEntry": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "item",
+            "command",
+            "evolution"
+          ]
+        },
+        "item": {
+          "type": "string"
+        },
+        "percentage": {
+          "type": "number"
+        },
+        "quantity": {
+          "type": "integer"
+        },
+        "quantityRange": {
+          "$ref": "./ranges.schema.json#/$defs/intRange"
+        },
+        "maxSelectableTimes": {
+          "type": "integer"
+        },
+        "dropMethod": {
+          "type": "string",
+          "enum": [
+            "on-entity",
+            "on-player",
+            "to-inventory"
+          ]
+        },
+        "components": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "requirements": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "variant": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "variant"
+            ],
+            "additionalProperties": true
+          }
+        },
+        "requiresPlayer": {
+          "type": "boolean"
+        },
+        "command": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "dropTable": {
+      "type": "object",
+      "properties": {
+        "amount": {
+          "$ref": "./ranges.schema.json#/$defs/intRange"
+        },
+        "entries": {
+          "type": "array",
+          "items": {
+            "$ref": "./drops.schema.json#/$defs/dropEntry"
+          }
+        }
+      },
+      "required": [
+        "amount",
+        "entries"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

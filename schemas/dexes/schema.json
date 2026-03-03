@@ -1,0 +1,89 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cobblemon-schema.local/dexes/schema.json",
+  "title": "Cobblemon Dex Definition",
+  "type": "object",
+  "properties": {
+    "type": {
+      "type": "string",
+      "enum": [
+        "cobblemon:simple_pokedex_def",
+        "cobblemon:aggregate_pokedex_def"
+      ]
+    },
+    "id": {
+      "$ref": "../_shared/defs/identifiers.schema.json#/$defs/identifier"
+    },
+    "sortOrder": {
+      "type": "integer"
+    },
+    "entries": {
+      "type": "array",
+      "items": {
+        "$ref": "../_shared/defs/identifiers.schema.json#/$defs/identifier"
+      }
+    },
+    "subDexIds": {
+      "type": "array",
+      "items": {
+        "$ref": "../_shared/defs/identifiers.schema.json#/$defs/identifier"
+      }
+    },
+    "squash": {
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "type",
+    "id",
+    "sortOrder"
+  ],
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "type": {
+            "const": "cobblemon:simple_pokedex_def"
+          }
+        },
+        "required": [
+          "type"
+        ]
+      },
+      "then": {
+        "required": [
+          "entries"
+        ],
+        "not": {
+          "required": [
+            "subDexIds"
+          ]
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "type": {
+            "const": "cobblemon:aggregate_pokedex_def"
+          }
+        },
+        "required": [
+          "type"
+        ]
+      },
+      "then": {
+        "required": [
+          "subDexIds",
+          "squash"
+        ],
+        "not": {
+          "required": [
+            "entries"
+          ]
+        }
+      }
+    }
+  ],
+  "additionalProperties": false
+}

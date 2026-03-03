@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cobblemon-schema.local/mechanics/remedies.schema.json",
+  "title": "Cobblemon Mechanics: Remedies",
+  "type": "object",
+  "properties": {
+    "remedies": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "healingAmount": {
+            "$ref": "../_shared/defs/expressions.schema.json#/$defs/expressionLike"
+          },
+          "friendshipDrop": {
+            "$ref": "../_shared/defs/expressions.schema.json#/$defs/expressionLike"
+          }
+        },
+        "required": [
+          "healingAmount",
+          "friendshipDrop"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "remedies"
+  ],
+  "additionalProperties": false
+}

@@ -1,0 +1,240 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cobblemon-schema.local/dialogues/schema.json",
+  "title": "Cobblemon Dialogue",
+  "type": "object",
+  "properties": {
+    "pages": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/page"
+      }
+    },
+    "background": {
+      "type": "string"
+    },
+    "escapeAction": {
+      "$ref": "../_shared/defs/expressions.schema.json#/$defs/actionList"
+    },
+    "initializationAction": {
+      "$ref": "../_shared/defs/expressions.schema.json#/$defs/actionList"
+    },
+    "speakers": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/$defs/speaker"
+      }
+    }
+  },
+  "required": [
+    "pages",
+    "speakers"
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "line": {
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string"
+            },
+            "expression": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "type",
+            "expression"
+          ],
+          "additionalProperties": true
+        }
+      ]
+    },
+    "option": {
+      "type": "object",
+      "properties": {
+        "text": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        },
+        "action": {
+          "$ref": "../_shared/defs/expressions.schema.json#/$defs/actionList"
+        },
+        "isVisible": {
+          "$ref": "../_shared/defs/expressions.schema.json#/$defs/expressionLike"
+        },
+        "isSelectable": {
+          "$ref": "../_shared/defs/expressions.schema.json#/$defs/expressionLike"
+        }
+      },
+      "required": [
+        "text",
+        "value"
+      ],
+      "additionalProperties": false
+    },
+    "input": {
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": [
+                "text",
+                "auto-continue",
+                "option",
+                "none"
+              ]
+            },
+            "action": {
+              "$ref": "../_shared/defs/expressions.schema.json#/$defs/actionList"
+            },
+            "delay": {
+              "type": "integer"
+            },
+            "allowSkip": {
+              "type": "boolean"
+            },
+            "showTimer": {
+              "type": "boolean"
+            },
+            "vertical": {
+              "type": "boolean"
+            },
+            "options": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/option"
+              }
+            },
+            "timeout": {
+              "type": "object",
+              "properties": {
+                "delay": {
+                  "type": "integer"
+                },
+                "action": {
+                  "$ref": "../_shared/defs/expressions.schema.json#/$defs/actionList"
+                }
+              },
+              "required": [
+                "delay",
+                "action"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "speaker": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "$ref": "../_shared/defs/expressions.schema.json#/$defs/expressionLike"
+        },
+        "face": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string"
+                },
+                "modelType": {
+                  "type": "string"
+                },
+                "identifier": {
+                  "type": "string"
+                },
+                "isLeftSide": {
+                  "type": "boolean"
+                },
+                "aspects": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "additionalProperties": true
+            }
+          ]
+        },
+        "gibber": {
+          "type": "object",
+          "additionalProperties": true
+        }
+      },
+      "required": [
+        "name",
+        "face"
+      ],
+      "additionalProperties": false
+    },
+    "page": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "speaker": {
+          "type": "string"
+        },
+        "lines": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/line"
+          }
+        },
+        "textColor": {
+          "type": "string"
+        },
+        "background": {
+          "type": "string"
+        },
+        "input": {
+          "$ref": "#/$defs/input"
+        },
+        "gibber": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "clientActions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "escapeAction": {
+          "$ref": "../_shared/defs/expressions.schema.json#/$defs/actionList"
+        }
+      },
+      "required": [
+        "lines"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

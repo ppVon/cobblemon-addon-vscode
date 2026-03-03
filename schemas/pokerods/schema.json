@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cobblemon-schema.local/pokerods/schema.json",
+  "title": "Cobblemon Poke Rod",
+  "type": "object",
+  "properties": {
+    "pokeBallId": {
+      "$ref": "../_shared/defs/identifiers.schema.json#/$defs/identifier"
+    },
+    "lineColor": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "pokeBallId",
+    "lineColor"
+  ],
+  "additionalProperties": false
+}

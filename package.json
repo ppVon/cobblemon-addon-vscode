@@ -1,0 +1,79 @@
+{
+  "name": "cobblemon-schema-tools",
+  "displayName": "Cobblemon Schema Tools",
+  "description": "Workspace-wide Cobblemon JSON schema validation, asset linkage diagnostics, and Pokemon builder scaffolding for species/resolver/poser content.",
+  "version": "0.1.0",
+  "publisher": "local",
+  "license": "MPL-2.0",
+  "engines": {
+    "vscode": "^1.90.0"
+  },
+  "categories": [
+    "Programming Languages",
+    "Linters",
+    "Other"
+  ],
+  "activationEvents": [
+    "onStartupFinished",
+    "onLanguage:json",
+    "onCommand:cobblemonSchemaTools.validateWorkspace",
+    "onCommand:cobblemonSchemaTools.scaffoldPokemonAssets",
+    "onCommand:cobblemonSchemaTools.scaffoldDataFile",
+    "onCommand:cobblemonSchemaTools.generateSpawnPoolWorld"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "cobblemonSchemaTools.validateWorkspace",
+        "title": "Cobblemon: Validate Workspace JSON"
+      },
+      {
+        "command": "cobblemonSchemaTools.scaffoldPokemonAssets",
+        "title": "Cobblemon: Pokemon Builder Form"
+      },
+      {
+        "command": "cobblemonSchemaTools.scaffoldDataFile",
+        "title": "Cobblemon: Scaffold Data JSON File"
+      },
+      {
+        "command": "cobblemonSchemaTools.generateSpawnPoolWorld",
+        "title": "Cobblemon: Generate Spawn Pool World"
+      }
+    ],
+    "configuration": {
+      "title": "Cobblemon Schema Tools",
+      "properties": {
+        "cobblemonSchemaTools.strictAssetNaming": {
+          "type": "boolean",
+          "default": false,
+          "description": "When enabled, naming/linking mismatches in resolver/poser filenames are reported as errors instead of warnings."
+        },
+        "cobblemonSchemaTools.strictWorkspaceValidation": {
+          "type": "boolean",
+          "default": true,
+          "description": "When enabled, workspace-level validation findings that are normally warnings are escalated to errors."
+        },
+        "cobblemonSchemaTools.enableWorkspaceValidation": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable automatic workspace-wide Cobblemon JSON validation and linkage diagnostics."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "build": "node ./scripts/clean-dist.mjs && tsc -p . && node ./scripts/copy-assets.mjs",
+    "watch": "tsc -p . -w",
+    "check": "tsc -p . --noEmit"
+  },
+  "dependencies": {
+    "ajv": "^8.17.1",
+    "jsonc-parser": "^3.3.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "@types/vscode": "^1.90.0",
+    "typescript": "^5.6.3"
+  }
+}

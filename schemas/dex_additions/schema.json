@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cobblemon-schema.local/dex_additions/schema.json",
+  "title": "Cobblemon Dex Addition",
+  "type": "object",
+  "properties": {
+    "dexId": {
+      "$ref": "../_shared/defs/identifiers.schema.json#/$defs/identifier"
+    },
+    "entries": {
+      "type": "array",
+      "items": {
+        "$ref": "../_shared/defs/identifiers.schema.json#/$defs/identifier"
+      }
+    }
+  },
+  "required": [
+    "dexId",
+    "entries"
+  ],
+  "additionalProperties": false
+}
