@@ -2,9 +2,13 @@
   "name": "cobblemon-schema-tools",
   "displayName": "Cobblemon Schema Tools",
   "description": "Workspace-wide Cobblemon JSON schema validation, asset linkage diagnostics, and Pokemon builder scaffolding for species/resolver/poser content.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ppVon/cobblemon-addon-vscode"
+  },
   "version": "0.1.0",
   "publisher": "local",
-  "license": "MPL-2.0",
+  "license": "MIT",
   "engines": {
     "vscode": "^1.90.0"
   },
