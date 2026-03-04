@@ -7,7 +7,7 @@
     "url": "https://github.com/ppVon/cobblemon-addon-vscode"
   },
   "version": "0.1.0",
-  "publisher": "local",
+  "publisher": "ppVon",
   "license": "MIT",
   "engines": {
     "vscode": "^1.90.0"
@@ -69,7 +69,8 @@
   "scripts": {
     "build": "node ./scripts/clean-dist.mjs && tsc -p . && node ./scripts/copy-assets.mjs",
     "watch": "tsc -p . -w",
-    "check": "tsc -p . --noEmit"
+    "check": "tsc -p . --noEmit",
+    "package": "npm run build && npx @vscode/vsce package"
   },
   "dependencies": {
     "ajv": "^8.17.1",

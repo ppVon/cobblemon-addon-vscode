@@ -12,6 +12,7 @@ import { normalizeResourceId } from '../core/utils';
 import { upsertSpeciesLangEntries } from './lang-utils';
 import {
   DEFAULT_POKEMON_BUILDER_FORM,
+  POKEMON_BUILDER_NAMESPACE,
   type PokemonBuilderTemplateArgs,
 } from './pokemon-builder/types';
 import { validatePokemonBuilderFormData } from './pokemon-builder/form-validation';
@@ -47,7 +48,7 @@ async function scaffoldPokemonAssets(): Promise<void> {
     return;
   }
 
-  const namespace = formData.namespace.trim().toLowerCase();
+  const namespace = POKEMON_BUILDER_NAMESPACE;
   const speciesName = formData.speciesName.trim();
   const speciesId = formData.speciesId.trim().toLowerCase();
   const dexRaw = formData.dexNumber.trim();

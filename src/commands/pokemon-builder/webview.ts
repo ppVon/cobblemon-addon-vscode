@@ -3,6 +3,7 @@ import * as path from 'node:path';
 import * as vscode from 'vscode';
 import {
   COBBLEMON_TYPES,
+  POKEMON_BUILDER_NAMESPACE,
   type PokemonBuilderFormData,
 } from './types';
 import {
@@ -86,6 +87,7 @@ function renderPokemonBuilderWebviewHtml(webview: vscode.Webview, initial: Pokem
   return template
     .replaceAll('__CSP_SOURCE__', webview.cspSource)
     .replaceAll('__NONCE__', nonce)
+    .replaceAll('__BUILDER_NAMESPACE__', POKEMON_BUILDER_NAMESPACE)
     .replaceAll('__TYPE_OPTIONS__', typeOptions)
     .replaceAll('__SECONDARY_TYPE_OPTIONS__', secondaryTypeOptions)
     .replaceAll('__INITIAL_JSON__', initialJson)

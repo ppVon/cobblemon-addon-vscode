@@ -94,6 +94,7 @@ function renderPokemonBuilderWebviewHtml(webview, initial, nonce) {
     return template
         .replaceAll('__CSP_SOURCE__', webview.cspSource)
         .replaceAll('__NONCE__', nonce)
+        .replaceAll('__BUILDER_NAMESPACE__', types_1.POKEMON_BUILDER_NAMESPACE)
         .replaceAll('__TYPE_OPTIONS__', typeOptions)
         .replaceAll('__SECONDARY_TYPE_OPTIONS__', secondaryTypeOptions)
         .replaceAll('__INITIAL_JSON__', initialJson)

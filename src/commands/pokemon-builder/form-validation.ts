@@ -2,10 +2,6 @@ import { parseCsvIdentifiers } from '../command-utils';
 import { COBBLEMON_TYPE_SET, type PokemonBuilderFormData } from './types';
 
 export function validatePokemonBuilderFormData(data: PokemonBuilderFormData): string | undefined {
-  if (!/^[a-z0-9_.-]+$/.test(data.namespace.trim())) {
-    return 'Namespace must use lowercase namespace characters.';
-  }
-
   if (!/^[A-Za-z0-9_.-]+$/.test(data.speciesName.trim())) {
     return 'Species name must use letters, numbers, dots, underscores, or hyphens.';
   }
@@ -89,8 +85,7 @@ export function isPokemonBuilderFormData(value: unknown): value is PokemonBuilde
   }
 
   const obj = value as Record<string, unknown>;
-  return typeof obj.namespace === 'string'
-    && typeof obj.speciesName === 'string'
+  return typeof obj.speciesName === 'string'
     && typeof obj.speciesId === 'string'
     && typeof obj.dexNumber === 'string'
     && typeof obj.primaryType === 'string'

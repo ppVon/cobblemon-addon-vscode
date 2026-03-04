@@ -64,7 +64,7 @@ async function scaffoldPokemonAssets() {
         void vscode.window.showErrorMessage(validationError);
         return;
     }
-    const namespace = formData.namespace.trim().toLowerCase();
+    const namespace = types_1.POKEMON_BUILDER_NAMESPACE;
     const speciesName = formData.speciesName.trim();
     const speciesId = formData.speciesId.trim().toLowerCase();
     const dexRaw = formData.dexNumber.trim();

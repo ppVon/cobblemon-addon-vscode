@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.DEFAULT_POKEMON_BUILDER_FORM = exports.COBBLEMON_TYPE_SET = exports.COBBLEMON_TYPES = void 0;
+exports.DEFAULT_POKEMON_BUILDER_FORM = exports.POKEMON_BUILDER_NAMESPACE = exports.COBBLEMON_TYPE_SET = exports.COBBLEMON_TYPES = void 0;
 exports.COBBLEMON_TYPES = [
     'normal',
     'fire',
@@ -22,8 +22,8 @@ exports.COBBLEMON_TYPES = [
     'fairy',
 ];
 exports.COBBLEMON_TYPE_SET = new Set(exports.COBBLEMON_TYPES);
+exports.POKEMON_BUILDER_NAMESPACE = 'cobblemon';
 exports.DEFAULT_POKEMON_BUILDER_FORM = {
-    namespace: 'cobblemon',
     speciesName: 'Bulbasaur',
     speciesId: 'bulbasaur',
     dexNumber: '9000',

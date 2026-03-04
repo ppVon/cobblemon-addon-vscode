@@ -16,7 +16,6 @@ export interface PokemonBuilderTemplateArgs {
 }
 
 export interface PokemonBuilderFormData {
-  namespace: string;
   speciesName: string;
   speciesId: string;
   dexNumber: string;
@@ -62,9 +61,9 @@ export const COBBLEMON_TYPES = [
 ] as const;
 
 export const COBBLEMON_TYPE_SET = new Set<string>(COBBLEMON_TYPES);
+export const POKEMON_BUILDER_NAMESPACE = 'cobblemon';
 
 export const DEFAULT_POKEMON_BUILDER_FORM: PokemonBuilderFormData = {
-  namespace: 'cobblemon',
   speciesName: 'Bulbasaur',
   speciesId: 'bulbasaur',
   dexNumber: '9000',

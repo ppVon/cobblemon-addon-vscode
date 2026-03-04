@@ -5,9 +5,6 @@ exports.isPokemonBuilderFormData = isPokemonBuilderFormData;
 const command_utils_1 = require("../command-utils");
 const types_1 = require("./types");
 function validatePokemonBuilderFormData(data) {
-    if (!/^[a-z0-9_.-]+$/.test(data.namespace.trim())) {
-        return 'Namespace must use lowercase namespace characters.';
-    }
     if (!/^[A-Za-z0-9_.-]+$/.test(data.speciesName.trim())) {
         return 'Species name must use letters, numbers, dots, underscores, or hyphens.';
     }
@@ -76,8 +73,7 @@ function isPokemonBuilderFormData(value) {
         return false;
     }
     const obj = value;
-    return typeof obj.namespace === 'string'
-        && typeof obj.speciesName === 'string'
+    return typeof obj.speciesName === 'string'
         && typeof obj.speciesId === 'string'
         && typeof obj.dexNumber === 'string'
         && typeof obj.primaryType === 'string'
