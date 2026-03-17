@@ -3,6 +3,7 @@ import * as path from 'node:path';
 
 interface CobblemonDefaultDataIndexFile {
   speciesIds?: string[];
+  dexEntryIds?: string[];
 }
 
 interface CobblemonDefaultAssetsIndexFile {
@@ -15,6 +16,7 @@ interface CobblemonDefaultAssetsIndexFile {
 
 export interface CobblemonDefaultResourceIndex {
   readonly speciesIds: ReadonlySet<string>;
+  readonly dexEntryIds: ReadonlySet<string>;
   readonly poserIds: ReadonlySet<string>;
   readonly modelIds: ReadonlySet<string>;
   readonly animationGroupNames: ReadonlySet<string>;
@@ -34,6 +36,7 @@ export function getCobblemonDefaultResourceIndex(): CobblemonDefaultResourceInde
 
   cachedIndex = {
     speciesIds: new Set(dataIndex.speciesIds ?? []),
+    dexEntryIds: new Set(dataIndex.dexEntryIds ?? []),
     poserIds: new Set(assetsIndex.poserIds ?? []),
     modelIds: new Set(assetsIndex.modelIds ?? []),
     animationGroupNames: new Set(assetsIndex.animationGroupNames ?? []),

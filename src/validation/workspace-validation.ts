@@ -40,6 +40,7 @@ export async function runWorkspaceValidation(
 
   const byUri = new Map<string, vscode.Diagnostic[]>();
   const speciesIds = new Map<string, vscode.Uri>();
+  const dexEntryIds = new Set<string>();
   const poserIds = new Map<string, vscode.Uri[]>();
   const referencedPosers = new Set<string>();
   const modelIds = new Set<string>();
@@ -50,6 +51,8 @@ export async function runWorkspaceValidation(
 
   const resolverRecords: ResolverRecord[] = [];
   const poserRecords: PoserRecord[] = [];
+  const dexEntryRecords: Array<{ parsed: ParsedJsonFile; namespace: string }> = [];
+  const dexEntryAdditionRecords: Array<{ parsed: ParsedJsonFile; namespace: string }> = [];
 
   for (const textureUri of textureFiles) {
     const textureId = toAssetResourceId(textureUri.fsPath);
@@ -137,6 +140,19 @@ export async function runWorkspaceValidation(
       }
     }
 
+    if (resolution.schemaPath === 'schemas/dex_entries/schema.json') {
+      const entryId = getStringProperty(parsedObject, 'id');
+      if (entryId) {
+        dexEntryIds.add(normalizeResourceId(entryId, namespace));
+      }
+
+      dexEntryRecords.push({ parsed, namespace });
+    }
+
+    if (resolution.schemaPath === 'schemas/dex_entry_additions/schema.json') {
+      dexEntryAdditionRecords.push({ parsed, namespace });
+    }
+
     if (resolution.schemaPath === 'schemas/bedrock_pokemon_resolvers/schema.json') {
       resolverRecords.push({ parsed, namespace, pathNorm: normalized });
     }
@@ -152,6 +168,16 @@ export async function runWorkspaceValidation(
 
       poserRecords.push({ parsed, namespace, pathNorm: normalized, poserId, isPokemonPoser });
     }
+  }
+
+  for (const record of dexEntryRecords) {
+    const diags = validateDexEntryRecord(record.parsed, record.namespace, speciesIds, cobblemonDefaults);
+    addDiagnostics(byUri, record.parsed.uri, diags);
+  }
+
+  for (const record of dexEntryAdditionRecords) {
+    const diags = validateDexEntryAdditionRecord(record.parsed, record.namespace, dexEntryIds, cobblemonDefaults);
+    addDiagnostics(byUri, record.parsed.uri, diags);
   }
 
   for (const record of resolverRecords) {
@@ -291,6 +317,50 @@ function validateResolverRecord(
       const layerTexture = (layer as Record<string, unknown>).texture;
       diagnostics.push(...validateTextureRef(record.parsed, layerTexture, record.namespace, textureIds, ['variations', i, 'layers', layerIndex, 'texture'], cobblemonDefaults));
     }
+  }
+
+  return diagnostics;
+}
+
+function validateDexEntryRecord(
+  parsed: ParsedJsonFile,
+  namespace: string,
+  speciesIds: Map<string, vscode.Uri>,
+  cobblemonDefaults: CobblemonDefaultResourceIndex
+): vscode.Diagnostic[] {
+  const diagnostics: vscode.Diagnostic[] = [];
+  const value = parsed.value as Record<string, unknown>;
+
+  const speciesIdRaw = getStringProperty(value, 'speciesId');
+  if (!speciesIdRaw) {
+    return diagnostics;
+  }
+
+  const speciesId = normalizeResourceId(speciesIdRaw, namespace);
+  if (!speciesIds.has(speciesId) && !cobblemonDefaults.speciesIds.has(speciesId)) {
+    diagnostics.push(createCustomDiagnostic(parsed, `Species id '${speciesId}' was not found in any species data file.`, workspaceWarningSeverity(), ['speciesId']));
+  }
+
+  return diagnostics;
+}
+
+function validateDexEntryAdditionRecord(
+  parsed: ParsedJsonFile,
+  namespace: string,
+  dexEntryIds: Set<string>,
+  cobblemonDefaults: CobblemonDefaultResourceIndex
+): vscode.Diagnostic[] {
+  const diagnostics: vscode.Diagnostic[] = [];
+  const value = parsed.value as Record<string, unknown>;
+
+  const entryIdRaw = getStringProperty(value, 'entryId');
+  if (!entryIdRaw) {
+    return diagnostics;
+  }
+
+  const entryId = normalizeResourceId(entryIdRaw, namespace);
+  if (!dexEntryIds.has(entryId) && !cobblemonDefaults.dexEntryIds.has(entryId)) {
+    diagnostics.push(createCustomDiagnostic(parsed, `Dex entry id '${entryId}' was not found in any dex_entries data file.`, workspaceWarningSeverity(), ['entryId']));
   }
 
   return diagnostics;

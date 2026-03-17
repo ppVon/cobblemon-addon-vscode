@@ -25,6 +25,7 @@ const sourceRevision = readGitRevision(repoRoot);
 
 const dataJsonFiles = walkFiles(dataRoot, (entry) => entry.endsWith('.json'));
 const speciesJsonFiles = dataJsonFiles.filter((filePath) => normalizePath(filePath).includes('/species/'));
+const dexEntryJsonFiles = dataJsonFiles.filter((filePath) => normalizePath(filePath).includes('/dex_entries/'));
 const poserFiles = walkFiles(bedrockRoot, (entry) => entry.endsWith('.json') && normalizePath(entry).includes('/posers/'));
 const modelFiles = walkFiles(bedrockRoot, (entry) => entry.endsWith('.geo.json'));
 const animationFiles = walkFiles(bedrockRoot, (entry) => entry.endsWith('.animation.json'));
@@ -38,6 +39,7 @@ const dataIndex = {
   sourceRoot: normalizePath(path.relative(ROOT, sourceRoot)),
   sourceRevision,
   speciesIds: sortedUnique(speciesJsonFiles.map((filePath) => `cobblemon:${path.basename(filePath, '.json').toLowerCase()}`)),
+  dexEntryIds: collectIdentifierField(dexEntryJsonFiles, 'id'),
 };
 
 const assetIndex = {
@@ -58,7 +60,7 @@ writeJson(path.join(outputDir, 'cobblemon-default-data-index.json'), dataIndex);
 writeJson(path.join(outputDir, 'cobblemon-default-assets-index.json'), assetIndex);
 
 console.log(`Generated Cobblemon indexes from ${normalizePath(sourceRoot)} (${sourceRevision ?? 'no git revision found'}).`);
-console.log(`Data files scanned: ${dataJsonFiles.length}, species ids: ${dataIndex.speciesIds.length}`);
+console.log(`Data files scanned: ${dataJsonFiles.length}, species ids: ${dataIndex.speciesIds.length}, dex entry ids: ${dataIndex.dexEntryIds.length}`);
 console.log(`Textures: ${assetIndex.textureIds.length}, models: ${assetIndex.modelIds.length}, posers: ${assetIndex.poserIds.length}, animations: ${assetIndex.animationGroupNames.length}, lang keys: ${assetIndex.langKeys.length}`);
 
 function walkFiles(root, include, output = []) {
@@ -99,6 +101,24 @@ function collectLangKeys(langFiles) {
   }
 
   return Array.from(keys).sort((a, b) => a.localeCompare(b));
+}
+
+function collectIdentifierField(jsonFiles, fieldName) {
+  const ids = new Set();
+
+  for (const filePath of jsonFiles) {
+    const parsed = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+    if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) {
+      continue;
+    }
+
+    const value = parsed[fieldName];
+    if (typeof value === 'string' && value.trim().length > 0) {
+      ids.add(value.trim().toLowerCase());
+    }
+  }
+
+  return Array.from(ids).sort((a, b) => a.localeCompare(b));
 }
 
 function writeJson(filePath, value) {
