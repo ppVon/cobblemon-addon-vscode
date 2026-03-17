@@ -26,12 +26,14 @@ import {
   type ResolverRecord,
 } from '../types';
 import { type CobblemonSchemaEngine } from '../schema/schema-engine';
+import { getCobblemonDefaultResourceIndex, type CobblemonDefaultResourceIndex } from './cobblemon-default-index';
 
 export async function runWorkspaceValidation(
   engine: CobblemonSchemaEngine,
   diagnostics: vscode.DiagnosticCollection,
   notifySuccess = false
 ): Promise<void> {
+  const cobblemonDefaults = getCobblemonDefaultResourceIndex();
   const files = await vscode.workspace.findFiles('**/*.json', DATA_ROOT_EXCLUDE);
   const textureFiles = await vscode.workspace.findFiles('**/assets/*/**/*.png', DATA_ROOT_EXCLUDE);
   const langFiles = await vscode.workspace.findFiles('**/assets/*/lang/*.json', DATA_ROOT_EXCLUDE);
@@ -109,18 +111,16 @@ export async function runWorkspaceValidation(
     const parsedObject = parsed.value as Record<string, unknown>;
 
     if (resolution.schemaPath === 'schemas/species/schema.json') {
-      const name = getStringProperty(parsedObject, 'name');
-      if (name) {
-        const speciesId = normalizeResourceId(name, namespace);
-        speciesIds.set(speciesId, uri);
+      const fileStem = path.basename(normalized, '.json');
+      const speciesId = normalizeResourceId(fileStem, namespace);
+      speciesIds.set(speciesId, uri);
 
-        const speciesSlug = speciesId.split(':', 2)[1] ?? speciesId;
-        langRequirements.push({
-          parsed,
-          key: `${namespace}.species.${speciesSlug}.name`,
-          pointer: ['name'],
-        });
-      }
+      const speciesSlug = speciesId.split(':', 2)[1] ?? speciesId;
+      langRequirements.push({
+        parsed,
+        key: `${namespace}.species.${speciesSlug}.name`,
+        pointer: ['name'],
+      });
 
       const pokedex = Array.isArray(parsedObject.pokedex) ? parsedObject.pokedex : [];
       for (let i = 0; i < pokedex.length; i++) {
@@ -155,12 +155,12 @@ export async function runWorkspaceValidation(
   }
 
   for (const record of resolverRecords) {
-    const diags = validateResolverRecord(record, speciesIds, poserIds, modelIds, textureIds, referencedPosers);
+    const diags = validateResolverRecord(record, speciesIds, poserIds, modelIds, textureIds, referencedPosers, cobblemonDefaults);
     addDiagnostics(byUri, record.parsed.uri, diags);
   }
 
   for (const record of poserRecords) {
-    const diags = validatePoserRecord(record, referencedPosers, animationGroupNames);
+    const diags = validatePoserRecord(record, referencedPosers, animationGroupNames, cobblemonDefaults);
     addDiagnostics(byUri, record.parsed.uri, diags);
   }
 
@@ -181,7 +181,7 @@ export async function runWorkspaceValidation(
   }
 
   for (const requirement of langRequirements) {
-    if (langKeys.has(requirement.key)) {
+    if (langKeys.has(requirement.key) || cobblemonDefaults.langKeys.has(requirement.key)) {
       continue;
     }
 
@@ -216,7 +216,8 @@ function validateResolverRecord(
   poserIds: Map<string, vscode.Uri[]>,
   modelIds: Set<string>,
   textureIds: Set<string>,
-  referencedPosers: Set<string>
+  referencedPosers: Set<string>,
+  cobblemonDefaults: CobblemonDefaultResourceIndex
 ): vscode.Diagnostic[] {
   const diagnostics: vscode.Diagnostic[] = [];
   const value = record.parsed.value as Record<string, unknown>;
@@ -247,7 +248,7 @@ function validateResolverRecord(
       diagnostics.push(new vscode.Diagnostic(new vscode.Range(0, 0, 0, 1), `Resolver filename does not include species slug '${speciesSlug}'.`, strictNamingSeverity()));
     }
 
-    if (!speciesIds.has(speciesId)) {
+    if (!speciesIds.has(speciesId) && !cobblemonDefaults.speciesIds.has(speciesId)) {
       diagnostics.push(createCustomDiagnostic(record.parsed, `Species id '${speciesId}' was not found in any species data file.`, workspaceWarningSeverity(), ['species']));
     }
   }
@@ -265,7 +266,7 @@ function validateResolverRecord(
     if (poser) {
       const poserId = normalizeResourceId(poser, record.namespace);
       referencedPosers.add(poserId);
-      if (!poserIds.has(poserId)) {
+      if (!poserIds.has(poserId) && !cobblemonDefaults.poserIds.has(poserId)) {
         diagnostics.push(createCustomDiagnostic(record.parsed, `Referenced poser '${poserId}' does not exist.`, vscode.DiagnosticSeverity.Error, ['variations', i, 'poser']));
       }
     }
@@ -273,13 +274,13 @@ function validateResolverRecord(
     const model = getStringProperty(variationObj, 'model');
     if (model) {
       const modelId = normalizeResourceId(model, record.namespace);
-      if (!modelIds.has(modelId)) {
+      if (!modelIds.has(modelId) && !cobblemonDefaults.modelIds.has(modelId)) {
         diagnostics.push(createCustomDiagnostic(record.parsed, `Referenced model '${modelId}' does not exist under assets/*/bedrock/**/models.`, vscode.DiagnosticSeverity.Error, ['variations', i, 'model']));
       }
     }
 
     const texture = variationObj.texture;
-    diagnostics.push(...validateTextureRef(record.parsed, texture, record.namespace, textureIds, ['variations', i, 'texture']));
+    diagnostics.push(...validateTextureRef(record.parsed, texture, record.namespace, textureIds, ['variations', i, 'texture'], cobblemonDefaults));
 
     const layers = Array.isArray(variationObj.layers) ? variationObj.layers : [];
     for (let layerIndex = 0; layerIndex < layers.length; layerIndex++) {
@@ -288,7 +289,7 @@ function validateResolverRecord(
         continue;
       }
       const layerTexture = (layer as Record<string, unknown>).texture;
-      diagnostics.push(...validateTextureRef(record.parsed, layerTexture, record.namespace, textureIds, ['variations', i, 'layers', layerIndex, 'texture']));
+      diagnostics.push(...validateTextureRef(record.parsed, layerTexture, record.namespace, textureIds, ['variations', i, 'layers', layerIndex, 'texture'], cobblemonDefaults));
     }
   }
 
@@ -298,7 +299,8 @@ function validateResolverRecord(
 function validatePoserRecord(
   record: PoserRecord,
   referencedPosers: Set<string>,
-  animationGroupNames: Set<string>
+  animationGroupNames: Set<string>,
+  cobblemonDefaults: CobblemonDefaultResourceIndex
 ): vscode.Diagnostic[] {
   const diagnostics: vscode.Diagnostic[] = [];
   const fileStem = path.basename(record.pathNorm, '.json');
@@ -324,7 +326,12 @@ function validatePoserRecord(
     const normalizedGroup = normalizeResourceId(group, record.namespace);
     const shortGroup = normalizedGroup.split(':', 2)[1] ?? normalizedGroup;
 
-    if (!animationGroupNames.has(shortGroup) && !animationGroupNames.has(normalizedGroup)) {
+    if (
+      !animationGroupNames.has(shortGroup)
+      && !animationGroupNames.has(normalizedGroup)
+      && !cobblemonDefaults.animationGroupNames.has(shortGroup)
+      && !cobblemonDefaults.animationGroupNames.has(normalizedGroup)
+    ) {
       diagnostics.push(new vscode.Diagnostic(new vscode.Range(0, 0, 0, 1), `Animation group '${group}' referenced by poser '${record.poserId}' was not found in assets/*/bedrock/**/animations/*.animation.json.`, workspaceWarningSeverity()));
     }
   }
@@ -337,7 +344,8 @@ function validateTextureRef(
   textureValue: unknown,
   namespace: string,
   textureIds: Set<string>,
-  pointer: Array<string | number>
+  pointer: Array<string | number>,
+  cobblemonDefaults: CobblemonDefaultResourceIndex
 ): vscode.Diagnostic[] {
   const diagnostics: vscode.Diagnostic[] = [];
 
@@ -347,7 +355,7 @@ function validateTextureRef(
     }
 
     const id = normalizeResourceId(textureValue, namespace);
-    if (!textureIds.has(id)) {
+    if (!textureIds.has(id) && !cobblemonDefaults.textureIds.has(id)) {
       diagnostics.push(createCustomDiagnostic(parsed, `Texture '${id}' does not exist in assets/${namespace}.`, workspaceWarningSeverity(), pointer));
     }
     return diagnostics;
@@ -369,7 +377,7 @@ function validateTextureRef(
     }
 
     const id = normalizeResourceId(frame, namespace);
-    if (!textureIds.has(id)) {
+    if (!textureIds.has(id) && !cobblemonDefaults.textureIds.has(id)) {
       diagnostics.push(createCustomDiagnostic(parsed, `Animated texture frame '${id}' does not exist in assets/${namespace}.`, workspaceWarningSeverity(), [...pointer, 'frames', i]));
     }
   }

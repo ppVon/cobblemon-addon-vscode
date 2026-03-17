@@ -70,6 +70,7 @@
     "build": "node ./scripts/clean-dist.mjs && tsc -p . && node ./scripts/copy-assets.mjs",
     "watch": "tsc -p . -w",
     "check": "tsc -p . --noEmit",
+    "refresh:cobblemon-default-index": "node ./scripts/generate-cobblemon-default-index.mjs",
     "package": "npm run build && npx @vscode/vsce package"
   },
   "dependencies": {

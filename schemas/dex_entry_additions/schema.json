@@ -57,9 +57,7 @@
     }
   },
   "required": [
-    "entryId",
-    "forms",
-    "variations"
+    "entryId"
   ],
   "additionalProperties": false
 }

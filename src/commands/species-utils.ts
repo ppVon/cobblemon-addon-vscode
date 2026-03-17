@@ -14,7 +14,6 @@ import { sanitizeFileComponent } from './command-utils';
 export async function collectWorkspaceSpecies(workspaceRoot: vscode.Uri): Promise<WorkspaceSpeciesRecord[]> {
   const files = await vscode.workspace.findFiles(new vscode.RelativePattern(workspaceRoot, 'data/*/species/**/*.json'), DATA_ROOT_EXCLUDE);
   const records: WorkspaceSpeciesRecord[] = [];
-  const identifierPattern = /^(?:[a-z0-9_.-]+:)?[a-z0-9_./-]+$/i;
 
   for (const uri of files) {
     const parsed = await parseWorkspaceJson(uri);
@@ -26,12 +25,9 @@ export async function collectWorkspaceSpecies(workspaceRoot: vscode.Uri): Promis
     const normalizedPath = normalizePath(uri.fsPath);
     const namespace = inferNamespaceFromPath(normalizedPath, '/data/') ?? 'minecraft';
     const fileStem = path.basename(uri.fsPath, '.json');
-    const fileSlug = sanitizeFileComponent(fileStem);
 
     const rawName = getStringProperty(obj, 'name')?.trim() ?? '';
-    const speciesId = rawName.length > 0 && identifierPattern.test(rawName)
-      ? normalizeResourceId(rawName, namespace)
-      : normalizeResourceId(fileSlug, namespace);
+    const speciesId = normalizeResourceId(fileStem, namespace);
 
     const speciesPath = speciesId.split(':', 2)[1] ?? speciesId;
     const displayName = rawName.length > 0 ? rawName : fileStem;
