@@ -1,3 +1,7 @@
+# 0.4.0 - 2026-03-17
+
+- Added dex entry id validation to dex_entry_addition s
+
 # 0.3.0 - 2026-03-17
 
 - Cobblemon's species and all resources are now present to be validated against
