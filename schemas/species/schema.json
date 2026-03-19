@@ -63,7 +63,7 @@
     "eggGroups": {
       "type": "array",
       "items": {
-        "type": "string"
+        "$ref": "#/$defs/eggGroup"
       }
     },
     "baseStats": {
@@ -258,6 +258,26 @@
   ],
   "additionalProperties": false,
   "$defs": {
+    "eggGroup": {
+      "type": "string",
+      "enum": [
+        "Monster",
+        "Water 1",
+        "Bug",
+        "Flying",
+        "Field",
+        "Fairy",
+        "Grass",
+        "Human-Like",
+        "Water 3",
+        "Mineral",
+        "Amorphous",
+        "Water 2",
+        "Ditto",
+        "Dragon",
+        "Undiscovered"
+      ]
+    },
     "stats": {
       "type": "object",
       "properties": {
@@ -973,7 +993,7 @@
         "eggGroups": {
           "type": "array",
           "items": {
-            "type": "string"
+            "$ref": "#/$defs/eggGroup"
           }
         },
         "catchRate": {
