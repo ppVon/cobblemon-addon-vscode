@@ -2,7 +2,6 @@
 
 - Remove error for poser and resolver not having dex_name in filepath
   - There is an option to enable this as an error
-- nationalDexNumber no longer required on species
 
 # 0.6.0 - 2026-03-18
 
