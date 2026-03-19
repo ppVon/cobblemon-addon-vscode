@@ -1,4 +1,8 @@
-# Cobblemon Schema Tools VSCode Extension 0.5.0 - 2026-03-18
+# 0.6.0 - 2026-03-18
+
+- Removed `cannotDynamax` from species sechema
+
+# 0.5.0 - 2026-03-18
 
 - Added `cannotDynamax` to species schema
 
