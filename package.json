@@ -62,6 +62,11 @@
           "type": "boolean",
           "default": true,
           "description": "Enable automatic workspace-wide Cobblemon JSON validation and linkage diagnostics."
+        },
+        "cobblemonSchemaTools.warnOnPokemonAssetFolderNaming": {
+          "type": "boolean",
+          "default": true,
+          "description": "When enabled, resolver and pokemon poser files whose parent folder does not follow the usual <dex>_<species> naming pattern are reported as warnings."
         }
       }
     }

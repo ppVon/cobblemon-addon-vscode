@@ -23,3 +23,4 @@ It helps you catch JSON issues quickly and generate common data files from guide
 - `cobblemonSchemaTools.enableWorkspaceValidation`
 - `cobblemonSchemaTools.strictWorkspaceValidation`
 - `cobblemonSchemaTools.strictAssetNaming`
+- `cobblemonSchemaTools.warnOnPokemonAssetFolderNaming`

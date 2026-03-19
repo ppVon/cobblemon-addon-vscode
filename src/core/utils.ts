@@ -90,6 +90,10 @@ export function isValidationEnabled(): boolean {
   return vscode.workspace.getConfiguration('cobblemonSchemaTools').get<boolean>('enableWorkspaceValidation', true);
 }
 
+export function isPokemonAssetFolderNamingWarningEnabled(): boolean {
+  return vscode.workspace.getConfiguration('cobblemonSchemaTools').get<boolean>('warnOnPokemonAssetFolderNaming', true);
+}
+
 function isStrictWorkspaceValidationEnabled(): boolean {
   return vscode.workspace.getConfiguration('cobblemonSchemaTools').get<boolean>('strictWorkspaceValidation', true);
 }

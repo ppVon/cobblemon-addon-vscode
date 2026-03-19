@@ -5,6 +5,7 @@ import {
   DATA_ROOT_EXCLUDE,
   getStringProperty,
   inferNamespaceFromPath,
+  isPokemonAssetFolderNamingWarningEnabled,
   normalizePath,
   normalizeResourceId,
   normalizeSlug,
@@ -255,7 +256,7 @@ function validateResolverRecord(
     diagnostics.push(new vscode.Diagnostic(new vscode.Range(0, 0, 0, 1), 'Resolver filename should use <order>_<name>.json.', strictNamingSeverity()));
   }
 
-  if (!/^[0-9]{3,4}_[a-z0-9_-]+$/.test(dirName)) {
+  if (isPokemonAssetFolderNamingWarningEnabled() && !/^[0-9]{3,4}_[a-z0-9_-]+$/.test(dirName)) {
     diagnostics.push(new vscode.Diagnostic(new vscode.Range(0, 0, 0, 1), 'Resolver directory should usually use <dex>_<species>.', vscode.DiagnosticSeverity.Warning));
   }
 
@@ -377,7 +378,7 @@ function validatePoserRecord(
 
   if (record.isPokemonPoser) {
     const dirName = path.basename(path.dirname(record.pathNorm));
-    if (dirName !== 'special' && !/^[0-9]{3,4}_[a-z0-9_-]+$/.test(dirName)) {
+    if (isPokemonAssetFolderNamingWarningEnabled() && dirName !== 'special' && !/^[0-9]{3,4}_[a-z0-9_-]+$/.test(dirName)) {
       diagnostics.push(new vscode.Diagnostic(new vscode.Range(0, 0, 0, 1), 'Pokemon poser directory should usually use <dex>_<species>.', vscode.DiagnosticSeverity.Warning));
     }
 
