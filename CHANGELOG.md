@@ -1,3 +1,8 @@
+# 0.7.0 - 2026-03-19
+
+- Remove error for poser and resolver not having dex_name in filepath
+  - There is an option to enable this as an error
+
 # 0.6.0 - 2026-03-18
 
 - Removed `cannotDynamax` from species sechema

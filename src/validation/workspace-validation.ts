@@ -1,6 +1,6 @@
-import * as path from 'path';
-import * as vscode from 'vscode';
-import { parseWorkspaceJson } from '../core/json';
+import * as path from "path";
+import * as vscode from "vscode";
+import { parseWorkspaceJson } from "../core/json";
 import {
   DATA_ROOT_EXCLUDE,
   getStringProperty,
@@ -14,30 +14,42 @@ import {
   toAnimationGroupName,
   toAssetResourceId,
   toModelResourceId,
-} from '../core/utils';
+} from "../core/utils";
 import {
   addDiagnostics,
   createCustomDiagnostic,
   createParseDiagnostics,
-} from '../core/diagnostics';
+} from "../core/diagnostics";
 import {
   type LangRequirement,
   type ParsedJsonFile,
   type PoserRecord,
   type ResolverRecord,
-} from '../types';
-import { type CobblemonSchemaEngine } from '../schema/schema-engine';
-import { getCobblemonDefaultResourceIndex, type CobblemonDefaultResourceIndex } from './cobblemon-default-index';
+} from "../types";
+import { type CobblemonSchemaEngine } from "../schema/schema-engine";
+import {
+  getCobblemonDefaultResourceIndex,
+  type CobblemonDefaultResourceIndex,
+} from "./cobblemon-default-index";
 
 export async function runWorkspaceValidation(
   engine: CobblemonSchemaEngine,
   diagnostics: vscode.DiagnosticCollection,
-  notifySuccess = false
+  notifySuccess = false,
 ): Promise<void> {
   const cobblemonDefaults = getCobblemonDefaultResourceIndex();
-  const files = await vscode.workspace.findFiles('**/*.json', DATA_ROOT_EXCLUDE);
-  const textureFiles = await vscode.workspace.findFiles('**/assets/*/**/*.png', DATA_ROOT_EXCLUDE);
-  const langFiles = await vscode.workspace.findFiles('**/assets/*/lang/*.json', DATA_ROOT_EXCLUDE);
+  const files = await vscode.workspace.findFiles(
+    "**/*.json",
+    DATA_ROOT_EXCLUDE,
+  );
+  const textureFiles = await vscode.workspace.findFiles(
+    "**/assets/*/**/*.png",
+    DATA_ROOT_EXCLUDE,
+  );
+  const langFiles = await vscode.workspace.findFiles(
+    "**/assets/*/lang/*.json",
+    DATA_ROOT_EXCLUDE,
+  );
 
   const byUri = new Map<string, vscode.Diagnostic[]>();
   const speciesIds = new Map<string, vscode.Uri>();
@@ -52,8 +64,12 @@ export async function runWorkspaceValidation(
 
   const resolverRecords: ResolverRecord[] = [];
   const poserRecords: PoserRecord[] = [];
-  const dexEntryRecords: Array<{ parsed: ParsedJsonFile; namespace: string }> = [];
-  const dexEntryAdditionRecords: Array<{ parsed: ParsedJsonFile; namespace: string }> = [];
+  const dexEntryRecords: Array<{ parsed: ParsedJsonFile; namespace: string }> =
+    [];
+  const dexEntryAdditionRecords: Array<{
+    parsed: ParsedJsonFile;
+    namespace: string;
+  }> = [];
 
   for (const textureUri of textureFiles) {
     const textureId = toAssetResourceId(textureUri.fsPath);
@@ -69,12 +85,18 @@ export async function runWorkspaceValidation(
       continue;
     }
 
-    if (!parsed.value || typeof parsed.value !== 'object' || Array.isArray(parsed.value)) {
+    if (
+      !parsed.value ||
+      typeof parsed.value !== "object" ||
+      Array.isArray(parsed.value)
+    ) {
       continue;
     }
 
-    for (const [key, value] of Object.entries(parsed.value as Record<string, unknown>)) {
-      if (typeof value === 'string') {
+    for (const [key, value] of Object.entries(
+      parsed.value as Record<string, unknown>,
+    )) {
+      if (typeof value === "string") {
         langKeys.add(key);
       }
     }
@@ -92,7 +114,7 @@ export async function runWorkspaceValidation(
     const animationGroup = toAnimationGroupName(normalized);
     if (animationGroup) {
       animationGroupNames.add(animationGroup);
-      const animationNamespace = inferNamespaceFromPath(normalized, '/assets/');
+      const animationNamespace = inferNamespaceFromPath(normalized, "/assets/");
       if (animationNamespace) {
         animationGroupNames.add(`${animationNamespace}:${animationGroup}`);
       }
@@ -104,45 +126,58 @@ export async function runWorkspaceValidation(
     }
 
     const parsed = await parseWorkspaceJson(uri);
-    const schemaDiagnostics = engine.validateJsonFile(parsed, resolution.schemaPath);
+    const schemaDiagnostics = engine.validateJsonFile(
+      parsed,
+      resolution.schemaPath,
+    );
     addDiagnostics(byUri, uri, schemaDiagnostics);
 
-    if (parsed.parseErrors.length > 0 || !parsed.value || typeof parsed.value !== 'object' || Array.isArray(parsed.value)) {
+    if (
+      parsed.parseErrors.length > 0 ||
+      !parsed.value ||
+      typeof parsed.value !== "object" ||
+      Array.isArray(parsed.value)
+    ) {
       continue;
     }
 
-    const namespace = inferNamespaceFromPath(normalized, '/data/') ?? inferNamespaceFromPath(normalized, '/assets/') ?? 'minecraft';
+    const namespace =
+      inferNamespaceFromPath(normalized, "/data/") ??
+      inferNamespaceFromPath(normalized, "/assets/") ??
+      "minecraft";
     const parsedObject = parsed.value as Record<string, unknown>;
 
-    if (resolution.schemaPath === 'schemas/species/schema.json') {
-      const fileStem = path.basename(normalized, '.json');
+    if (resolution.schemaPath === "schemas/species/schema.json") {
+      const fileStem = path.basename(normalized, ".json");
       const speciesId = normalizeResourceId(fileStem, namespace);
       speciesIds.set(speciesId, uri);
 
-      const speciesSlug = speciesId.split(':', 2)[1] ?? speciesId;
+      const speciesSlug = speciesId.split(":", 2)[1] ?? speciesId;
       langRequirements.push({
         parsed,
         key: `${namespace}.species.${speciesSlug}.name`,
-        pointer: ['name'],
+        pointer: ["name"],
       });
 
-      const pokedex = Array.isArray(parsedObject.pokedex) ? parsedObject.pokedex : [];
+      const pokedex = Array.isArray(parsedObject.pokedex)
+        ? parsedObject.pokedex
+        : [];
       for (let i = 0; i < pokedex.length; i++) {
         const entry = pokedex[i];
-        if (typeof entry !== 'string') {
+        if (typeof entry !== "string") {
           continue;
         }
 
         langRequirements.push({
           parsed,
           key: entry,
-          pointer: ['pokedex', i],
+          pointer: ["pokedex", i],
         });
       }
     }
 
-    if (resolution.schemaPath === 'schemas/dex_entries/schema.json') {
-      const entryId = getStringProperty(parsedObject, 'id');
+    if (resolution.schemaPath === "schemas/dex_entries/schema.json") {
+      const entryId = getStringProperty(parsedObject, "id");
       if (entryId) {
         dexEntryIds.add(normalizeResourceId(entryId, namespace));
       }
@@ -150,44 +185,77 @@ export async function runWorkspaceValidation(
       dexEntryRecords.push({ parsed, namespace });
     }
 
-    if (resolution.schemaPath === 'schemas/dex_entry_additions/schema.json') {
+    if (resolution.schemaPath === "schemas/dex_entry_additions/schema.json") {
       dexEntryAdditionRecords.push({ parsed, namespace });
     }
 
-    if (resolution.schemaPath === 'schemas/bedrock_pokemon_resolvers/schema.json') {
+    if (
+      resolution.schemaPath === "schemas/bedrock_pokemon_resolvers/schema.json"
+    ) {
       resolverRecords.push({ parsed, namespace, pathNorm: normalized });
     }
 
-    if (resolution.schemaPath === 'schemas/bedrock_posers/schema.json') {
-      const fileStem = path.basename(normalized, '.json');
+    if (resolution.schemaPath === "schemas/bedrock_posers/schema.json") {
+      const fileStem = path.basename(normalized, ".json");
       const poserId = normalizeResourceId(fileStem, namespace);
-      const isPokemonPoser = /\/assets\/[^/]+\/bedrock\/pokemon\/posers\//.test(normalized);
+      const isPokemonPoser = /\/assets\/[^/]+\/bedrock\/pokemon\/posers\//.test(
+        normalized,
+      );
 
       const current = poserIds.get(poserId) ?? [];
       current.push(uri);
       poserIds.set(poserId, current);
 
-      poserRecords.push({ parsed, namespace, pathNorm: normalized, poserId, isPokemonPoser });
+      poserRecords.push({
+        parsed,
+        namespace,
+        pathNorm: normalized,
+        poserId,
+        isPokemonPoser,
+      });
     }
   }
 
   for (const record of dexEntryRecords) {
-    const diags = validateDexEntryRecord(record.parsed, record.namespace, speciesIds, cobblemonDefaults);
+    const diags = validateDexEntryRecord(
+      record.parsed,
+      record.namespace,
+      speciesIds,
+      cobblemonDefaults,
+    );
     addDiagnostics(byUri, record.parsed.uri, diags);
   }
 
   for (const record of dexEntryAdditionRecords) {
-    const diags = validateDexEntryAdditionRecord(record.parsed, record.namespace, dexEntryIds, cobblemonDefaults);
+    const diags = validateDexEntryAdditionRecord(
+      record.parsed,
+      record.namespace,
+      dexEntryIds,
+      cobblemonDefaults,
+    );
     addDiagnostics(byUri, record.parsed.uri, diags);
   }
 
   for (const record of resolverRecords) {
-    const diags = validateResolverRecord(record, speciesIds, poserIds, modelIds, textureIds, referencedPosers, cobblemonDefaults);
+    const diags = validateResolverRecord(
+      record,
+      speciesIds,
+      poserIds,
+      modelIds,
+      textureIds,
+      referencedPosers,
+      cobblemonDefaults,
+    );
     addDiagnostics(byUri, record.parsed.uri, diags);
   }
 
   for (const record of poserRecords) {
-    const diags = validatePoserRecord(record, referencedPosers, animationGroupNames, cobblemonDefaults);
+    const diags = validatePoserRecord(
+      record,
+      referencedPosers,
+      animationGroupNames,
+      cobblemonDefaults,
+    );
     addDiagnostics(byUri, record.parsed.uri, diags);
   }
 
@@ -201,14 +269,17 @@ export async function runWorkspaceValidation(
         new vscode.Diagnostic(
           new vscode.Range(0, 0, 0, 1),
           `Poser id '${poserId}' is defined by multiple files. Resolver links may resolve unpredictably.`,
-          strictNamingSeverity()
+          strictNamingSeverity(),
         ),
       ]);
     }
   }
 
   for (const requirement of langRequirements) {
-    if (langKeys.has(requirement.key) || cobblemonDefaults.langKeys.has(requirement.key)) {
+    if (
+      langKeys.has(requirement.key) ||
+      cobblemonDefaults.langKeys.has(requirement.key)
+    ) {
       continue;
     }
 
@@ -217,7 +288,7 @@ export async function runWorkspaceValidation(
         requirement.parsed,
         `Lang key '${requirement.key}' was not found in any assets/*/lang/*.json file.`,
         workspaceWarningSeverity(),
-        requirement.pointer
+        requirement.pointer,
       ),
     ]);
   }
@@ -228,11 +299,17 @@ export async function runWorkspaceValidation(
   }
 
   if (notifySuccess) {
-    const filesWithIssues = Array.from(byUri.values()).filter((x) => x.length > 0).length;
+    const filesWithIssues = Array.from(byUri.values()).filter(
+      (x) => x.length > 0,
+    ).length;
     if (filesWithIssues > 0) {
-      void vscode.window.showWarningMessage(`Cobblemon validation finished with issues in ${filesWithIssues} file(s).`);
+      void vscode.window.showWarningMessage(
+        `Cobblemon validation finished with issues in ${filesWithIssues} file(s).`,
+      );
     } else {
-      void vscode.window.showInformationMessage('Cobblemon validation finished with no issues.');
+      void vscode.window.showInformationMessage(
+        "Cobblemon validation finished with no issues.",
+      );
     }
   }
 }
@@ -244,79 +321,158 @@ function validateResolverRecord(
   modelIds: Set<string>,
   textureIds: Set<string>,
   referencedPosers: Set<string>,
-  cobblemonDefaults: CobblemonDefaultResourceIndex
+  cobblemonDefaults: CobblemonDefaultResourceIndex,
 ): vscode.Diagnostic[] {
   const diagnostics: vscode.Diagnostic[] = [];
   const value = record.parsed.value as Record<string, unknown>;
 
-  const fileName = path.basename(record.pathNorm, '.json');
+  const fileName = path.basename(record.pathNorm, ".json");
   const dirName = path.basename(path.dirname(record.pathNorm));
 
   if (!/^[0-9]+_[a-z0-9_-]+$/.test(fileName)) {
-    diagnostics.push(new vscode.Diagnostic(new vscode.Range(0, 0, 0, 1), 'Resolver filename should use <order>_<name>.json.', strictNamingSeverity()));
+    diagnostics.push(
+      new vscode.Diagnostic(
+        new vscode.Range(0, 0, 0, 1),
+        "Resolver filename should use <order>_<name>.json.",
+        strictNamingSeverity(),
+      ),
+    );
   }
 
-  if (isPokemonAssetFolderNamingWarningEnabled() && !/^[0-9]{3,4}_[a-z0-9_-]+$/.test(dirName)) {
-    diagnostics.push(new vscode.Diagnostic(new vscode.Range(0, 0, 0, 1), 'Resolver directory should usually use <dex>_<species>.', vscode.DiagnosticSeverity.Warning));
+  if (
+    isPokemonAssetFolderNamingWarningEnabled() &&
+    !/^[0-9]{3,4}_[a-z0-9_-]+$/.test(dirName)
+  ) {
+    diagnostics.push(
+      new vscode.Diagnostic(
+        new vscode.Range(0, 0, 0, 1),
+        "Resolver directory should usually use <dex>_<species>.",
+        vscode.DiagnosticSeverity.Warning,
+      ),
+    );
   }
 
-  const order = typeof value.order === 'number' ? value.order : undefined;
-  const prefix = Number.parseInt(fileName.split('_', 1)[0] ?? '', 10);
+  const order = typeof value.order === "number" ? value.order : undefined;
+  const prefix = Number.parseInt(fileName.split("_", 1)[0] ?? "", 10);
   if (Number.isFinite(prefix) && order !== undefined && prefix !== order) {
-    diagnostics.push(createCustomDiagnostic(record.parsed, `Filename order prefix (${prefix}) does not match JSON 'order' (${order}).`, strictNamingSeverity(), ['order']));
+    diagnostics.push(
+      createCustomDiagnostic(
+        record.parsed,
+        `Filename order prefix (${prefix}) does not match JSON 'order' (${order}).`,
+        strictNamingSeverity(),
+        ["order"],
+      ),
+    );
   }
 
-  const speciesRaw = getStringProperty(value, 'species') ?? getStringProperty(value, 'name') ?? getStringProperty(value, 'pokeball');
+  const speciesRaw =
+    getStringProperty(value, "species") ??
+    getStringProperty(value, "name") ??
+    getStringProperty(value, "pokeball");
   if (speciesRaw) {
     const speciesId = normalizeResourceId(speciesRaw, record.namespace);
-    const speciesSlug = speciesId.split(':', 2)[1] ?? speciesId;
+    const speciesSlug = speciesId.split(":", 2)[1] ?? speciesId;
 
     if (!normalizeSlug(fileName).includes(normalizeSlug(speciesSlug))) {
-      diagnostics.push(new vscode.Diagnostic(new vscode.Range(0, 0, 0, 1), `Resolver filename does not include species slug '${speciesSlug}'.`, strictNamingSeverity()));
+      diagnostics.push(
+        new vscode.Diagnostic(
+          new vscode.Range(0, 0, 0, 1),
+          `Resolver filename does not include species slug '${speciesSlug}'.`,
+          strictNamingSeverity(),
+        ),
+      );
     }
 
-    if (!speciesIds.has(speciesId) && !cobblemonDefaults.speciesIds.has(speciesId)) {
-      diagnostics.push(createCustomDiagnostic(record.parsed, `Species id '${speciesId}' was not found in any species data file.`, workspaceWarningSeverity(), ['species']));
+    if (
+      !speciesIds.has(speciesId) &&
+      !cobblemonDefaults.speciesIds.has(speciesId)
+    ) {
+      diagnostics.push(
+        createCustomDiagnostic(
+          record.parsed,
+          `Species id '${speciesId}' was not found in any species data file.`,
+          workspaceWarningSeverity(),
+          ["species"],
+        ),
+      );
     }
   }
 
   const variations = Array.isArray(value.variations) ? value.variations : [];
   for (let i = 0; i < variations.length; i++) {
     const variation = variations[i];
-    if (!variation || typeof variation !== 'object' || Array.isArray(variation)) {
+    if (
+      !variation ||
+      typeof variation !== "object" ||
+      Array.isArray(variation)
+    ) {
       continue;
     }
 
     const variationObj = variation as Record<string, unknown>;
 
-    const poser = getStringProperty(variationObj, 'poser');
+    const poser = getStringProperty(variationObj, "poser");
     if (poser) {
       const poserId = normalizeResourceId(poser, record.namespace);
       referencedPosers.add(poserId);
       if (!poserIds.has(poserId) && !cobblemonDefaults.poserIds.has(poserId)) {
-        diagnostics.push(createCustomDiagnostic(record.parsed, `Referenced poser '${poserId}' does not exist.`, vscode.DiagnosticSeverity.Error, ['variations', i, 'poser']));
+        diagnostics.push(
+          createCustomDiagnostic(
+            record.parsed,
+            `Referenced poser '${poserId}' does not exist.`,
+            vscode.DiagnosticSeverity.Error,
+            ["variations", i, "poser"],
+          ),
+        );
       }
     }
 
-    const model = getStringProperty(variationObj, 'model');
+    const model = getStringProperty(variationObj, "model");
     if (model) {
       const modelId = normalizeResourceId(model, record.namespace);
       if (!modelIds.has(modelId) && !cobblemonDefaults.modelIds.has(modelId)) {
-        diagnostics.push(createCustomDiagnostic(record.parsed, `Referenced model '${modelId}' does not exist under assets/*/bedrock/**/models.`, vscode.DiagnosticSeverity.Error, ['variations', i, 'model']));
+        diagnostics.push(
+          createCustomDiagnostic(
+            record.parsed,
+            `Referenced model '${modelId}' does not exist under assets/*/bedrock/**/models.`,
+            vscode.DiagnosticSeverity.Error,
+            ["variations", i, "model"],
+          ),
+        );
       }
     }
 
     const texture = variationObj.texture;
-    diagnostics.push(...validateTextureRef(record.parsed, texture, record.namespace, textureIds, ['variations', i, 'texture'], cobblemonDefaults));
+    diagnostics.push(
+      ...validateTextureRef(
+        record.parsed,
+        texture,
+        record.namespace,
+        textureIds,
+        ["variations", i, "texture"],
+        cobblemonDefaults,
+      ),
+    );
 
-    const layers = Array.isArray(variationObj.layers) ? variationObj.layers : [];
+    const layers = Array.isArray(variationObj.layers)
+      ? variationObj.layers
+      : [];
     for (let layerIndex = 0; layerIndex < layers.length; layerIndex++) {
       const layer = layers[layerIndex];
-      if (!layer || typeof layer !== 'object' || Array.isArray(layer)) {
+      if (!layer || typeof layer !== "object" || Array.isArray(layer)) {
         continue;
       }
       const layerTexture = (layer as Record<string, unknown>).texture;
-      diagnostics.push(...validateTextureRef(record.parsed, layerTexture, record.namespace, textureIds, ['variations', i, 'layers', layerIndex, 'texture'], cobblemonDefaults));
+      diagnostics.push(
+        ...validateTextureRef(
+          record.parsed,
+          layerTexture,
+          record.namespace,
+          textureIds,
+          ["variations", i, "layers", layerIndex, "texture"],
+          cobblemonDefaults,
+        ),
+      );
     }
   }
 
@@ -327,19 +483,29 @@ function validateDexEntryRecord(
   parsed: ParsedJsonFile,
   namespace: string,
   speciesIds: Map<string, vscode.Uri>,
-  cobblemonDefaults: CobblemonDefaultResourceIndex
+  cobblemonDefaults: CobblemonDefaultResourceIndex,
 ): vscode.Diagnostic[] {
   const diagnostics: vscode.Diagnostic[] = [];
   const value = parsed.value as Record<string, unknown>;
 
-  const speciesIdRaw = getStringProperty(value, 'speciesId');
+  const speciesIdRaw = getStringProperty(value, "speciesId");
   if (!speciesIdRaw) {
     return diagnostics;
   }
 
   const speciesId = normalizeResourceId(speciesIdRaw, namespace);
-  if (!speciesIds.has(speciesId) && !cobblemonDefaults.speciesIds.has(speciesId)) {
-    diagnostics.push(createCustomDiagnostic(parsed, `Species id '${speciesId}' was not found in any species data file.`, workspaceWarningSeverity(), ['speciesId']));
+  if (
+    !speciesIds.has(speciesId) &&
+    !cobblemonDefaults.speciesIds.has(speciesId)
+  ) {
+    diagnostics.push(
+      createCustomDiagnostic(
+        parsed,
+        `Species id '${speciesId}' was not found in any species data file.`,
+        workspaceWarningSeverity(),
+        ["speciesId"],
+      ),
+    );
   }
 
   return diagnostics;
@@ -349,19 +515,29 @@ function validateDexEntryAdditionRecord(
   parsed: ParsedJsonFile,
   namespace: string,
   dexEntryIds: Set<string>,
-  cobblemonDefaults: CobblemonDefaultResourceIndex
+  cobblemonDefaults: CobblemonDefaultResourceIndex,
 ): vscode.Diagnostic[] {
   const diagnostics: vscode.Diagnostic[] = [];
   const value = parsed.value as Record<string, unknown>;
 
-  const entryIdRaw = getStringProperty(value, 'entryId');
+  const entryIdRaw = getStringProperty(value, "entryId");
   if (!entryIdRaw) {
     return diagnostics;
   }
 
   const entryId = normalizeResourceId(entryIdRaw, namespace);
-  if (!dexEntryIds.has(entryId) && !cobblemonDefaults.dexEntryIds.has(entryId)) {
-    diagnostics.push(createCustomDiagnostic(parsed, `Dex entry id '${entryId}' was not found in any dex_entries data file.`, workspaceWarningSeverity(), ['entryId']));
+  if (
+    !dexEntryIds.has(entryId) &&
+    !cobblemonDefaults.dexEntryIds.has(entryId)
+  ) {
+    diagnostics.push(
+      createCustomDiagnostic(
+        parsed,
+        `Dex entry id '${entryId}' was not found in any dex_entries data file.`,
+        workspaceWarningSeverity(),
+        ["entryId"],
+      ),
+    );
   }
 
   return diagnostics;
@@ -371,39 +547,69 @@ function validatePoserRecord(
   record: PoserRecord,
   referencedPosers: Set<string>,
   animationGroupNames: Set<string>,
-  cobblemonDefaults: CobblemonDefaultResourceIndex
+  cobblemonDefaults: CobblemonDefaultResourceIndex,
 ): vscode.Diagnostic[] {
   const diagnostics: vscode.Diagnostic[] = [];
-  const fileStem = path.basename(record.pathNorm, '.json');
+  const fileStem = path.basename(record.pathNorm, ".json");
 
   if (record.isPokemonPoser) {
     const dirName = path.basename(path.dirname(record.pathNorm));
-    if (isPokemonAssetFolderNamingWarningEnabled() && dirName !== 'special' && !/^[0-9]{3,4}_[a-z0-9_-]+$/.test(dirName)) {
-      diagnostics.push(new vscode.Diagnostic(new vscode.Range(0, 0, 0, 1), 'Pokemon poser directory should usually use <dex>_<species>.', vscode.DiagnosticSeverity.Warning));
+    if (
+      isPokemonAssetFolderNamingWarningEnabled() &&
+      dirName !== "special" &&
+      !/^[0-9]{3,4}_[a-z0-9_-]+$/.test(dirName)
+    ) {
+      diagnostics.push(
+        new vscode.Diagnostic(
+          new vscode.Range(0, 0, 0, 1),
+          "Pokemon poser directory should usually use <dex>_<species>.",
+          vscode.DiagnosticSeverity.Warning,
+        ),
+      );
     }
 
     if (!/^[a-z0-9_-]+$/.test(fileStem)) {
-      diagnostics.push(new vscode.Diagnostic(new vscode.Range(0, 0, 0, 1), 'Pokemon poser filename should use lowercase snake/kebab case.', strictNamingSeverity()));
+      diagnostics.push(
+        new vscode.Diagnostic(
+          new vscode.Range(0, 0, 0, 1),
+          "Pokemon poser filename should use lowercase snake/kebab case.",
+          strictNamingSeverity(),
+        ),
+      );
     }
 
-    const inSpecial = /\/bedrock\/pokemon\/posers\/special\//.test(record.pathNorm);
+    const inSpecial = /\/bedrock\/pokemon\/posers\/special\//.test(
+      record.pathNorm,
+    );
     if (!inSpecial && !referencedPosers.has(record.poserId)) {
-      diagnostics.push(new vscode.Diagnostic(new vscode.Range(0, 0, 0, 1), `Poser '${record.poserId}' is not referenced by any pokemon resolver variation.`, workspaceWarningSeverity()));
+      diagnostics.push(
+        new vscode.Diagnostic(
+          new vscode.Range(0, 0, 0, 1),
+          `Poser '${record.poserId}' is not referenced by any pokemon resolver variation.`,
+          workspaceWarningSeverity(),
+        ),
+      );
     }
   }
 
   const groups = extractBedrockGroups(record.parsed.value);
   for (const group of groups) {
     const normalizedGroup = normalizeResourceId(group, record.namespace);
-    const shortGroup = normalizedGroup.split(':', 2)[1] ?? normalizedGroup;
+    const shortGroup = normalizedGroup.split(":", 2)[1] ?? normalizedGroup;
 
     if (
-      !animationGroupNames.has(shortGroup)
-      && !animationGroupNames.has(normalizedGroup)
-      && !cobblemonDefaults.animationGroupNames.has(shortGroup)
-      && !cobblemonDefaults.animationGroupNames.has(normalizedGroup)
+      !animationGroupNames.has(shortGroup) &&
+      !animationGroupNames.has(normalizedGroup) &&
+      !cobblemonDefaults.animationGroupNames.has(shortGroup) &&
+      !cobblemonDefaults.animationGroupNames.has(normalizedGroup)
     ) {
-      diagnostics.push(new vscode.Diagnostic(new vscode.Range(0, 0, 0, 1), `Animation group '${group}' referenced by poser '${record.poserId}' was not found in assets/*/bedrock/**/animations/*.animation.json.`, workspaceWarningSeverity()));
+      diagnostics.push(
+        new vscode.Diagnostic(
+          new vscode.Range(0, 0, 0, 1),
+          `Animation group '${group}' referenced by poser '${record.poserId}' was not found in assets/*/bedrock/**/animations/*.animation.json.`,
+          workspaceWarningSeverity(),
+        ),
+      );
     }
   }
 
@@ -416,23 +622,34 @@ function validateTextureRef(
   namespace: string,
   textureIds: Set<string>,
   pointer: Array<string | number>,
-  cobblemonDefaults: CobblemonDefaultResourceIndex
+  cobblemonDefaults: CobblemonDefaultResourceIndex,
 ): vscode.Diagnostic[] {
   const diagnostics: vscode.Diagnostic[] = [];
 
-  if (typeof textureValue === 'string') {
-    if (textureValue === 'variable') {
+  if (typeof textureValue === "string") {
+    if (textureValue === "variable") {
       return diagnostics;
     }
 
     const id = normalizeResourceId(textureValue, namespace);
     if (!textureIds.has(id) && !cobblemonDefaults.textureIds.has(id)) {
-      diagnostics.push(createCustomDiagnostic(parsed, `Texture '${id}' does not exist in assets/${namespace}.`, workspaceWarningSeverity(), pointer));
+      diagnostics.push(
+        createCustomDiagnostic(
+          parsed,
+          `Texture '${id}' does not exist in assets/${namespace}.`,
+          workspaceWarningSeverity(),
+          pointer,
+        ),
+      );
     }
     return diagnostics;
   }
 
-  if (!textureValue || typeof textureValue !== 'object' || Array.isArray(textureValue)) {
+  if (
+    !textureValue ||
+    typeof textureValue !== "object" ||
+    Array.isArray(textureValue)
+  ) {
     return diagnostics;
   }
 
@@ -443,13 +660,20 @@ function validateTextureRef(
 
   for (let i = 0; i < frames.length; i++) {
     const frame = frames[i];
-    if (typeof frame !== 'string') {
+    if (typeof frame !== "string") {
       continue;
     }
 
     const id = normalizeResourceId(frame, namespace);
     if (!textureIds.has(id) && !cobblemonDefaults.textureIds.has(id)) {
-      diagnostics.push(createCustomDiagnostic(parsed, `Animated texture frame '${id}' does not exist in assets/${namespace}.`, workspaceWarningSeverity(), [...pointer, 'frames', i]));
+      diagnostics.push(
+        createCustomDiagnostic(
+          parsed,
+          `Animated texture frame '${id}' does not exist in assets/${namespace}.`,
+          workspaceWarningSeverity(),
+          [...pointer, "frames", i],
+        ),
+      );
     }
   }
 
@@ -461,7 +685,7 @@ function extractBedrockGroups(value: unknown): string[] {
   const regex = /q\.bedrock(?:_[a-zA-Z]+)?\('([^']+)'\s*,\s*'[^']+'/g;
 
   const visit = (item: unknown): void => {
-    if (typeof item === 'string') {
+    if (typeof item === "string") {
       let match: RegExpExecArray | null;
       while ((match = regex.exec(item)) !== null) {
         groups.add(match[1]);
@@ -476,7 +700,7 @@ function extractBedrockGroups(value: unknown): string[] {
       return;
     }
 
-    if (item && typeof item === 'object') {
+    if (item && typeof item === "object") {
       for (const child of Object.values(item as Record<string, unknown>)) {
         visit(child);
       }
