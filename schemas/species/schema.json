@@ -236,6 +236,7 @@
     }
   },
   "required": [
+    "nationalPokedexNumber",
     "name",
     "primaryType",
     "maleRatio",
