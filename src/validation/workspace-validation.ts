@@ -256,7 +256,7 @@ function validateResolverRecord(
   }
 
   if (!/^[0-9]{3,4}_[a-z0-9_-]+$/.test(dirName)) {
-    diagnostics.push(new vscode.Diagnostic(new vscode.Range(0, 0, 0, 1), 'Resolver directory should usually use <dex>_<species>.', strictNamingSeverity()));
+    diagnostics.push(new vscode.Diagnostic(new vscode.Range(0, 0, 0, 1), 'Resolver directory should usually use <dex>_<species>.', vscode.DiagnosticSeverity.Warning));
   }
 
   const order = typeof value.order === 'number' ? value.order : undefined;
@@ -378,7 +378,7 @@ function validatePoserRecord(
   if (record.isPokemonPoser) {
     const dirName = path.basename(path.dirname(record.pathNorm));
     if (dirName !== 'special' && !/^[0-9]{3,4}_[a-z0-9_-]+$/.test(dirName)) {
-      diagnostics.push(new vscode.Diagnostic(new vscode.Range(0, 0, 0, 1), 'Pokemon poser directory should usually use <dex>_<species>.', strictNamingSeverity()));
+      diagnostics.push(new vscode.Diagnostic(new vscode.Range(0, 0, 0, 1), 'Pokemon poser directory should usually use <dex>_<species>.', vscode.DiagnosticSeverity.Warning));
     }
 
     if (!/^[a-z0-9_-]+$/.test(fileStem)) {

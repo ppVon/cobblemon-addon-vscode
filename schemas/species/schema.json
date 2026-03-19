@@ -228,6 +228,9 @@
           ]
         }
       },
+      "cannotDynamax": {
+        "type": "boolean"
+      },
       "required": [
         "lightLevel",
         "liquidGlowMode"
