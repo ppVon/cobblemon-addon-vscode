@@ -70,7 +70,7 @@
       "$ref": "#/$defs/stats"
     },
     "evYield": {
-      "$ref": "#/$defs/stats"
+      "$ref": "#/$defs/evYields"
     },
     "baseExperienceYield": {
       "type": "integer",
@@ -288,6 +288,30 @@
         "special_defence",
         "speed"
       ],
+      "additionalProperties": false
+    },
+    "evYields": {
+      "type": "object",
+      "properties": {
+        "hp": {
+          "type": "integer"
+        },
+        "attack": {
+          "type": "integer"
+        },
+        "defence": {
+          "type": "integer"
+        },
+        "special_attack": {
+          "type": "integer"
+        },
+        "special_defence": {
+          "type": "integer"
+        },
+        "speed": {
+          "type": "integer"
+        }
+      },
       "additionalProperties": false
     },
     "behaviourConfig": {
