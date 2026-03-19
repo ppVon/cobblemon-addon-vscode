@@ -1,3 +1,7 @@
+# 0.5.0 - 2026-03-18
+
+- Added `cannotDynamax` to species schema
+
 # 0.4.0 - 2026-03-17
 
 - Added dex entry id validation to dex_entry_addition s
