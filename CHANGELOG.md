@@ -1,7 +1,7 @@
 # 0.7.0 - 2026-03-19
 
-- Remove error for poser and resolver not having dex_name in filepath
-  - There is an option to enable this as an error
+- Resolver and poser filepath dex_name convention is now a warning
+  - There is an option to disable this warning
 - EV Yields no longer require every stat present
 - Egg groups are now limited to the supported egg groups
 - Extension is now bundled properly
