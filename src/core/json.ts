@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { parse, parseTree, type ParseError } from 'jsonc-parser';
+import { parse, parseTree, type ParseError } from './jsonc-parser';
 import { type ParsedJsonFile } from '../types';
 
 export async function parseWorkspaceJson(uri: vscode.Uri): Promise<ParsedJsonFile> {

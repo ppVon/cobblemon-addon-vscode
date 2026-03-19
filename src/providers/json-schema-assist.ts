@@ -10,7 +10,7 @@ import {
   type EditResult,
   type Node as JsonNode,
   type ParseError,
-} from 'jsonc-parser';
+} from '../core/jsonc-parser';
 import { type CobblemonSchemaEngine } from '../schema/schema-engine';
 
 const JSON_PARSE_OPTIONS = {

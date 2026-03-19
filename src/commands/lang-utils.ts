@@ -1,6 +1,6 @@
 import * as path from 'path';
 import * as vscode from 'vscode';
-import { parse, printParseErrorCode, type ParseError } from 'jsonc-parser';
+import { parse, printParseErrorCode, type ParseError } from '../core/jsonc-parser';
 
 export async function upsertSpeciesLangEntries(
   workspaceRoot: vscode.Uri,

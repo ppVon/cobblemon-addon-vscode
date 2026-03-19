@@ -1,17 +1,14 @@
-import * as fs from 'node:fs';
-import * as path from 'node:path';
 import * as vscode from 'vscode';
 import {
   COBBLEMON_TYPES,
   POKEMON_BUILDER_NAMESPACE,
   type PokemonBuilderFormData,
 } from './types';
+import formTemplate from './pokemon-builder.form.html';
 import {
   isPokemonBuilderFormData,
   validatePokemonBuilderFormData,
 } from './form-validation';
-
-const FORM_TEMPLATE_PATH = path.join(__dirname, 'pokemon-builder.form.html');
 
 export async function showPokemonBuilderForm(initial: PokemonBuilderFormData): Promise<PokemonBuilderFormData | undefined> {
   const panel = vscode.window.createWebviewPanel(
@@ -79,7 +76,7 @@ export async function showPokemonBuilderForm(initial: PokemonBuilderFormData): P
 }
 
 function renderPokemonBuilderWebviewHtml(webview: vscode.Webview, initial: PokemonBuilderFormData, nonce: string): string {
-  const template = fs.readFileSync(FORM_TEMPLATE_PATH, 'utf8');
+  const template = formTemplate;
   const initialJson = JSON.stringify(initial).replace(/</g, '\\u003c');
   const typeOptions = COBBLEMON_TYPES.map((type) => `<option value="${type}">${type}</option>`).join('');
   const secondaryTypeOptions = `<option value="">(none)</option>${typeOptions}`;

@@ -72,11 +72,11 @@
     }
   },
   "scripts": {
-    "build": "node ./scripts/clean-dist.mjs && tsc -p . && node ./scripts/copy-assets.mjs",
-    "watch": "tsc -p . -w",
+    "build": "npm run check && node ./scripts/clean-dist.mjs && node ./scripts/build-extension.mjs",
+    "watch": "node ./scripts/build-extension.mjs --watch",
     "check": "tsc -p . --noEmit",
     "refresh:cobblemon-default-index": "node ./scripts/generate-cobblemon-default-index.mjs",
-    "package": "npm run build && npx @vscode/vsce package"
+    "package": "npm run build && npx @vscode/vsce package --no-dependencies"
   },
   "dependencies": {
     "ajv": "^8.17.1",
@@ -85,6 +85,7 @@
   "devDependencies": {
     "@types/node": "^22.10.2",
     "@types/vscode": "^1.90.0",
+    "esbuild": "^0.27.4",
     "typescript": "^5.6.3"
   }
 }

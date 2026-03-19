@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 import { type ErrorObject } from 'ajv/dist/2020';
-import { findNodeAtLocation, printParseErrorCode } from 'jsonc-parser';
+import { findNodeAtLocation, printParseErrorCode } from './jsonc-parser';
 import { type ParsedJsonFile } from '../types';
 
 type VerboseErrorObject = ErrorObject & { parentSchema?: unknown };

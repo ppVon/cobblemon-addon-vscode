@@ -35,9 +35,10 @@ import {
 export async function runWorkspaceValidation(
   engine: CobblemonSchemaEngine,
   diagnostics: vscode.DiagnosticCollection,
+  extensionUri: vscode.Uri,
   notifySuccess = false,
 ): Promise<void> {
-  const cobblemonDefaults = getCobblemonDefaultResourceIndex();
+  const cobblemonDefaults = getCobblemonDefaultResourceIndex(extensionUri);
   const files = await vscode.workspace.findFiles(
     "**/*.json",
     DATA_ROOT_EXCLUDE,

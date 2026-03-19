@@ -1,5 +1,5 @@
 import * as fs from 'node:fs';
-import * as path from 'node:path';
+import * as vscode from 'vscode';
 
 interface CobblemonDefaultDataIndexFile {
   speciesIds?: string[];
@@ -24,17 +24,19 @@ export interface CobblemonDefaultResourceIndex {
   readonly langKeys: ReadonlySet<string>;
 }
 
-let cachedIndex: CobblemonDefaultResourceIndex | undefined;
+const cachedIndices = new Map<string, CobblemonDefaultResourceIndex>();
 
-export function getCobblemonDefaultResourceIndex(): CobblemonDefaultResourceIndex {
+export function getCobblemonDefaultResourceIndex(extensionUri: vscode.Uri): CobblemonDefaultResourceIndex {
+  const cacheKey = extensionUri.toString();
+  const cachedIndex = cachedIndices.get(cacheKey);
   if (cachedIndex) {
     return cachedIndex;
   }
 
-  const dataIndex = readIndexFile<CobblemonDefaultDataIndexFile>('cobblemon-default-data-index.json');
-  const assetsIndex = readIndexFile<CobblemonDefaultAssetsIndexFile>('cobblemon-default-assets-index.json');
+  const dataIndex = readIndexFile<CobblemonDefaultDataIndexFile>(extensionUri, 'cobblemon-default-data-index.json');
+  const assetsIndex = readIndexFile<CobblemonDefaultAssetsIndexFile>(extensionUri, 'cobblemon-default-assets-index.json');
 
-  cachedIndex = {
+  const index = {
     speciesIds: new Set(dataIndex.speciesIds ?? []),
     dexEntryIds: new Set(dataIndex.dexEntryIds ?? []),
     poserIds: new Set(assetsIndex.poserIds ?? []),
@@ -44,14 +46,15 @@ export function getCobblemonDefaultResourceIndex(): CobblemonDefaultResourceInde
     langKeys: new Set(assetsIndex.langKeys ?? []),
   };
 
-  return cachedIndex;
+  cachedIndices.set(cacheKey, index);
+  return index;
 }
 
-function readIndexFile<T>(fileName: string): T {
-  const indexPath = path.resolve(__dirname, '../../schemas/generated', fileName);
+function readIndexFile<T>(extensionUri: vscode.Uri, fileName: string): T {
+  const indexUri = vscode.Uri.joinPath(extensionUri, 'schemas', 'generated', fileName);
 
   try {
-    const raw = fs.readFileSync(indexPath, 'utf8');
+    const raw = fs.readFileSync(indexUri.fsPath, 'utf8');
     return JSON.parse(raw) as T;
   } catch (error) {
     console.warn(`[cobblemon-schema-tools] Failed to load bundled Cobblemon index '${fileName}':`, error);

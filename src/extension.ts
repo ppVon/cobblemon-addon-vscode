@@ -25,7 +25,7 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
     }
 
     timeoutHandle = setTimeout(() => {
-      void runWorkspaceValidation(engine, diagnosticCollection);
+      void runWorkspaceValidation(engine, diagnosticCollection, context.extensionUri);
     }, 350);
   };
 

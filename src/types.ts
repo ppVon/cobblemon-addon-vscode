@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { type Node as JsonNode, type ParseError } from 'jsonc-parser';
+import { type Node as JsonNode, type ParseError } from './core/jsonc-parser';
 
 export interface SchemaIndexEntry {
   name: string;
