@@ -1,4 +1,3 @@
-import * as path from 'path';
 import * as vscode from 'vscode';
 import { type CommandDefinition } from './types';
 import { pickWorkspaceFolder, writeFileIfMissing } from './command-utils';
@@ -40,15 +39,8 @@ async function scaffoldMoveFile(): Promise<void> {
     return;
   }
 
-  const moveDataImportPath = await resolveMoveDataImportPath(folder.uri, targetUri);
-  const content = buildMoveTemplate(formData, { moveDataImportPath });
+  const content = buildMoveTemplate(formData);
   await writeFileIfMissing(targetUri, content);
-
-  if (!moveDataImportPath) {
-    void vscode.window.showWarningMessage(
-      "Couldn't find cobblemon-showdown/sim/dex-moves.ts nearby, so this move file was generated without MoveData type checking.",
-    );
-  }
 
   void vscode.window.showInformationMessage(
     `Move builder generated ${formData.namespace}:${formData.fileId}.`,
@@ -71,46 +63,4 @@ async function resolveMoveTargetUri(
   const dir = vscode.Uri.joinPath(workspaceRoot, 'data', namespace, 'moves');
   await vscode.workspace.fs.createDirectory(dir);
   return vscode.Uri.joinPath(dir, `${fileId}.ts`);
-}
-
-async function resolveMoveDataImportPath(
-  workspaceRoot: vscode.Uri,
-  targetUri: vscode.Uri,
-): Promise<string | undefined> {
-  const candidates: vscode.Uri[] = [
-    vscode.Uri.joinPath(workspaceRoot, '..', 'cobblemon-showdown', 'sim', 'dex-moves.ts'),
-    vscode.Uri.joinPath(workspaceRoot, 'cobblemon-showdown', 'sim', 'dex-moves.ts'),
-  ];
-
-  for (const folder of vscode.workspace.workspaceFolders ?? []) {
-    if (path.basename(folder.uri.fsPath) === 'cobblemon-showdown') {
-      candidates.push(vscode.Uri.joinPath(folder.uri, 'sim', 'dex-moves.ts'));
-    }
-  }
-
-  for (const candidate of candidates) {
-    if (!(await uriExists(candidate))) {
-      continue;
-    }
-
-    const relativePath = path.relative(
-      path.dirname(targetUri.fsPath),
-      candidate.fsPath,
-    );
-    const withoutExtension = relativePath.replace(/\.ts$/i, '');
-    return withoutExtension.startsWith('.')
-      ? withoutExtension.replace(/\\/g, '/')
-      : `./${withoutExtension.replace(/\\/g, '/')}`;
-  }
-
-  return undefined;
-}
-
-async function uriExists(uri: vscode.Uri): Promise<boolean> {
-  try {
-    await vscode.workspace.fs.stat(uri);
-    return true;
-  } catch {
-    return false;
-  }
 }

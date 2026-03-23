@@ -116,7 +116,7 @@ export function parseJsObjectText(
   if (!expression) {
     parseErrors.push({
       message:
-        'Move file must contain either ({ ... }) or export default ({ ... }) satisfies MoveData.',
+        'Move file must contain a single object expression like ({ ... }).',
       start: 0,
       length: Math.max(1, text.length),
     });

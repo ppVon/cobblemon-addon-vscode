@@ -7,21 +7,13 @@ import {
 } from '../../moves/spec';
 import { type MoveBuilderFormData } from './types';
 
-export interface BuildMoveTemplateOptions {
-  moveDataImportPath?: string;
-}
-
 export function buildMoveTemplate(
   formData: MoveBuilderFormData,
-  options: BuildMoveTemplateOptions = {},
 ): string {
   const definition = buildMoveDefinition(formData);
   const ordered = buildOrderedMoveRecord(definition);
-  const objectLiteral = `({\n${renderObjectBody(ordered, 1)}\n})`;
-  if (options.moveDataImportPath) {
-    return `import type { MoveData } from ${JSON.stringify(options.moveDataImportPath)};\n\nexport default ${objectLiteral} satisfies MoveData;\n`;
-  }
-  return `export default ${objectLiteral};\n`;
+  const objectBody = `{\n${renderObjectBody(ordered, 1)}\n}`;
+  return `(${objectBody});\n`;
 }
 
 function buildMoveDefinition(formData: MoveBuilderFormData): MoveTemplateDefinition {

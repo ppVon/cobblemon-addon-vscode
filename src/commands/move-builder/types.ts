@@ -84,7 +84,7 @@ export const DEFAULT_MOVE_BUILDER_FORM: MoveBuilderFormData = {
   target: "normal",
   type: "Normal",
   contestType: "",
-  selectedFlags: [],
+  selectedFlags: ["protect", "mirror", "metronome", "contact"],
   status: "",
   volatileStatus: "",
   sideCondition: "",

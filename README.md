@@ -6,7 +6,7 @@ It helps you catch data issues quickly and generate common Cobblemon files from 
 ## What You Can Do
 
 - Validate your workspace data and view issues in the **Problems** panel.
-- Generate typed custom move TS files with **Cobblemon: Move Builder Form**.
+- Generate custom move TS files with **Cobblemon: Move Builder Form**.
 - Generate Pokemon starter files with **Cobblemon: Pokemon Builder Form**.
 - Scaffold a data JSON file with **Cobblemon: Scaffold Data JSON File**.
 - Generate a spawn pool world entry with **Cobblemon: Generate Spawn Pool World**.
