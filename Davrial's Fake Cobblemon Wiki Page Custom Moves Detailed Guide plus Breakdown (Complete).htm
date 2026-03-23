@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<title>Davrial's Custom Move Detailed Guide - Custom Cobblemon Wiki Page</title>
+
+<body class="mediawiki ltr sitedir-ltr mw-hide-empty-elt ns-0 ns-subject page-Datapackable_Move_Effects rootpage-Datapackable_Move_Effects stable is-authenticated skin-minerva action-view skin--responsive minerva--history-page-action-enabled dark-mode"><div id="mw-mf-viewport">
+	<div id="mw-mf-page-center">
+		<a class="mw-mf-page-center__mask" href="#"></a>
+		
+		<header class="header-container header-chrome">
+			<div class="minerva-header">
+				<nav class="navigation-drawer toggle-list view-border-box">
+					<input type="checkbox" id="main-menu-input" class="toggle-list__checkbox" role="button" aria-haspopup="true" aria-expanded="false" aria-labelledby="mw-mf-main-menu-button">
+					<label for="main-menu-input" id="mw-mf-main-menu-button" aria-hidden="true" class=" mw-ui-button mw-ui-quiet mw-ui-icon mw-ui-icon-element mw-ui-icon-wikimedia-menu-base20 mw-ui-icon-flush-left toggle-list__toggle" title="Open main menu" data-event-name="ui.mainmenu">Open main menu</label>
+					<div id="mw-mf-page-left" class="menu toggle-list__list view-border-box">
+	<ul id="p-navigation">
+			<li class="">
+			    <a href="https://wiki.cobblemon.com/index.php/Main_Page" class="menu__item--home" data-mw="interface" data-event-name="">
+			      <span class="mw-ui-icon-minerva-home mw-ui-icon"></span><span>Real Cobblemon Wiki Home</span>
+			     </a>
+			</li>
+
+	</ul>
+
+	<ul class="hlist">
+			<li class="">
+			    <a href="https://wiki.cobblemon.com/index.php/Cobblemon_Wiki:About" class="menu__item--about" data-mw="interface" data-event-name="">
+			      <span class="mw-ui-icon-minerva-about mw-ui-icon"></span><span>About the actual Cobblemon Wiki</span>
+			     </a>
+			</li>
+			<li class="">
+			    <a href="https://wiki.cobblemon.com/index.php/Cobblemon_Wiki:General_disclaimer" class="menu__item--disclaimers" data-mw="interface" data-event-name="">
+			      <span class="mw-ui-icon-minerva-disclaimers mw-ui-icon"></span><span>Actual real wiki Disclaimers</span>
+			     </a>
+			</li>
+	</ul>
+</div>
+
+					<label class="main-menu-mask" for="main-menu-input"></label>
+				</nav>
+				<div class="branding-box">
+					<a href="https://wiki.cobblemon.com/index.php/Main_Page">
+						<span>
+Cobblemon Wiki
+</span>
+						
+					</a>
+				</div>
+					<form action="/index.php" method="get" class="minerva-search-form">
+				<div class="search-box">
+					<input type="hidden" name="title" value="Special:Search">
+					<input class="search mw-ui-background-icon-search skin-minerva-search-trigger" type="search" name="search" id="searchInput" placeholder="Search the ACTUAL wiki (Leaves here)" aria-label="Search the ACTUAL wiki (Leaves here)" autocapitalize="sentences" title="Search the ACTUAL wiki (Leaves here) [Alt+Shift+f]" accesskey="f" "="" autocomplete="off">
+				</div>
+				<button id="searchIcon" class="mw-ui-icon mw-ui-icon-element mw-ui-icon-wikimedia-search-base20 skin-minerva-search-trigger mw-ui-button mw-ui-quiet">Search</button>
+			</form>
+			</div>
+		</header>
+		<main id="content" class="mw-body ve-init-mw-desktopArticleTarget-targetContainer">
+			<div class="banner-container">
+			<div id="siteNotice"></div>
+			</div>
+			
+			<div class="pre-content heading-holder">
+				<div class="page-heading">
+					<h1 id="firstHeading" class="firstHeading mw-first-heading"><span class="mw-page-title-main">Davrial's Custom Wiki Page: Detailed Custom Move Info</span></h1>
+					<div class="tagline"></div>
+				<nav class="page-actions-menu">
+
+</nav>
+<!-- version 1.0.2 (change every time you update a partial) -->
+				
+				<div class="minerva__subtitle"></div>
+			</div>
+			<div id="bodyContent" class="content">
+				<div id="mw-content-text" class="mw-body-content mw-content-ltr" lang="en" dir="ltr"><div class="mw-parser-output"><div style="clear: right; float: right; margin: 0 0 0.8em 1.4em;"><div id="toc" class="toc" role="navigation" aria-labelledby="mw-toc-heading"><input type="checkbox" role="button" id="toctogglecheckbox" class="toctogglecheckbox" style="display:none"><div class="toctitle" lang="en" dir="ltr"><h2 id="mw-toc-heading">Contents</h2><span class="toctogglespan"><label class="toctogglelabel" for="toctogglecheckbox"></label></span></div>
+<ul>
+	<li class="toclevel-1 tocsection-1"><a href="#Preface"><span class="tocnumber">1</span> <span class="toctext">Preface</span></a></li>
+	<ul>
+		<li class="toclevel-2 tocsection-2"><a href="#Folder_File_Structure"><span class="tocnumber">1.1</span> <span class="toctext">Folder/File Structure</span></a></li>
+	</ul>
+	<li class="toclevel-1 tocsection-3"><a href="#Basic_Example_Move_Tackle"><span class="tocnumber">2</span> <span class="toctext">Basic Example Move: Tackle</span></a></li>
+	<ul>
+		<li class="toclevel-2 tocsection-4"><a href="#Basic_Example_Breakdown"><span class="tocnumber">2.1</span> <span class="toctext">Basic Example Breakdown</span></a></li>
+	</ul>
+	<li class="toclevel-1 tocsection-5"><a href="#Basic_Additional_Effects"><span class="tocnumber">3</span> <span class="toctext">Basic Additional Effects</span></a>
+	</li><li class="toclevel-1 tocsection-6"><a href="#Advanced_Additional_Effects"><span class="tocnumber">4</span> <span class="toctext">Advanced Additional Effects</span></a></li>
+	<li class="toclevel-1 tocsection-7"><a href="#Targets"><span class="tocnumber">5</span> <span class="toctext">Targets</span></a>
+	</li><li class="toclevel-1 tocsection-8"><a href="#Flags"><span class="tocnumber">6</span> <span class="toctext">Flags</span></a></li>
+	<ul>
+		<li class="toclevel-2 tocsection-9"><a href="#Flags-Common"><span class="tocnumber">6.1</span> <span class="toctext">Common Flags</span></a></li>
+		<li class="toclevel-2 tocsection-10"><a href="#Flags-MoveCategories"><span class="tocnumber">6.2</span> <span class="toctext">Move Categories Flags</span></a></li>
+		<li class="toclevel-2 tocsection-11"><a href="#Flags-ExceptionsAndFails"><span class="tocnumber">6.3</span> <span class="toctext">Exeption And Failure Flags</span></a></li>
+	</ul>
+	<li class="toclevel-1 tocsection-12"><a href="#StatusAndVolatiles"><span class="tocnumber">7</span> <span class="toctext">Status Conditions And Volatile Statuses</span></a></li>
+	<ul>
+		<li class="toclevel-2 tocsection-13"><a href="#StatusAndVolatiles-StatusConditions"><span class="tocnumber">7.1</span> <span class="toctext">Status Conditions</span></a></li>
+		<li class="toclevel-2 tocsection-13"><a href="#StatusAndVolatiles-Volatiles"><span class="tocnumber">7.2</span> <span class="toctext">Volatile Statuses aka Volatiles</span></a></li>
+		<ul>
+			<li class="toclevel-3 tocsection-13"><a href="#StatusAndVolatiles-Volatiles-Common"><span class="tocnumber">7.3</span> <span class="toctext">Common Volatiles</span></a></li>
+			<li class="toclevel-3 tocsection-13"><a href="#StatusAndVolatiles-Volatiles-Other"><span class="tocnumber">7.4</span> <span class="toctext">Other Volatiles</span></a></li>
+		</ul>
+	</ul>
+</ul>
+</div>
+</div>
+<h1><span class="mw-headline" id="Title">Davrial's Fake Cobblemon Wiki Page: Custom Moves Detailed Guide + Breakdown</span></h1>
+<h2><span class="mw-headline" id="Preface">Preface</span></h2>
+<p>I, Davrial, wished to put out a thorough guide on the various 
+different elements of a custom move. I applied to be a wiki editor for 
+this exact reason, but was turned down (very politely, i have no ill 
+will to them at all). But unfortunately my brain wouldnt let me just 
+drop the idea, so here i am making a custom wiki page the hard way. This
+ guide will break down all the possible elements contained within a 
+move, ALL of them, to the best of my ability.
+</p>
+					<br>
+<h3><span class="mw-headline" id="Folder_File_Structure">Folder/File Structure</span></h3>
+<p>When adding a  custom move to your pack, the location it goes in is as such: <code>[Pack]/data/cobblemon/moves/[movename].js</code>. For custom abilities, the same structure is used but just replace <code>/moves/[movename].js</code> with <code>/abilities/[abilityname].js</code></p>
+					<br>
+<h4><span class="mw-headline" id="HTML_Stuff">HTML Complete ZIP vs just the HTLM File</span></h4>
+<p>If you opened this from the zip with the folder of other contents, 
+you will see that it has the exact same formatting as the actual wiki. 
+The reason it needed to be in a ZIP is because much of the visual data 
+is stored in separate javascript files and cannot be merged into the 
+HTML file. This guide will work perfectly fine without those files, as 
+you might be seeing if you didn't grab the ZIP and just grabbed the 
+file, it will just be missing the vast majority of the visual appeal. If
+ you got the ZIP, you can just grab the file instead if you want. If you
+ grabbed the file unsure about the contents of the ZIP, now you know, 
+and can make an informed decision on which you prefer. I dont care 
+either way ive just got brainworms about this so i wanted it to look as 
+accurate as possible.</p>
+
+					<br>
+
+<h2><span class="mw-headline" id="Basic_Example_Move_Tackle">Step 1: Basic Example Move - Tackle</span></h2>
+					<br>
+<p>We'll start basic: the move Tackle for an example. Tackle is a basic 
+move that does damage and that's it, a great baseline for understanding 
+the basics before moving on to complex effects.</p>
+
+<pre>({
+	num: 33,
+	accuracy: 100,
+	basePower: 40,
+	category: "Physical",
+	name: "Tackle",
+	pp: 35,
+	priority: 0,
+	flags: {contact: 1, protect: 1, mirror: 1, metronome: 1},
+	secondary: null,
+	target: "normal",
+	type: "Normal",
+	contestType: "Tough",
+})
+</pre>
+					<br>
+<h3><span class="mw-headline" id="Basic_Example_Breakdown">Basic Example Breakdown</span></h3>
+<p>Now let's go through and break down all the different elements of that:<br>
+</p><p><code>num: 33</code>: The "num" field indicates which official 
+move is being targeted in the showdown index. I have recieved 
+conflicting information on whether or not custom moves should have 
+custom numbers; the wiki page says no, but multiple people have given 
+advice saying they do. If one does add a custom num to a custom move, 
+give it a large number which is unlikely to conflict with other custom 
+addons'/mods' moves. I personally am using 64000 as the starting index 
+for my moves in my Mario inspired addon.
+</p><p><code>accuracy: 100</code>: This is the move's accuracy. Valid 
+numbers are 1-100, as well was "true", for moves that always succeed 
+like ally-targeting boots or guaranteed-hit attacks.
+</p><p><code>basePower: 40</code>: This is the move's Power, how strong the move is. It's not relevant for Status moves and should be set to 0 for those.
+</p><p><code>category: "Physical"</code>: The kind of move being used. Valid options are "Physical", "Special, and "Status".
+</p><p><code>name: "Tackle"</code>: Pretty self-explanatory, this is the
+ name of the move. Note: this is both what's shown in battle AND used 
+for code references, so make sure any custom move names are formatted 
+how you want them to look in game, and then make sure you keep using 
+that specific formatting every time you reference the move in code.
+</p><p><code>pp: 35</code>: PP is short for Power Points. It is how many
+ times the pokemon can use the move before needing to be refreshed in 
+some way, either via an item usage or via using a healing machine.
+</p><p><code>priority: 0</code>: This is the Priority of the move. 
+Higher Priority moves go before lower priority moves, a pokemon's Speed 
+only matters within the same Priority level. Possible options are whole 
+numbers from +6  to -6, with +3 being the highest any canonical 
+attacking moves go to.
+</p><p><code>flags: {contact: 1, protect: 1, mirror: 1, metronome: 1}</code>:
+ Flags are very important and define a lot of various different things, 
+primarily involving the move's interactions with other moves and 
+abilities. There's many different flags, and we'll go over them all 
+later, but for now we'll just cover the ones present here. The flags 
+here define that: the move makes contact; the move can be blocked by 
+Protect; the move can be copied by the move Mirror Move; and the move 
+can be called and used by the random-move move Metronome.
+</p><p><code>secondary: null</code>: This field is for if the move has 
+secondary effects. This is primarily relevant for moves which are 
+primarily damage with a separate effect that also happens not as part of
+ the damage, such as having a chance to flinch or burn. Chance-based 
+effects are usually secondary effects. Tackle does not have one, so it's
+ set to null, important to note that it's null instead of not having the
+ field entirely.
+</p><p><code>target: "normal"</code>: This is what determines which 
+pokemon can be targeted by a move. The "normal" targeting method as 
+shown here is 1 adjacent enemy or ally. There are many different target 
+options, which i will go into later, but "normal" and "self" are the two
+ most common by far.
+</p><p><code>type: "Normal"</code>: Pretty self-explanatory, this is what pokemon elemental Type the move is.
+</p><p><code>contestType: "Tough"</code>: And finally, this is what the 
+contest appeal type of the move is. Currently, this serves no purpose in
+ Cobblemon, but every move from before the generations where the 
+official games removed them has one. Tackle here is Tough. It's not a 
+required field as newer moves dont have it either. If you wish to have 
+the field anyway, the possible options are: Beautiful, Clever, Cool, 
+Cute, and Tough.
+</p>
+					<br>
+<h2><span class="mw-headline" id="Basic_Additional_Effects">Step 2: Basic Additional Effects</span></h2>
+					<br>
+<p>Ok now that we know the extreme basics, we're going to step it up a 
+little. Next up I'm going list and explain all the basic additional 
+effects (that I could find by manually combing thru the code). What do I
+ mean by "basic additional effects"? I don't know if there's an official
+ term for them, but what I mean are things that don't require 
+specialized coding, just basic effects with basic fields, such as 
+increased crit rate.
+</p>
+<p><code>isNonstandard: "Past"</code>: Starting off with one which is 
+not relevant to custom moves, isNonstandard denotes a move isnt 
+acquirable for one reason or another. The existing values are: "Past", 
+which means the move was standard in the past but nolonger is as of the 
+most recent pokemon games; "Unobtainable", which means for one reason or
+ another the move isn't obtainable via any regular method (usually moves
+ only story encounter pokemon have, or special event-givaway moves); 
+"Gigantamax", for moves which are unique to G-Max form signature 
+attacks; "LGPE", which is short for Let's Go Pikachu / Eevee, which is 
+for the unique moves that only Partner Pikachu and Partner Eevee (which 
+are unique forms with different stats from regular members of their 
+species) can learn, and which not present outside of those games in 
+official pokemon games; and "CAP", which is short for Create-A-Pokemon, 
+the only 2 moves with this tag are signature moves from SMOGON's 
+Showdown Create-A-Pokemon project.
+</p><p><code>forceSwitch: true</code>: This effect forces the opponent 
+pokemon to swap out, such as with moves like Roar and Whirlwind. If the 
+fight is a wild battle, the battle is fled; if the fight is a trainer 
+battle, the opposing pokemon is swapped out for a different one at 
+random.
+</p><p><code>recoil: [1, 4]</code>: This field denotes any recoil damage
+ the move does. The format is similar to others that come later, but 
+functions differently. In this case, the format is actually a fraction, 
+specifically a fraction of the damage dealt, in this case 1/4th. So for 
+example a move with this recoil which did 100 damage to the target would
+ then do 25 damage in recoil to the user.
+</p><p><code>struggleRecoil: true</code>: A directly related stat, 
+"struggleRecoil", is used by the move... well, Struggle. Instead of 
+doing recoil damage based on how much damage the target took, 
+struggleRecoil instead does 1/4 of the user's max HP.
+</p><p><code>mindBlownRecoil: true,</code>: Another different form of 
+recoil, this one does damage based on a custom-code math formula. 
+However, the only 2 official moves that use this (Mind Blown and Steel 
+Beam) have the same formula, as they both do 1/2 of the user's max HP in
+ recoil damage. Since the custom code is extremely simple, I'll make an 
+exception and put it here, as this effect doesnt work without the 
+accompanying code:
+	</p><pre>onAfterMove(pokemon, target, move) {
+		if (move.mindBlownRecoil &amp;&amp; !move.multihit) {
+			const hpBeforeRecoil = pokemon.hp;
+			this.damage(Math.round(pokemon.maxhp / 2), pokemon, pokemon, this.dex.conditions.get('[Move Name Here]'), true);
+			if (pokemon.hp &lt;= pokemon.maxhp / 2 &amp;&amp; hpBeforeRecoil &gt; pokemon.maxhp / 2) {
+				this.runEvent('EmergencyExit', pokemon, pokemon);
+			}
+		}
+	}</pre>
+<p></p><p><code>hasCrashDamage: true</code>: A related effect similar to
+ recoil, Crash Damage is instead damage dealt to the user only upon 
+missing a move, based on the user's max HP. This is used for 
+high-risk-high-reward moves such as High Jump Kick. Just like with the 
+previous example all existing moves have the same formula, and as with 
+mindBlownRecoil, this does not function without it's accompanying code, 
+so I'll make another exception and put it here:
+	</p><pre>onMoveFail(target, source, move) {
+		this.damage(source.baseMaxhp / 2, source, source, this.dex.conditions.get('[Move Name Here]'));
+	}</pre>
+<p></p><p><code>status: 'slp'</code>: The basic "status" effect gives 
+the target the status listed, always listed in a three-letter 
+shortening. In this example, the target is put to sleep. Important note:
+ status refers to the statuses that display on a pokemon's health bar UI
+ in game, such as sleep, poison, or burn. A pokemon can only have 1 
+status effect at a time, and will not gain a new one if it already has 
+one. I will list all possible options for this field later.
+</p><p><code>volatileStatus: 'confusion'</code>: Status-like effects 
+that are not displayed are classified as "volatileStatus" instead. The 
+example here being Confusion. Volatile Statuses get cleared when the 
+pokemon swaps out, unless the effect is causing them to be unable to 
+swap out (like being bound by Bind) Important note: While a pokemon can 
+only have 1 status effect at a time, a pokemon can be affected by any 
+number of different volatile statuses at the same time. I will list all 
+possible options for this field later.
+</p><p><code>sideCondition: 'lightscreen'</code>: Another different type
+ of status condition, sideCondition compromises effects that influence a
+ whole side of the field, in this case Lightscreen.
+</p><p><code>boosts: { atk: 1, }</code>: This is the effect you use to 
+boost the user's stats. This basic example would raise the user's attack
+ by 1 stage. This is also the effect you use to LOWER their stats, by 
+setting the value to negative.
+</p><p><code>drain: [1, 2]</code>: This effect is how much of the damage
+ dealt by a move is returned as HP, as with Absorb and Leech Life. Like 
+with Recoil, it's represented as a fraction ([1, 2] = 1/2 = 50% of the 
+damage returned as health)
+</p><p><code>heal: [1, 4]</code>: Similar to drain, but for purely 
+healing effects. This is again a fraction calculation, but instead it's a
+ fraction of the target's max HP, since no damage is being dealt unlike 
+with drain effects. Example: Life Dew.
+</p><p><code>ohko: true</code>: This is for One-Hit Knock-Out moves such as Horn Drill and Fissure.
+</p><p><code>critRatio: 2</code> This effect boosts the crit chance of 
+the move it is on, as opposed to boosting the crit chance of later moves
+ or boosting the user's overall crit chance.
+</p><p><code>multihit: [2, 5]</code>: Multihit is for moves that hit 
+multiple times, as you might be able to guess. There's two different 
+ways to use it: "multihit: 2" for example would mean the move would 
+always hit twice. Meanwhile, the example shown here, which is far more 
+common, means that a move will hit 2 to 5 times, randomly. (Note that 
+that means the bracketed numbers do NOT act like a fraction as with 
+prior effects listed here)
+</p><p><code>stallingMove: true</code>: This line is used for moves used to stall out turns, such as protective moves like Protect or healing moves like Rest.
+</p><p><code>selfSwitch: true</code>: This effect is used for moves 
+which swap the user pokemon out. Valid values are: true (note: no single
+ nor double quote marks); 'copyvolatile', which is how Baton Pass works;
+ and 'shedtail', which is how Shed Tail works.
+</p><p><code>selfdestruct: "always"</code>: This is what's used to faint
+ your pokemon when they use the move, like with Explosion. Valid values:
+ are "always", always faints the mon; and "ifHit", which only faints 
+them if they successfully land the hit (as with Final Gambit).
+</p><p><code>isZ: "psychiumz"</code>: This field indicates a move is a 
+Z-Move, and which Z Crystal needs to be held to activate it. No existing
+ moves seem to do it, but based on the code it's theoretically possible 
+to use a mismatched move and crystal to trigger a unique Z-Move, like 
+having a Water move need a Firium Z to activate a custom move named 
+"Steam Torrent" or something.
+</p><p><code>zMove: {basePower: 180}</code>: This field denotes what 
+additional effect the move has when boosted by being used as a Z-Move, 
+if it's not converted into a unique Z-Move. There's various different 
+effects that can be used, but this example simply boosts the move's base
+ power to 180.
+</p><p><code>maxMove: {basePower: 100}</code>: Similar to the previous 
+field, this one just sets the power of a move when used as a Max move. 
+This is primarily present on moves which typically have varying Power, 
+or multihit moves, which lose those traits when they become Max 
+Airstream or any other Max move.
+</p><p><code>ignoreAbility: true</code>: This causes the move to ignore all relevant abilities on the target, or at least ones that are able to be ignored.
+</p><p><code>ignoreImmunity: true</code>: This line is used for moves that ignore a target's type immunities.
+</p><p><code>ignoreDefensive: true</code>: This line is used for moves that ignore a target's defense boosts.
+</p><p><code>ignoreEvasion: true</code>: This line is used for moves that ignore a target's evasiveness boosts.
+</p><p>And finally, one last example before we leave this section, saved because it's the only one that goes in the secondary field: </p><pre>secondary: {chance: 10,status: 'brn',}</pre>
+The "chance" field, very simply, makes a secondary effect happen with a 
+random chance, instead of guaranteed. In this specific example, the move
+ would have a 10% chance to burn the target.
+<p></p>
+
+					<br>
+<h2><span class="mw-headline" id="Advanced_Additional_Effects">Step 3: Advanced Additional Effects</span></h2>
+<p>Alright, now we're about to get into the weeds. This section will 
+cover multiple common move effects that require custom code, as well as 
+some less-common-but-simple ones. To be clear, by "custom code", i mean 
+code that specifically is written out to cause an exact effect based on a
+ given trigger. With some of the more common ones it'd be easy enough to
+ copy-paste into your own custom move, without having to actually change
+ any of the code. Others, custom code editing would be needed. The 
+format of this section will be the code followed by the text describing 
+what it does.
+</p>
+<br>
+					<h3>Freeze-Dry: Additional Super-Effectiveness</h3>
+<pre>   onEffectiveness(typeMod, target, type) {
+     if (type === "Water")
+       return 1;
+   }
+</pre>
+<p>This is the code block from Freeze-Dry, which makes a move 
+supereffective against a given type that it wouldn't be normally, in 
+this case making Water-type pokemon get hit supereffectively.
+</p>
+<br>
+					<h3>Flying Press: Addition Move Type</h3>
+<pre>onEffectiveness(typeMod, target, type, move) {
+	return typeMod + this.dex.getEffectiveness('Flying', type);
+},
+</pre>
+<p>As you could figure based on using the same starting field syntax, 
+this type of effect is similar but different. Instead of making the move
+ supereffective against a specific target like the previous example, 
+this instead adds a whole extra type's effectiveness to the move. This 
+effect is currently only used in Hawlucha's Flying Press.
+</p>
+<br>
+					<h3>Acrobatics</h3>
+<pre>	basePowerCallback(pokemon, target, move) {
+			if (!pokemon.item) {
+				this.debug("BP doubled for no item");
+				return move.basePower * 2;
+			}
+			return move.basePower;
+	}
+</pre>
+<p>
+</p>
+<br>
+					<h3>Assurance</h3>
+<pre>basePowerCallback(pokemon, target, move) {
+			if (target.hurtThisTurn) {
+				this.debug('BP doubled on damaged target');
+				return move.basePower * 2;
+			}
+			return move.basePower;
+		}
+</pre>
+<p>
+</p>
+<br>
+					<h3>Barb Barrage</h3>
+<pre>onBasePower(basePower, pokemon, target) {
+			if (target.status === 'psn' || target.status === 'tox') {
+				return this.chainModify(2);
+			}
+		}
+</pre>
+<p>
+</p>
+<br>
+					<h3>Phantom Force</h3>
+<pre>onTryMove(attacker, defender, move) {
+			if (attacker.removeVolatile(move.id)) {
+				return;
+			}
+			this.add('-prepare', attacker, move.name);
+			if (!this.runEvent('ChargeMove', attacker, defender, move)) {
+				return;
+			}
+			attacker.addVolatile('twoturnmove', defender);
+			return null;
+		},
+		condition: {
+			duration: 2,
+			onInvulnerability: false,
+		}
+</pre>
+<p>
+</p>
+<br>
+					<h3>Dig comparison</h3>
+<pre>condition: {
+			duration: 2,
+			onImmunity(type, pokemon) {
+				if (type === 'sandstorm' || type === 'hail') return false;
+			},
+			onInvulnerability(target, source, move) {
+				if (['earthquake', 'magnitude'].includes(move.id)) {
+					return;
+				}
+				return false;
+			},
+			onSourceModifyDamage(damage, source, target, move) {
+				if (move.id === 'earthquake' || move.id === 'magnitude') {
+					return this.chainModify(2);
+				}
+			},
+		}
+</pre>
+<p>
+</p>
+<br>
+					<h3>Ice Burn comparison</h3>
+<pre>onTryMove(attacker, defender, move) {
+			if (attacker.removeVolatile(move.id)) {
+				return;
+			}
+			this.add('-prepare', attacker, move.name);
+			if (!this.runEvent('ChargeMove', attacker, defender, move)) {
+				return;
+			}
+			attacker.addVolatile('twoturnmove', defender);
+			return null;
+		}
+</pre>
+<p>
+</p>
+<br>
+					<h3>Jaw Lock</h3>
+<pre>onHit(target, source, move) {
+			source.addVolatile('trapped', target, move, 'trapper');
+			target.addVolatile('trapped', source, move, 'trapper');
+		}
+</pre>
+<p>
+</p>
+<br>
+					<h3>Jungle Healing</h3>
+<pre>onHit(pokemon) {
+			const success = !!this.heal(this.modify(pokemon.maxhp, 0.25));
+			return pokemon.cureStatus() || success;
+		}
+</pre>
+<p>
+</p>
+<br>
+					<h3>Knockoff</h3>
+<pre>onAfterHit(target, source) {
+			if (source.hp) {
+				const item = target.takeItem();
+				if (item) {
+					this.add('-enditem', target, item.name, '[from] move: Knock Off', '[of] ' + source);
+				}
+			}
+		}
+</pre>
+<p>
+</p>
+<br>
+					<h3>Last Respects</h3>
+<pre>basePowerCallback(pokemon, target, move) {
+			return 50 + 50 * pokemon.side.totalFainted;
+		}
+</pre>
+<p>
+</p>
+<br>
+					<h3>Light That Burns The Sky damage swap</h3>
+<pre>onModifyMove(move, pokemon) {
+			if (pokemon.getStat('atk', false, true) &gt; pokemon.getStat('spa', false, true)) move.category = 'Physical';
+		}
+</pre>
+<p>
+</p>
+<br>
+					<h3>Magic Powder</h3>
+<pre>onHit(target) {
+			if (target.getTypes().join() === 'Psychic' || !target.setType('Psychic')) return false;
+			this.add('-start', target, 'typechange', 'Psychic');
+		}
+</pre>
+<p>
+</p>
+<br>
+					<h3>Unseen Fist</h3>
+<pre>onModifyMove(move) {
+      if (move.flags["contact"])
+        delete move.flags["protect"];
+    }
+</pre>
+<p>
+</p>
+
+					<br>
+<h2><span class="mw-headline" id="Targets">Targets</span></h2>
+<p>This one's real simple, in this section I'll just be going over all the possible <code>target:</code>
+ values and what each one does. For the sake of readability, presented 
+without additional commentary (with one exception for clarification).
+</p>
+<p>Single Target:</p>
+<p><code>target: "self"</code>: Targets the user.</p>
+<p><code>target: "adjacentAlly"</code>: Targets 1 adjacent ally, cannot target the user.</p>
+<p><code>target: "adjacentAllyOrSelf"</code>: Targets 1 adjacent ally or the user.</p>
+<p><code>target: "normal"</code> Targets any 1 adjacent pokemon, be it ally or foe.</p>
+<p><code>target: "randomNormal"</code> As with "normal", but targets any 1 adjacent pokemon at random instead of being decided by the trainer (Example: Thrash).</p>
+<p><code>target: "any"</code> As with "normal", except "any" is not 
+restricted to adjacency. This is only different from "normal" in triple 
+battles, rotation battles, and hoard battles.</p>
+<p><code>target: "scripted"</code>: This target value is used in special
+ moves with specific code which causes the user to target based on 
+certain parameters. This is almost exclusively used to target the last 
+pokemon to damage the user, as with the move Counter.</p>
+<p>Multi-target:</p>
+<p><code>target: "all"</code>: Targets all pokemon on both sides, 
+including the user. Important Note: No existing damaging moves can 
+target all, and trying to do so with a custom move breaks it, ending up 
+only targeting the user and their allies and not any foes (I know from 
+trying myself)</p>
+<p><code>target: "allAdjacentFoes"</code>: Targets all adjacent foes.</p>
+<p><code>target: "allAdjacent"</code>: Targets all adjacent pokemon, ally and foe alike, but not the user.</p>
+<p><code>target: "allySide"</code>: Targets the user and adjacent ally pokemon</p>
+<p><code>target: "allyTeam"</code>: As with "allySide", but also targets non-adjacent ally pokemon. This is only different from "allySide" in triple battles.</p>
+<p><code>target: "foeSide"</code>: Targets all foes, including non-adjacent ones. Note: This the opposite of the difference between "allyTeam" and "allySide".</p>
+
+					<br>
+
+<h2><span class="mw-headline" id="Flags">Flags</span></h2>
+					<br>
+<h3><span class="mw-headline" id="Flags-Common">Common Flags:</span></h3>
+					<p>First, here's a bunch of flags that are extremely common, many 
+being basically omnipresent for certain kinds of moves, and when they're
+ absent it's a purposeful move design decision.</p>
+					<br>
+					<p><code>protect</code>: The move can be blocked by Protect, and similar moves.</p>
+					<p><code>mirror</code>: The move can be copied by Mirror Move.</p>
+					<p><code>metronome</code>: The move can be randomly called by the random-move move Metronome.</p>
+					<p><code>allyanim</code>: Not related to the mechanical effects of 
+the move, but instead the graphics. this flag makes it so that the user 
+turns to look at their ally. Obviously used for most ally-targeting 
+moves.</p>
+					<p><code>contact</code>: The move has the user make physical contact with the target.</p>
+					<p><code>snatch</code>: Used with moves that give boosts, this flag
+ enables the move Snatch to steal the related boosts. Most boosting 
+moves have this flag, though not all.</p>
+					<p><code>reflectable</code>: The move can be reflected back by Magic Coat / Magic Bounce.</p>
+
+					<br>
+					<h3><span class="mw-headline" id="Flags-MoveCategories">Move Category Flags:</span></h3>
+					<p>Herein are various flags which indicate move categories, such as
+ sound and wind moves, as well as related flags like recharging or 
+healing moves.</p>
+					<br>
+					<p><code>bite</code>: The move is considered a biting move. These moves are boosted by the ability Strong Jaw.</p>
+					<p><code>bullet</code>: The move is considered a bullet, ball, or bomb move. These moves are resisted by the ability Bulletproof.</p>
+					<p><code>dance</code>: The move is considered to be a dancing move. These moves are interacted with by the ability Dancer.</p>
+					<p><code>defrost</code>: The move will un-Freeze the user when used, or un-Freeze any target hit with it.</p>
+					<p><code>explosive</code>: The move is considered to be a explosive move. These moves are prevented by the ability Damp. [<b>NOTE:</b>
+ Technically the flag doesnt exist in Cobblemon / Showdown. Its effects 
+are instead hardcoded. However I highly recommend using this flag for 
+custom moves and abilities, I know I will be using it for my Mario 
+enemies addon, and at some point I plan on putting out an 
+additions/tweaks addon that fixes stuff like that.]</p>
+					<p><code>powder</code>: The move is considered a powder or spore 
+move. Grass Type pokemon, pokemon with the Overcoat ability, and pokemon
+ wearing the item Safety Goggles are immune to these moves.</p>
+					<p><code>pulse</code>: The move is considered an aura or pulse move. These moves are boosted by the ability Mega Launcher.</p>
+					<p><code>punch</code>: The move is considered a punching move. These moves are boosted by the ability Iron Fist and the item Punching Glove.</p>
+					<p><code>slicing</code>: The move is considered a sharp slicing or piercing attack. These moves are boosted by the ability Sharpness.</p>
+					<p><code>sound</code>: The move is considered to be Sound Based, and interacts with Soundproof and other sound-related effects.</p>
+					<p><code>wind</code>: The move is considered to be Wind Based, and interacts with Wind Rider and other wind-related effects.</p>
+					<br>
+					<p><code>futuremove</code>: Thee move does its damage, or main 
+effect, on a future turn, independant of the user taking other actions 
+in the meantime. See: Future Sight.</p>
+					<p><code>heal</code>: All moves that heal, either plainly or via drain, have this flag, and are interacted by certain effects.</p>
+					<p><code>pledgecombo</code>: The move combines with other pledge moves for unique effects.</p>
+					<br>
+					<p><code>charge</code>: The move takes a turn before the main 
+effect. This includes both actual charge moves like Solar Beam, but also
+ moves like Fly or Dig which have a semi-invulnerable turn before 
+attacking.</p>
+					<p><code>recharge</code>: The move takes a turn to recharge after use, such as with Hyper Beam.</p>
+					<p><code>cantusetwice</code>: This flag makes it so a move cannot be used twice in a row, such as with Blood Moon.</p>
+
+					<br>
+					<h3><span class="mw-headline" id="Flags-ExceptionsAndFails">Exception and Failure Flags:</span></h3>
+					<p>There's quite a few flags that exist to indicate a move cannot 
+do something, does something normally disallowed, or prevents other 
+moves from interacting with it. Here they are.</p>
+					<br>
+
+					<p><code>bypasssub</code>: The move bypasses Substitute. Mostly used for beneficial ally-targeting effects.</p>
+<p><code>distance</code>: The move is considered to be attacking from 
+long range or striking quickly from any distance away. Most of these 
+moves also have the target of <code>any</code> instead of <code>normal</code>, not being bound by adjacency.</p>
+<p><code>failencore</code>: The move cannot be affected by Encore and 
+similar effects. Usually moves that take multiple turns, regardless of 
+it's a charge move or a recharge move.</p>
+<p><code>nosleeptalk</code>: The move cannot be called by Sleep Talk. Often moves that would damage the user or take multiple turns.</p>
+<p><code>noassist</code>: The move cannot be called by an ally pokemon's Assist.</p>
+<p><code>failcopycat</code>: The move cannot be copied by Copycat.</p>
+<p><code>failmimic</code>: The move cannot be copied by Mimic.</p>
+<p><code>failinstruct</code>: The move cannot be retriggered by an ally using Instruct, or similar moves. Usually two-turn moves.</p>
+<p><code>failmefirst</code>: The move cannot be copied and used first by another pokemon's Me First.</p>
+<p><code>nonsky</code>: This flag makes it so the move cannot hit pokemon that are in the air, such as FLying Types or pokemon with Levitate.</p>
+<p><code>gravity</code>: This flag makes it so the move cannot be used 
+while the psuedo-weather Gravity is in effect. This includes most moves 
+that involve bouncing, jumping, or flying.</p>
+<p><code>noparentalbond</code>: The move cannot be used a second time by Mega Kangaskan's Parental Bond ability.</p>
+
+<br>
+
+<h2><span class="mw-headline" id="StatusAndVolatiles">Status Conditions and Volatile Conditions</span></h2>
+<br>
+<h3><span class="mw-headline" id="StatusAndVolatiles-StatusConditions">Status Conditions</span></h3>
+<p>Format: "Name (nam): description"; the full name of the Status, the 
+three-letter name for it in parentheses, then the description of what it
+ does.</p>
+<p><b>Burn (<code>brn</code>):</b> Burn does 1/16 of the pokemon's Max 
+HP in damage at the end of their turns, and a Burned pokemon deals half 
+damage with Physical moves. Burn does not go away on its own. Fire Type 
+pokemon cannot be Burned.</p>
+<p><b>Paralysis (<code>par</code>):</b> Paralysis causes a pokemon to 
+have a 1 in 4 (25%) chance of being unable to act for a turn, and the 
+pokemon's speed is halved. Paralysis does not go away on its own. 
+Electric Type pokemon cannot be Paralyzed.</p>
+<p><b>Sleep (<code>slp</code>):</b> Sleeping pokemon cannot act, with 
+special exceptions such as Sleep Talk. A pokemon put to sleep by its own
+ move, such as with Rest, will be asleep for 2 turns. A pokemon put to 
+sleep by other means will wake up in 2-5 turns.</p>
+<p><b>Freeze (<code>frz</code>):</b> Frozen pokemon cannot act, unless 
+the chosen move would remove the Frozen condition, such as many Fire 
+Type moves or Scald. A Frozen pokemon hit with such moves will also be 
+unfrozen. Each turn a Frozen pokemon has a 20% chance to break out of 
+being Frozen. This means that an especially unlucky pokemon could 
+theoretically never unfreeze. Ice Type pokemon cannot be Frozen, and 
+pokemon cannot be frozen in Harsh Sunlight.</p>
+<p><b>Poison (<code>psn</code>):</b> Poison does 1/8 of the pokemon's 
+Max HP in damage at the end of their turns. Poison does not go away on 
+its own. Both Poison Type and Steel Type pokemon cannot be Poisoned.</p>
+<p><b>Badly Poisoned aka Toxic (<code>tox</code>):</b> As with Poisoned,
+ except the damage for Toxic starts at 1/16 of Max HP, and increases by 
+an additional 1/16 each turn the pokemon is on the field. (So 1/16, 
+2/16, 3/16, etc.)</p>
+					<br>
+<h3><span class="mw-headline" id="StatusAndVolatiles-Volatiles">Volatile Statuses (also just called "Volatiles")</span></h3>
+<p>There are far too many preexisting Volatiles to go over in detail. 
+Instead, I will go over a few extremely common and useful ones. 
+Additionally, know that it is fairly easy to add your own volatiles 
+within a custom move, as opposed to brand new Status Conditions which 
+are extremely difficult and possibly impossible to do without full on 
+modding.</p>
+<h4><span class="mw-headline" id="StatusAndVolatiles-Volatiles-Common">Common Volatiles:</span></h4>
+<p><code>confusion</code>: Easily the most common volatile status. 
+Confuses the pokemon. You know what confusion is. If you dont, makes it 
+so the pokemon has a chance to fail to use a move and hit themselves 
+instead.</p>
+<p><code>flinch</code>: Makes the pokemon flinch, failing whatever move they were going to do.</p>
+<p><code>charge</code>: A volatile applied for the first turn of a move that requires charging.</p>
+<p><code>mustrecharge</code>: A volatile applied after the first turn of a move that requires recharging.</p>
+<p><code>protect</code>: The Protect effect. Can also be used with other
+ moves which do the exact same effect without any additional effects, 
+such as with Detect but not Baneful Bunker.</p>
+<p><code>foresight</code>: Makes the user's next attack ignore 
+evasiveness and allows it to bypass Ghost's immunities. Used by 
+Foresight and other moves that do the same.</p>
+<p><code>substitute</code>: Makes the user have a substitute. Note  that
+ this doesn't work on its own unlike some other volatiles, as it needs 
+other data to determine the substitute doll's health.</p>
+<p><code>partiallytrapped</code>: Many moves trap the target on the field for a few turns. This is the volatile that is applied to the target when done so.</p>
+<h4><span class="mw-headline" id="StatusAndVolatiles-Volatiles-Other">Other Volatiles?</span></h4>
+<p>There are many other volatiles. I even gathered up a list of all of them. There's <b><i>82</i></b>
+ of them, to be precise. I had not counted all them until i got to 
+making this part of this guide. I have decided i will not be listing all
+ them because that feels like a waste of time and also genuinely feels 
+like it wouldnt actually be useful information. So i'll just say this: 
+If a move or ability has an ongoing effect, it's probably in the form of
+ a volatile status.</p>
+					<br>
+					<br>
+					<br>
+					<br>
+					<br>
+					<br>
+					<br>
+					<br>
+					<br>
+					<br>
+
+
+<div class="navbox">
+<div class="navbox-header">Addon Creation</div>
+<div class="content-row hlist collapsible">
+  <div class="row-label">Tutorials</div>
+  <div class="row-content"><a href="https://wiki.cobblemon.com/index.php/Tutorials/Creating_A_Custom_Pokemon" title="Tutorials/Creating A Custom Pokemon">Creating A Custom Pokemon</a> <a href="https://wiki.cobblemon.com/index.php/Tutorials/Creating_A_Model" title="Tutorials/Creating A Model">Creating A Model</a> <a href="https://wiki.cobblemon.com/index.php/Tutorials/Creating_Custom_Spawns" title="Tutorials/Creating Custom Spawns">Creating Custom Spawns</a> <a href="https://wiki.cobblemon.com/index.php/Tutorials/Emissive_Textures" title="Tutorials/Emissive Textures">Emissive Textures</a> <a href="https://wiki.cobblemon.com/index.php/Tutorials/Animated_Textures" title="Tutorials/Animated Textures">Animated Textures</a> <a href="https://wiki.cobblemon.com/index.php/Tutorials/Texture_replacement" title="Tutorials/Texture replacement">Texture Replacement</a> <a href="https://wiki.cobblemon.com/index.php/Tutorials/Animation_Replacement" title="Tutorials/Animation Replacement">Animation Replacement</a> <a href="https://wiki.cobblemon.com/index.php/Tutorials/Regional_Forms" title="Tutorials/Regional Forms"> Regional Forms</a><a href="https://wiki.cobblemon.com/index.php/Tutorials/Multiple_Visual_Variants" title="Tutorials/Multiple Visual Variants">Multiple Visual Variants</a> <a href="https://wiki.cobblemon.com/index.php/Tutorials/Adding_Sounds_To_Animations" title="Tutorials/Adding Sounds To Animations">Adding Sounds To Animations</a></div>
+</div>
+  <div class="content-row hlist collapsible">
+  <div class="row-label">Asset Files</div>
+  <div class="row-content"><a href="https://wiki.cobblemon.com/index.php/Resolver" title="Resolver">Resolver</a> <a href="https://wiki.cobblemon.com/index.php/Poser" title="Poser"> Old Poser</a> <a href="https://wiki.cobblemon.com/index.php/New_Poser" class="mw-redirect" title="New Poser"> New Poser</a> <a href="https://wiki.cobblemon.com/index.php/Sounds" title="Sounds">Sounds</a></div>
+</div>
+  <div class="content-row hlist collapsible">
+  <div class="row-label">Data Files</div>
+  <div class="row-content"><a href="https://wiki.cobblemon.com/index.php/Species" title="Species">Species</a> <a href="https://wiki.cobblemon.com/index.php/Species_Features" title="Species Features">Species Features</a> <a href="https://wiki.cobblemon.com/index.php/Species_Feature_Assignments" title="Species Feature Assignments">Species Feature Assignments</a> <a href="https://wiki.cobblemon.com/index.php/Species_Additions" title="Species Additions">Species Additions</a> <a href="https://wiki.cobblemon.com/index.php/Spawn_Detail_Presets" title="Spawn Detail Presets">Spawn Detail Presets</a> <a href="https://wiki.cobblemon.com/index.php/Spawn_Pool_World" title="Spawn Pool World">Spawn Pool World</a> <a href="https://wiki.cobblemon.com/index.php/Fossils_File" title="Fossils File">Fossils</a> <a class="mw-selflink selflink">Datapackable Move Effects</a></div>
+</div>
+  <div class="content-row hlist collapsible">
+  <div class="row-label">Properties</div>
+  <div class="row-content"><a href="https://wiki.cobblemon.com/index.php/Pok%C3%A9mon/Behaviour" title="Pokémon/Behaviour">Behaviour</a> <a href="https://wiki.cobblemon.com/index.php/Spawn_Condition" title="Spawn Condition">Spawn Condition</a> <a href="https://wiki.cobblemon.com/index.php/Advancements" title="Advancements">Advancements</a></div>
+</div>
+</div>
+
+</div>
+<div class="printfooter" data-nosnippet="">Retrieved from "<a dir="ltr" href="https://wiki.cobblemon.com/index.php?title=Datapackable_Move_Effects&amp;oldid=6979">https://wiki.cobblemon.com/index.php?title=Datapackable_Move_Effects&amp;oldid=6979</a>"</div></div>
+
+			</div>
+			<div class="post-content" id="page-secondary-actions">
+			</div>
+		</div></main>
+		<footer class="mw-footer minerva-footer" role="contentinfo">
+		  <a class="last-modified-bar" href="https://wiki.cobblemon.com/index.php?title=Datapackable_Move_Effects&amp;action=history">
+  	<div class="post-content last-modified-bar__content">
+  		<span class="last-modified-bar__icon mw-ui-icon mw-ui-icon-mw-ui-icon-small mw-ui-icon-wikimedia-history-base20 "></span>
+  		<span class="last-modified-bar__text modified-enhancement" data-user-name="DuckyQuackington" data-user-gender="unknown" data-timestamp="1764020941">
+  				<span>Last edited on 24 November 2025, at 15:49</span>
+  		</span>
+  		<span class="mw-ui-icon mw-ui-icon-small mw-ui-icon-mf-expand-gray mf-mw-ui-icon-rotate-anti-clockwise indicator"></span>
+  	</div>
+  </a>
+	<div class="post-content footer-content">
+
+			<div class="minerva-footer-logo">
+Cobblemon Wiki
+</div>
+			<ul id="footer-info" class="footer-info hlist hlist-separated">
+	<li id="footer-info-lastmod"> This page was last edited on 24 November 2025, at 15:49.</li>
+	<li id="footer-info-copyright">Content is available under <a class="external" rel="nofollow" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution</a> unless otherwise noted.</li>
+</ul>
+
+			<ul id="footer-places" class="footer-places hlist hlist-separated">
+	<li id="footer-places-privacy"><a href="https://wiki.cobblemon.com/index.php/Cobblemon_Wiki:Privacy_policy">Privacy policy</a></li>
+	<li id="footer-places-about"><a href="https://wiki.cobblemon.com/index.php/Cobblemon_Wiki:About">About Cobblemon Wiki</a></li>
+	<li id="footer-places-disclaimer"><a href="https://wiki.cobblemon.com/index.php/Cobblemon_Wiki:General_disclaimer">Disclaimers</a></li>
+</ul>
+
+			</div>
+		</footer>
+			</div>
+</div>
+<div class="mw-notification-area" data-mw="interface"></div>
+<!-- v:8.3.1 -->
+<script src="Davrial's%20Fake%20Cobblemon%20Wiki%20Page%20Custom%20Moves%20Detailed%20Guide%20plus%20Breakdown%20(Complete)_files/js" async=""></script><script>
+window.dataLayer = window.dataLayer || [];
+
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-WD86SM6GKX', {});
+</script>
+
+<script>(RLQ=window.RLQ||[]).push(function(){mw.config.set({"wgPageParseReport":{"limitreport":{"cputime":"0.022","walltime":"0.030","ppvisitednodes":{"value":107,"limit":1000000},"postexpandincludesize":{"value":4484,"limit":2097152},"templateargumentsize":{"value":2358,"limit":2097152},"expansiondepth":{"value":6,"limit":100},"expensivefunctioncount":{"value":0,"limit":100},"unstrip-depth":{"value":0,"limit":20},"unstrip-size":{"value":0,"limit":5000000},"timingprofile":["100.00%   10.866      1 -total"," 65.99%    7.170      1 Template:Addon_Creation"," 42.77%    4.647      1 Template:NavigationBox"," 29.57%    3.213      1 Template:TOC"," 19.09%    2.074      4 Template:NavigationRow"]},"cachereport":{"timestamp":"20251130102337","ttl":86400,"transientcontent":false}}});mw.config.set({"wgBackendResponseTime":567});});</script>
+<script defer="defer" src="Davrial's%20Fake%20Cobblemon%20Wiki%20Page%20Custom%20Moves%20Detailed%20Guide%20plus%20Breakdown%20(Complete)_files/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon="{&quot;version&quot;:&quot;2024.11.0&quot;,&quot;token&quot;:&quot;a83778ecadc54b098ae7857724a07d90&quot;,&quot;r&quot;:1,&quot;server_timing&quot;:{&quot;name&quot;:{&quot;cfCacheStatus&quot;:true,&quot;cfEdge&quot;:true,&quot;cfExtPri&quot;:true,&quot;cfL4&quot;:true,&quot;cfOrigin&quot;:true,&quot;cfSpeedBrain&quot;:true},&quot;location_startswith&quot;:null}}" crossorigin="anonymous"></script>
+
+<div style="display: none; font-size: 18px;" class="suggestions"><div class="suggestions-results"></div><div class="suggestions-special"></div></div><div id="abineFillElement"></div></body></html>

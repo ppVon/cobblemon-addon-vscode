@@ -1,15 +1,16 @@
 # Cobblemon Schema Tools
 
 Cobblemon Schema Tools is a VS Code extension for Cobblemon content creators.  
-It helps you catch JSON issues quickly and generate common data files from guided forms.
+It helps you catch data issues quickly and generate common Cobblemon files from guided forms.
 
 ## What You Can Do
 
-- Validate your workspace JSON and view issues in the **Problems** panel.
+- Validate your workspace data and view issues in the **Problems** panel.
+- Generate custom move JS files with **Cobblemon: Move Builder Form**.
 - Generate Pokemon starter files with **Cobblemon: Pokemon Builder Form**.
 - Scaffold a data JSON file with **Cobblemon: Scaffold Data JSON File**.
 - Generate a spawn pool world entry with **Cobblemon: Generate Spawn Pool World**.
-- Run full checks anytime with **Cobblemon: Validate Workspace JSON**.
+- Run full checks anytime with **Cobblemon: Validate Workspace Data**.
 
 ## Quick Usage
 

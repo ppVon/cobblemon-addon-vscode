@@ -1,0 +1,936 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'none'; img-src __CSP_SOURCE__ https: data:; style-src 'unsafe-inline'; script-src 'nonce-__NONCE__';"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cobblemon Move Builder</title>
+    <style>
+      :root {
+        color-scheme: light dark;
+      }
+      body {
+        font-family: var(--vscode-font-family);
+        color: var(--vscode-foreground);
+        background: var(--vscode-editor-background);
+        margin: 0;
+        padding: 16px;
+      }
+      form {
+        display: grid;
+        gap: 14px;
+        max-width: 1080px;
+      }
+      .section {
+        border: 1px solid var(--vscode-editorWidget-border);
+        border-radius: 6px;
+        padding: 12px;
+        display: grid;
+        gap: 10px;
+      }
+      .section-header {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        align-items: baseline;
+        justify-content: space-between;
+      }
+      .section-title {
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.02em;
+        text-transform: uppercase;
+      }
+      .helper {
+        font-size: 11px;
+        color: var(--vscode-descriptionForeground);
+      }
+      .grid {
+        display: grid;
+        gap: 12px;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      }
+      .field {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+      label {
+        font-size: 12px;
+        font-weight: 600;
+      }
+      input[type="text"],
+      select {
+        border: 1px solid var(--vscode-input-border);
+        color: var(--vscode-input-foreground);
+        background: var(--vscode-input-background);
+        padding: 8px 10px;
+        border-radius: 4px;
+        outline: none;
+      }
+      input[type="text"]:focus,
+      select:focus {
+        border-color: var(--vscode-focusBorder);
+      }
+      input[disabled],
+      select[disabled] {
+        opacity: 0.7;
+      }
+      .checks {
+        display: grid;
+        gap: 8px 12px;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      }
+      .check {
+        display: flex;
+        gap: 8px;
+        align-items: start;
+        font-size: 12px;
+      }
+      .flag-grid {
+        display: grid;
+        gap: 8px 12px;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      }
+      .path-preview {
+        margin: 0;
+        padding-left: 18px;
+        display: grid;
+        gap: 4px;
+        font-size: 12px;
+        font-family: var(--vscode-editor-font-family, var(--vscode-font-family));
+      }
+      .actions {
+        display: flex;
+        gap: 8px;
+        justify-content: flex-end;
+        margin-top: 8px;
+      }
+      button {
+        border: 1px solid transparent;
+        border-radius: 4px;
+        padding: 6px 12px;
+        cursor: pointer;
+        color: var(--vscode-button-foreground);
+        background: var(--vscode-button-background);
+      }
+      button.secondary {
+        color: var(--vscode-button-secondaryForeground);
+        background: var(--vscode-button-secondaryBackground);
+      }
+      #error {
+        min-height: 18px;
+        color: var(--vscode-errorForeground);
+        font-size: 12px;
+        font-weight: 600;
+      }
+      .pill-note {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        border-radius: 999px;
+        padding: 4px 8px;
+        font-size: 11px;
+        background: color-mix(
+          in srgb,
+          var(--vscode-textBlockQuote-background) 80%,
+          transparent
+        );
+      }
+    </style>
+  </head>
+  <body>
+    <form id="builder-form">
+      <div class="section">
+        <div class="section-header">
+          <div class="section-title">Move Identity</div>
+          <div class="pill-note">Writes to <code>data/&lt;namespace&gt;/moves</code></div>
+        </div>
+        <div class="helper">
+          The file id is auto-derived from the move name until you edit it manually.
+        </div>
+        <div class="grid">
+          <div class="field">
+            <label for="namespace">Namespace</label>
+            <input id="namespace" type="text" />
+          </div>
+          <div class="field">
+            <label for="moveName">Move Name</label>
+            <input id="moveName" type="text" />
+          </div>
+          <div class="field">
+            <label for="fileId">File Id</label>
+            <input id="fileId" type="text" />
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-header">
+          <div class="section-title">Core Move Data</div>
+        </div>
+        <div class="grid">
+          <div class="field">
+            <label for="moveNumber">Move Number (Optional)</label>
+            <input id="moveNumber" type="text" />
+          </div>
+          <div class="field">
+            <label for="category">Category</label>
+            <select id="category"></select>
+          </div>
+          <div class="field">
+            <label for="type">Type</label>
+            <select id="type"></select>
+          </div>
+          <div class="field">
+            <label for="target">Target</label>
+            <select id="target"></select>
+          </div>
+        </div>
+        <div class="grid">
+          <div class="field">
+            <label for="pp">PP</label>
+            <input id="pp" type="text" />
+          </div>
+          <div class="field">
+            <label for="accuracyMode">Accuracy Mode</label>
+            <select id="accuracyMode">
+              <option value="number">Numeric Accuracy</option>
+              <option value="always">Always Hits</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="accuracyValue">Accuracy Value</label>
+            <input id="accuracyValue" type="text" />
+          </div>
+          <div class="field">
+            <label for="basePower">Base Power</label>
+            <input id="basePower" type="text" />
+          </div>
+          <div class="field">
+            <label for="priority">Priority</label>
+            <input id="priority" type="text" />
+          </div>
+          <div class="field">
+            <label for="contestType">Contest Type (Optional)</label>
+            <select id="contestType"></select>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-header">
+          <div class="section-title">Flags</div>
+        </div>
+        <div class="helper">
+          Pick the interaction flags that apply to the generated move. Unknown or custom flags can still be added manually later.
+        </div>
+        <div id="flagChecks" class="flag-grid"></div>
+      </div>
+
+      <div class="section">
+        <div class="section-header">
+          <div class="section-title">Primary Effects</div>
+        </div>
+        <div class="grid">
+          <div class="field">
+            <label for="status">Status</label>
+            <select id="status"></select>
+          </div>
+          <div class="field">
+            <label for="volatileStatus">Volatile Status</label>
+            <select id="volatileStatus"></select>
+          </div>
+          <div class="field">
+            <label for="sideCondition">Side Condition</label>
+            <input id="sideCondition" type="text" />
+          </div>
+        </div>
+        <div class="grid">
+          <div class="field">
+            <label for="boostStat">Boost Stat</label>
+            <select id="boostStat"></select>
+          </div>
+          <div class="field">
+            <label for="boostStages">Boost Stages</label>
+            <input id="boostStages" type="text" />
+          </div>
+          <div class="field">
+            <label for="critRatio">Crit Ratio</label>
+            <input id="critRatio" type="text" />
+          </div>
+        </div>
+        <div class="grid">
+          <div class="field">
+            <label for="recoilNumerator">Recoil Numerator</label>
+            <input id="recoilNumerator" type="text" />
+          </div>
+          <div class="field">
+            <label for="recoilDenominator">Recoil Denominator</label>
+            <input id="recoilDenominator" type="text" />
+          </div>
+          <div class="field">
+            <label for="drainNumerator">Drain Numerator</label>
+            <input id="drainNumerator" type="text" />
+          </div>
+          <div class="field">
+            <label for="drainDenominator">Drain Denominator</label>
+            <input id="drainDenominator" type="text" />
+          </div>
+          <div class="field">
+            <label for="healNumerator">Heal Numerator</label>
+            <input id="healNumerator" type="text" />
+          </div>
+          <div class="field">
+            <label for="healDenominator">Heal Denominator</label>
+            <input id="healDenominator" type="text" />
+          </div>
+        </div>
+        <div class="grid">
+          <div class="field">
+            <label for="multihitMode">Multihit Mode</label>
+            <select id="multihitMode">
+              <option value="none">(none)</option>
+              <option value="fixed">Fixed Count</option>
+              <option value="range">Range</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="multihitValue">Fixed Hit Count</label>
+            <input id="multihitValue" type="text" />
+          </div>
+          <div class="field">
+            <label for="multihitMin">Range Min</label>
+            <input id="multihitMin" type="text" />
+          </div>
+          <div class="field">
+            <label for="multihitMax">Range Max</label>
+            <input id="multihitMax" type="text" />
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-header">
+          <div class="section-title">Move Behavior</div>
+        </div>
+        <div class="checks">
+          <label class="check"><input id="forceSwitch" type="checkbox" /> forceSwitch</label>
+          <label class="check"><input id="stallingMove" type="checkbox" /> stallingMove</label>
+          <label class="check"><input id="ohko" type="checkbox" /> ohko</label>
+          <label class="check"><input id="struggleRecoil" type="checkbox" /> struggleRecoil</label>
+          <label class="check"><input id="mindBlownRecoil" type="checkbox" /> mindBlownRecoil</label>
+          <label class="check"><input id="hasCrashDamage" type="checkbox" /> hasCrashDamage</label>
+          <label class="check"><input id="ignoreAbility" type="checkbox" /> ignoreAbility</label>
+          <label class="check"><input id="ignoreImmunity" type="checkbox" /> ignoreImmunity</label>
+          <label class="check"><input id="ignoreDefensive" type="checkbox" /> ignoreDefensive</label>
+          <label class="check"><input id="ignoreEvasion" type="checkbox" /> ignoreEvasion</label>
+        </div>
+        <div class="grid">
+          <div class="field">
+            <label for="selfSwitch">Self Switch</label>
+            <select id="selfSwitch">
+              <option value="">(none)</option>
+              <option value="true">true</option>
+              <option value="copyvolatile">copyvolatile</option>
+              <option value="shedtail">shedtail</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="selfdestruct">Selfdestruct</label>
+            <select id="selfdestruct">
+              <option value="">(none)</option>
+              <option value="always">always</option>
+              <option value="ifHit">ifHit</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-header">
+          <div class="section-title">Secondary Effect</div>
+        </div>
+        <div class="helper">
+          Leave this blank to emit <code>secondary: null</code>. Advanced callback-based effects can be added manually after generation.
+        </div>
+        <div class="grid">
+          <div class="field">
+            <label for="secondaryChance">Chance</label>
+            <input id="secondaryChance" type="text" />
+          </div>
+          <div class="field">
+            <label for="secondaryStatus">Status</label>
+            <select id="secondaryStatus"></select>
+          </div>
+          <div class="field">
+            <label for="secondaryVolatileStatus">Volatile Status</label>
+            <select id="secondaryVolatileStatus"></select>
+          </div>
+        </div>
+        <div class="grid">
+          <div class="field">
+            <label for="secondaryBoostStat">Boost Stat</label>
+            <select id="secondaryBoostStat"></select>
+          </div>
+          <div class="field">
+            <label for="secondaryBoostStages">Boost Stages</label>
+            <input id="secondaryBoostStages" type="text" />
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-header">
+          <div class="section-title">Generated File</div>
+        </div>
+        <div class="helper">Relative to the selected workspace folder.</div>
+        <ul id="generatedFiles" class="path-preview"></ul>
+      </div>
+
+      <div id="error"></div>
+      <div class="actions">
+        <button id="cancel" type="button" class="secondary">Cancel</button>
+        <button type="submit">Generate Move File</button>
+      </div>
+    </form>
+
+    <script nonce="__NONCE__">
+      const vscode = acquireVsCodeApi();
+      const initial = __INITIAL_JSON__;
+      const config = __CONFIG_JSON__;
+      const categorySet = new Set(config.categories);
+      const typeSet = new Set(config.types);
+      const targetSet = new Set(config.targets);
+      const contestTypeSet = new Set(config.contestTypes);
+      const flagSet = new Set(config.flags);
+      const statusSet = new Set(config.statuses);
+      const boostSet = new Set(config.boostKeys);
+      let fileIdEdited = false;
+
+      const fields = {
+        namespace: document.getElementById("namespace"),
+        moveName: document.getElementById("moveName"),
+        fileId: document.getElementById("fileId"),
+        moveNumber: document.getElementById("moveNumber"),
+        accuracyMode: document.getElementById("accuracyMode"),
+        accuracyValue: document.getElementById("accuracyValue"),
+        basePower: document.getElementById("basePower"),
+        category: document.getElementById("category"),
+        pp: document.getElementById("pp"),
+        priority: document.getElementById("priority"),
+        target: document.getElementById("target"),
+        type: document.getElementById("type"),
+        contestType: document.getElementById("contestType"),
+        status: document.getElementById("status"),
+        volatileStatus: document.getElementById("volatileStatus"),
+        sideCondition: document.getElementById("sideCondition"),
+        boostStat: document.getElementById("boostStat"),
+        boostStages: document.getElementById("boostStages"),
+        recoilNumerator: document.getElementById("recoilNumerator"),
+        recoilDenominator: document.getElementById("recoilDenominator"),
+        drainNumerator: document.getElementById("drainNumerator"),
+        drainDenominator: document.getElementById("drainDenominator"),
+        healNumerator: document.getElementById("healNumerator"),
+        healDenominator: document.getElementById("healDenominator"),
+        critRatio: document.getElementById("critRatio"),
+        multihitMode: document.getElementById("multihitMode"),
+        multihitValue: document.getElementById("multihitValue"),
+        multihitMin: document.getElementById("multihitMin"),
+        multihitMax: document.getElementById("multihitMax"),
+        forceSwitch: document.getElementById("forceSwitch"),
+        stallingMove: document.getElementById("stallingMove"),
+        ohko: document.getElementById("ohko"),
+        selfSwitch: document.getElementById("selfSwitch"),
+        selfdestruct: document.getElementById("selfdestruct"),
+        struggleRecoil: document.getElementById("struggleRecoil"),
+        mindBlownRecoil: document.getElementById("mindBlownRecoil"),
+        hasCrashDamage: document.getElementById("hasCrashDamage"),
+        ignoreAbility: document.getElementById("ignoreAbility"),
+        ignoreImmunity: document.getElementById("ignoreImmunity"),
+        ignoreDefensive: document.getElementById("ignoreDefensive"),
+        ignoreEvasion: document.getElementById("ignoreEvasion"),
+        secondaryChance: document.getElementById("secondaryChance"),
+        secondaryStatus: document.getElementById("secondaryStatus"),
+        secondaryVolatileStatus: document.getElementById("secondaryVolatileStatus"),
+        secondaryBoostStat: document.getElementById("secondaryBoostStat"),
+        secondaryBoostStages: document.getElementById("secondaryBoostStages"),
+      };
+
+      const generatedFilesEl = document.getElementById("generatedFiles");
+      const errorEl = document.getElementById("error");
+      const flagChecksEl = document.getElementById("flagChecks");
+
+      function setError(message) {
+        errorEl.textContent = message || "";
+      }
+
+      function sanitizeFileId(raw) {
+        const sanitized = raw
+          .trim()
+          .toLowerCase()
+          .replace(/[^a-z0-9_.-]+/g, "_")
+          .replace(/^_+|_+$/g, "");
+        return sanitized || "custom_move";
+      }
+
+      function populateSelect(selectEl, values, emptyLabel) {
+        const fragment = document.createDocumentFragment();
+        if (emptyLabel !== undefined) {
+          const option = document.createElement("option");
+          option.value = "";
+          option.textContent = emptyLabel;
+          fragment.appendChild(option);
+        }
+        for (const value of values) {
+          const option = document.createElement("option");
+          option.value = value;
+          option.textContent = value;
+          fragment.appendChild(option);
+        }
+        selectEl.replaceChildren(fragment);
+      }
+
+      function populateFlagChecks(values) {
+        flagChecksEl.replaceChildren(
+          ...values.map((flag) => {
+            const label = document.createElement("label");
+            label.className = "check";
+
+            const input = document.createElement("input");
+            input.type = "checkbox";
+            input.dataset.flag = flag;
+
+            label.appendChild(input);
+            label.appendChild(document.createTextNode(flag));
+            return label;
+          }),
+        );
+      }
+
+      function applyCategoryState() {
+        if (fields.category.value === "Status") {
+          fields.basePower.value = "0";
+          fields.basePower.disabled = true;
+        } else {
+          fields.basePower.disabled = false;
+          if (fields.basePower.value.trim() === "") {
+            fields.basePower.value = "40";
+          }
+        }
+      }
+
+      function applyAccuracyState() {
+        const alwaysHits = fields.accuracyMode.value === "always";
+        fields.accuracyValue.disabled = alwaysHits;
+        if (alwaysHits) {
+          fields.accuracyValue.value = "";
+        } else if (fields.accuracyValue.value.trim() === "") {
+          fields.accuracyValue.value = "100";
+        }
+      }
+
+      function applyMultihitState() {
+        const mode = fields.multihitMode.value;
+        fields.multihitValue.disabled = mode !== "fixed";
+        fields.multihitMin.disabled = mode !== "range";
+        fields.multihitMax.disabled = mode !== "range";
+        if (mode !== "fixed") fields.multihitValue.value = "";
+        if (mode !== "range") {
+          fields.multihitMin.value = "";
+          fields.multihitMax.value = "";
+        }
+      }
+
+      function selectedFlags() {
+        return [...document.querySelectorAll("input[data-flag]:checked")].map(
+          (input) => input.dataset.flag,
+        );
+      }
+
+      function collectData() {
+        return {
+          namespace: fields.namespace.value.trim().toLowerCase(),
+          moveName: fields.moveName.value.trim(),
+          fileId: fields.fileId.value.trim().toLowerCase(),
+          moveNumber: fields.moveNumber.value.trim(),
+          accuracyMode: fields.accuracyMode.value,
+          accuracyValue: fields.accuracyValue.value.trim(),
+          basePower: fields.basePower.value.trim(),
+          category: fields.category.value,
+          pp: fields.pp.value.trim(),
+          priority: fields.priority.value.trim(),
+          target: fields.target.value,
+          type: fields.type.value,
+          contestType: fields.contestType.value,
+          selectedFlags: selectedFlags(),
+          status: fields.status.value,
+          volatileStatus: fields.volatileStatus.value,
+          sideCondition: fields.sideCondition.value.trim(),
+          boostStat: fields.boostStat.value,
+          boostStages: fields.boostStages.value.trim(),
+          recoilNumerator: fields.recoilNumerator.value.trim(),
+          recoilDenominator: fields.recoilDenominator.value.trim(),
+          drainNumerator: fields.drainNumerator.value.trim(),
+          drainDenominator: fields.drainDenominator.value.trim(),
+          healNumerator: fields.healNumerator.value.trim(),
+          healDenominator: fields.healDenominator.value.trim(),
+          critRatio: fields.critRatio.value.trim(),
+          multihitMode: fields.multihitMode.value,
+          multihitValue: fields.multihitValue.value.trim(),
+          multihitMin: fields.multihitMin.value.trim(),
+          multihitMax: fields.multihitMax.value.trim(),
+          forceSwitch: !!fields.forceSwitch.checked,
+          stallingMove: !!fields.stallingMove.checked,
+          ohko: !!fields.ohko.checked,
+          selfSwitch: fields.selfSwitch.value,
+          selfdestruct: fields.selfdestruct.value,
+          struggleRecoil: !!fields.struggleRecoil.checked,
+          mindBlownRecoil: !!fields.mindBlownRecoil.checked,
+          hasCrashDamage: !!fields.hasCrashDamage.checked,
+          ignoreAbility: !!fields.ignoreAbility.checked,
+          ignoreImmunity: !!fields.ignoreImmunity.checked,
+          ignoreDefensive: !!fields.ignoreDefensive.checked,
+          ignoreEvasion: !!fields.ignoreEvasion.checked,
+          secondaryChance: fields.secondaryChance.value.trim(),
+          secondaryStatus: fields.secondaryStatus.value,
+          secondaryVolatileStatus: fields.secondaryVolatileStatus.value,
+          secondaryBoostStat: fields.secondaryBoostStat.value,
+          secondaryBoostStages: fields.secondaryBoostStages.value.trim(),
+        };
+      }
+
+      function renderGeneratedFile(data) {
+        const namespace = data.namespace || "cobblemon";
+        const fileId = data.fileId || "custom_move";
+        generatedFilesEl.replaceChildren(
+          (() => {
+            const item = document.createElement("li");
+            item.textContent = `data/${namespace}/moves/${fileId}.js`;
+            return item;
+          })(),
+        );
+      }
+
+      function validateBoostPair(stat, stages, label) {
+        if (!stat && !stages) return undefined;
+        if (!stat || !stages) return `${label} require both a stat and a stages value.`;
+        if (!boostSet.has(stat)) return `${label} must use a supported boost stat.`;
+        if (!/^-?[0-9]+$/.test(stages)) return `${label} stages must be an integer.`;
+        const amount = Number.parseInt(stages, 10);
+        if (amount < -6 || amount > 6 || amount === 0) {
+          return `${label} stages must be between -6 and 6 and cannot be 0.`;
+        }
+        return undefined;
+      }
+
+      function validateFractionPair(numerator, denominator, label) {
+        if (!numerator && !denominator) return undefined;
+        if (!numerator || !denominator) return `${label} requires both a numerator and denominator.`;
+        if (!/^[0-9]+$/.test(numerator) || !/^[0-9]+$/.test(denominator)) {
+          return `${label} values must be positive integers.`;
+        }
+        if (
+          Number.parseInt(numerator, 10) < 1 ||
+          Number.parseInt(denominator, 10) < 1
+        ) {
+          return `${label} values must be positive integers.`;
+        }
+        return undefined;
+      }
+
+      function validate(data) {
+        if (!/^[a-z0-9_.-]+$/.test(data.namespace)) {
+          return "Namespace must use lowercase id characters.";
+        }
+        if (!data.moveName) {
+          return "Move name is required.";
+        }
+        if (!/^[a-z0-9_.-]+$/.test(data.fileId)) {
+          return "File id must use lowercase id characters.";
+        }
+        if (data.moveNumber && (!/^[0-9]+$/.test(data.moveNumber) || Number.parseInt(data.moveNumber, 10) < 1)) {
+          return "Move number must be a positive integer when provided.";
+        }
+        if (!categorySet.has(data.category)) {
+          return "Category must be one of the supported move categories.";
+        }
+        if (!typeSet.has(data.type)) {
+          return "Type must be one of the supported Cobblemon types.";
+        }
+        if (!targetSet.has(data.target)) {
+          return "Target must be one of the supported move targets.";
+        }
+        if (data.contestType && !contestTypeSet.has(data.contestType)) {
+          return "Contest type must be empty or supported.";
+        }
+        if (!/^[0-9]+$/.test(data.pp) || Number.parseInt(data.pp, 10) < 1) {
+          return "PP must be a positive integer.";
+        }
+        if (!/^-?[0-9]+$/.test(data.priority)) {
+          return "Priority must be an integer.";
+        }
+        const priority = Number.parseInt(data.priority, 10);
+        if (priority < -6 || priority > 6) {
+          return "Priority must be between -6 and 6.";
+        }
+        if (data.accuracyMode === "number") {
+          if (!/^[0-9]+$/.test(data.accuracyValue)) {
+            return "Accuracy must be a whole number when always-hit is disabled.";
+          }
+          const accuracy = Number.parseInt(data.accuracyValue, 10);
+          if (accuracy < 1 || accuracy > 100) {
+            return "Accuracy must be between 1 and 100.";
+          }
+        }
+        if (!/^[0-9]+$/.test(data.basePower)) {
+          return "Base power must be a whole number.";
+        }
+        const basePower = Number.parseInt(data.basePower, 10);
+        if (basePower < 0) {
+          return "Base power cannot be negative.";
+        }
+        if (data.category === "Status" && basePower !== 0) {
+          return "Status moves must use base power 0.";
+        }
+        if (!data.selectedFlags.every((flag) => flagSet.has(flag))) {
+          return "One or more selected flags are not supported.";
+        }
+        if (data.status && !statusSet.has(data.status)) {
+          return "Primary status must use a supported status code.";
+        }
+        if (data.volatileStatus && !/^[a-z][a-z0-9_]*$/i.test(data.volatileStatus)) {
+          return "Volatile status must use an identifier-like value.";
+        }
+        if (data.sideCondition && !/^[a-z][a-z0-9_]*$/i.test(data.sideCondition)) {
+          return "Side condition must use an identifier-like value.";
+        }
+        const boostError = validateBoostPair(data.boostStat, data.boostStages, "Primary boosts");
+        if (boostError) return boostError;
+        const recoilError = validateFractionPair(data.recoilNumerator, data.recoilDenominator, "Recoil");
+        if (recoilError) return recoilError;
+        const drainError = validateFractionPair(data.drainNumerator, data.drainDenominator, "Drain");
+        if (drainError) return drainError;
+        const healError = validateFractionPair(data.healNumerator, data.healDenominator, "Heal");
+        if (healError) return healError;
+        if (data.critRatio) {
+          if (!/^[0-9]+$/.test(data.critRatio) || Number.parseInt(data.critRatio, 10) < 1) {
+            return "Crit ratio must be a positive integer when provided.";
+          }
+        }
+        if (data.multihitMode === "fixed") {
+          if (!/^[0-9]+$/.test(data.multihitValue) || Number.parseInt(data.multihitValue, 10) < 1) {
+            return "Fixed multihit count must be a positive integer.";
+          }
+        }
+        if (data.multihitMode === "range") {
+          if (
+            !/^[0-9]+$/.test(data.multihitMin) ||
+            !/^[0-9]+$/.test(data.multihitMax)
+          ) {
+            return "Multihit range values must be positive integers.";
+          }
+          const min = Number.parseInt(data.multihitMin, 10);
+          const max = Number.parseInt(data.multihitMax, 10);
+          if (min < 1 || max < min) {
+            return "Multihit range must use positive integers where max >= min.";
+          }
+        }
+        if (data.secondaryStatus && !statusSet.has(data.secondaryStatus)) {
+          return "Secondary status must use a supported status code.";
+        }
+        if (
+          data.secondaryVolatileStatus &&
+          !/^[a-z][a-z0-9_]*$/i.test(data.secondaryVolatileStatus)
+        ) {
+          return "Secondary volatile status must use an identifier-like value.";
+        }
+        const secondaryBoostError = validateBoostPair(
+          data.secondaryBoostStat,
+          data.secondaryBoostStages,
+          "Secondary boosts",
+        );
+        if (secondaryBoostError) return secondaryBoostError;
+        const hasSecondaryEffect =
+          !!data.secondaryStatus ||
+          !!data.secondaryVolatileStatus ||
+          !!data.secondaryBoostStat;
+        if (hasSecondaryEffect) {
+          if (!/^[0-9]+$/.test(data.secondaryChance)) {
+            return "Secondary chance must be a positive integer when a secondary effect is configured.";
+          }
+          const chance = Number.parseInt(data.secondaryChance, 10);
+          if (chance < 1 || chance > 100) {
+            return "Secondary chance must be between 1 and 100.";
+          }
+        } else if (data.secondaryChance) {
+          return "Secondary chance was provided without a secondary effect.";
+        }
+        return undefined;
+      }
+
+      function persist() {
+        const data = collectData();
+        vscode.setState(data);
+        renderGeneratedFile(data);
+      }
+
+      function setFromData(data) {
+        fields.namespace.value = data.namespace || "cobblemon";
+        fields.moveName.value = data.moveName || "";
+        fields.fileId.value = data.fileId || "";
+        fields.moveNumber.value = data.moveNumber || "";
+        fields.accuracyMode.value = data.accuracyMode || "number";
+        fields.accuracyValue.value = data.accuracyValue || "";
+        fields.basePower.value = data.basePower || "";
+        fields.category.value = categorySet.has(data.category)
+          ? data.category
+          : config.categories[0];
+        fields.pp.value = data.pp || "";
+        fields.priority.value = data.priority || "0";
+        fields.target.value = targetSet.has(data.target)
+          ? data.target
+          : config.targets[0];
+        fields.type.value = typeSet.has(data.type)
+          ? data.type
+          : config.types[0];
+        fields.contestType.value = contestTypeSet.has(data.contestType)
+          ? data.contestType
+          : "";
+        fields.status.value = statusSet.has(data.status) ? data.status : "";
+        fields.volatileStatus.value = data.volatileStatus || "";
+        fields.sideCondition.value = data.sideCondition || "";
+        fields.boostStat.value = boostSet.has(data.boostStat) ? data.boostStat : "";
+        fields.boostStages.value = data.boostStages || "";
+        fields.recoilNumerator.value = data.recoilNumerator || "";
+        fields.recoilDenominator.value = data.recoilDenominator || "";
+        fields.drainNumerator.value = data.drainNumerator || "";
+        fields.drainDenominator.value = data.drainDenominator || "";
+        fields.healNumerator.value = data.healNumerator || "";
+        fields.healDenominator.value = data.healDenominator || "";
+        fields.critRatio.value = data.critRatio || "";
+        fields.multihitMode.value = data.multihitMode || "none";
+        fields.multihitValue.value = data.multihitValue || "";
+        fields.multihitMin.value = data.multihitMin || "";
+        fields.multihitMax.value = data.multihitMax || "";
+        fields.forceSwitch.checked = !!data.forceSwitch;
+        fields.stallingMove.checked = !!data.stallingMove;
+        fields.ohko.checked = !!data.ohko;
+        fields.selfSwitch.value = data.selfSwitch || "";
+        fields.selfdestruct.value = data.selfdestruct || "";
+        fields.struggleRecoil.checked = !!data.struggleRecoil;
+        fields.mindBlownRecoil.checked = !!data.mindBlownRecoil;
+        fields.hasCrashDamage.checked = !!data.hasCrashDamage;
+        fields.ignoreAbility.checked = !!data.ignoreAbility;
+        fields.ignoreImmunity.checked = !!data.ignoreImmunity;
+        fields.ignoreDefensive.checked = !!data.ignoreDefensive;
+        fields.ignoreEvasion.checked = !!data.ignoreEvasion;
+        fields.secondaryChance.value = data.secondaryChance || "";
+        fields.secondaryStatus.value = statusSet.has(data.secondaryStatus)
+          ? data.secondaryStatus
+          : "";
+        fields.secondaryVolatileStatus.value = data.secondaryVolatileStatus || "";
+        fields.secondaryBoostStat.value = boostSet.has(data.secondaryBoostStat)
+          ? data.secondaryBoostStat
+          : "";
+        fields.secondaryBoostStages.value = data.secondaryBoostStages || "";
+
+        const selected = new Set(data.selectedFlags || []);
+        for (const input of document.querySelectorAll("input[data-flag]")) {
+          input.checked = selected.has(input.dataset.flag);
+        }
+
+        applyCategoryState();
+        applyAccuracyState();
+        applyMultihitState();
+        renderGeneratedFile(collectData());
+      }
+
+      populateSelect(fields.category, config.categories);
+      populateSelect(fields.type, config.types);
+      populateSelect(fields.target, config.targets);
+      populateSelect(fields.contestType, config.contestTypes, "(omit)");
+      populateSelect(fields.status, config.statuses, "(none)");
+      populateSelect(fields.volatileStatus, config.volatiles, "(none)");
+      populateSelect(fields.boostStat, config.boostKeys, "(none)");
+      populateSelect(fields.secondaryStatus, config.statuses, "(none)");
+      populateSelect(fields.secondaryVolatileStatus, config.volatiles, "(none)");
+      populateSelect(fields.secondaryBoostStat, config.boostKeys, "(none)");
+      populateFlagChecks(config.flags);
+
+      fields.fileId.addEventListener("input", () => {
+        fileIdEdited = true;
+        persist();
+      });
+
+      fields.moveName.addEventListener("input", () => {
+        if (!fileIdEdited) {
+          fields.fileId.value = sanitizeFileId(fields.moveName.value);
+        }
+        persist();
+      });
+
+      fields.category.addEventListener("change", () => {
+        applyCategoryState();
+        persist();
+      });
+
+      fields.accuracyMode.addEventListener("change", () => {
+        applyAccuracyState();
+        persist();
+      });
+
+      fields.multihitMode.addEventListener("change", () => {
+        applyMultihitState();
+        persist();
+      });
+
+      for (const element of Object.values(fields)) {
+        if (
+          element === fields.moveName ||
+          element === fields.fileId ||
+          element === fields.category ||
+          element === fields.accuracyMode ||
+          element === fields.multihitMode
+        ) {
+          continue;
+        }
+        element.addEventListener("input", persist);
+        element.addEventListener("change", persist);
+      }
+
+      flagChecksEl.addEventListener("change", persist);
+
+      document.getElementById("cancel").addEventListener("click", () => {
+        vscode.postMessage({ type: "cancel" });
+      });
+
+      document
+        .getElementById("builder-form")
+        .addEventListener("submit", (event) => {
+          event.preventDefault();
+          const data = collectData();
+          const error = validate(data);
+          if (error) {
+            setError(error);
+            return;
+          }
+          setError("");
+          vscode.postMessage({ type: "submit", data });
+        });
+
+      window.addEventListener("message", (event) => {
+        const message = event.data;
+        if (!message || typeof message !== "object") return;
+        if (message.type === "error" && typeof message.message === "string") {
+          setError(message.message);
+        }
+      });
+
+      setFromData(vscode.getState() || initial);
+    </script>
+  </body>
+</html>

@@ -1,7 +1,7 @@
 {
   "name": "cobblemon-schema-tools",
   "displayName": "Cobblemon Schema Tools",
-  "description": "Workspace-wide Cobblemon JSON schema validation, asset linkage diagnostics, and Pokemon builder scaffolding for species/resolver/poser content.",
+  "description": "Workspace-wide Cobblemon data validation, asset linkage diagnostics, and guided builders for Cobblemon addon content.",
   "repository": {
     "type": "git",
     "url": "https://github.com/ppVon/cobblemon-addon-vscode"
@@ -20,7 +20,9 @@
   "activationEvents": [
     "onStartupFinished",
     "onLanguage:json",
+    "onLanguage:javascript",
     "onCommand:cobblemonSchemaTools.validateWorkspace",
+    "onCommand:cobblemonSchemaTools.scaffoldMoveFile",
     "onCommand:cobblemonSchemaTools.scaffoldPokemonAssets",
     "onCommand:cobblemonSchemaTools.scaffoldDataFile",
     "onCommand:cobblemonSchemaTools.generateSpawnPoolWorld"
@@ -30,7 +32,11 @@
     "commands": [
       {
         "command": "cobblemonSchemaTools.validateWorkspace",
-        "title": "Cobblemon: Validate Workspace JSON"
+        "title": "Cobblemon: Validate Workspace Data"
+      },
+      {
+        "command": "cobblemonSchemaTools.scaffoldMoveFile",
+        "title": "Cobblemon: Move Builder Form"
       },
       {
         "command": "cobblemonSchemaTools.scaffoldPokemonAssets",

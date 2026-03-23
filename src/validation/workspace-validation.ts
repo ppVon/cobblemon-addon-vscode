@@ -31,6 +31,7 @@ import {
   getCobblemonDefaultResourceIndex,
   type CobblemonDefaultResourceIndex,
 } from "./cobblemon-default-index";
+import { validateMoveJsFile } from "./move-validation";
 
 export async function runWorkspaceValidation(
   engine: CobblemonSchemaEngine,
@@ -41,6 +42,10 @@ export async function runWorkspaceValidation(
   const cobblemonDefaults = getCobblemonDefaultResourceIndex(extensionUri);
   const files = await vscode.workspace.findFiles(
     "**/*.json",
+    DATA_ROOT_EXCLUDE,
+  );
+  const moveFiles = await vscode.workspace.findFiles(
+    "**/data/*/moves/**/*.js",
     DATA_ROOT_EXCLUDE,
   );
   const textureFiles = await vscode.workspace.findFiles(
@@ -215,6 +220,11 @@ export async function runWorkspaceValidation(
         isPokemonPoser,
       });
     }
+  }
+
+  for (const uri of moveFiles) {
+    const diags = await validateMoveJsFile(uri);
+    addDiagnostics(byUri, uri, diags);
   }
 
   for (const record of dexEntryRecords) {
