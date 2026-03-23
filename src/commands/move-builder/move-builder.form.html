@@ -101,7 +101,10 @@
         display: grid;
         gap: 4px;
         font-size: 12px;
-        font-family: var(--vscode-editor-font-family, var(--vscode-font-family));
+        font-family: var(
+          --vscode-editor-font-family,
+          var(--vscode-font-family)
+        );
       }
       .actions {
         display: flex;
@@ -147,10 +150,13 @@
       <div class="section">
         <div class="section-header">
           <div class="section-title">Move Identity</div>
-          <div class="pill-note">Writes to <code>data/&lt;namespace&gt;/moves</code></div>
+          <div class="pill-note">
+            Writes to <code>data/&lt;namespace&gt;/moves</code>
+          </div>
         </div>
         <div class="helper">
-          The file id is auto-derived from the move name until you edit it manually.
+          The file id is auto-derived from the move name until you edit it
+          manually.
         </div>
         <div class="grid">
           <div class="field">
@@ -226,7 +232,8 @@
           <div class="section-title">Flags</div>
         </div>
         <div class="helper">
-          Pick the interaction flags that apply to the generated move. Unknown or custom flags can still be added manually later.
+          Pick the interaction flags that apply to the generated move. Unknown
+          or custom flags can still be added manually later.
         </div>
         <div id="flagChecks" class="flag-grid"></div>
       </div>
@@ -272,6 +279,8 @@
             <label for="recoilDenominator">Recoil Denominator</label>
             <input id="recoilDenominator" type="text" />
           </div>
+        </div>
+        <div class="grid">
           <div class="field">
             <label for="drainNumerator">Drain Numerator</label>
             <input id="drainNumerator" type="text" />
@@ -280,6 +289,8 @@
             <label for="drainDenominator">Drain Denominator</label>
             <input id="drainDenominator" type="text" />
           </div>
+        </div>
+        <div class="grid">
           <div class="field">
             <label for="healNumerator">Heal Numerator</label>
             <input id="healNumerator" type="text" />
@@ -318,16 +329,36 @@
           <div class="section-title">Move Behavior</div>
         </div>
         <div class="checks">
-          <label class="check"><input id="forceSwitch" type="checkbox" /> forceSwitch</label>
-          <label class="check"><input id="stallingMove" type="checkbox" /> stallingMove</label>
+          <label class="check"
+            ><input id="forceSwitch" type="checkbox" /> forceSwitch</label
+          >
+          <label class="check"
+            ><input id="stallingMove" type="checkbox" /> stallingMove</label
+          >
           <label class="check"><input id="ohko" type="checkbox" /> ohko</label>
-          <label class="check"><input id="struggleRecoil" type="checkbox" /> struggleRecoil</label>
-          <label class="check"><input id="mindBlownRecoil" type="checkbox" /> mindBlownRecoil</label>
-          <label class="check"><input id="hasCrashDamage" type="checkbox" /> hasCrashDamage</label>
-          <label class="check"><input id="ignoreAbility" type="checkbox" /> ignoreAbility</label>
-          <label class="check"><input id="ignoreImmunity" type="checkbox" /> ignoreImmunity</label>
-          <label class="check"><input id="ignoreDefensive" type="checkbox" /> ignoreDefensive</label>
-          <label class="check"><input id="ignoreEvasion" type="checkbox" /> ignoreEvasion</label>
+          <label class="check"
+            ><input id="struggleRecoil" type="checkbox" /> struggleRecoil</label
+          >
+          <label class="check"
+            ><input id="mindBlownRecoil" type="checkbox" />
+            mindBlownRecoil</label
+          >
+          <label class="check"
+            ><input id="hasCrashDamage" type="checkbox" /> hasCrashDamage</label
+          >
+          <label class="check"
+            ><input id="ignoreAbility" type="checkbox" /> ignoreAbility</label
+          >
+          <label class="check"
+            ><input id="ignoreImmunity" type="checkbox" /> ignoreImmunity</label
+          >
+          <label class="check"
+            ><input id="ignoreDefensive" type="checkbox" />
+            ignoreDefensive</label
+          >
+          <label class="check"
+            ><input id="ignoreEvasion" type="checkbox" /> ignoreEvasion</label
+          >
         </div>
         <div class="grid">
           <div class="field">
@@ -355,7 +386,8 @@
           <div class="section-title">Secondary Effect</div>
         </div>
         <div class="helper">
-          Leave this blank to emit <code>secondary: null</code>. Advanced callback-based effects can be added manually after generation.
+          Leave this blank to emit <code>secondary: null</code>. Advanced
+          callback-based effects can be added manually after generation.
         </div>
         <div class="grid">
           <div class="field">
@@ -455,7 +487,9 @@
         ignoreEvasion: document.getElementById("ignoreEvasion"),
         secondaryChance: document.getElementById("secondaryChance"),
         secondaryStatus: document.getElementById("secondaryStatus"),
-        secondaryVolatileStatus: document.getElementById("secondaryVolatileStatus"),
+        secondaryVolatileStatus: document.getElementById(
+          "secondaryVolatileStatus",
+        ),
         secondaryBoostStat: document.getElementById("secondaryBoostStat"),
         secondaryBoostStages: document.getElementById("secondaryBoostStages"),
       };
@@ -617,9 +651,12 @@
 
       function validateBoostPair(stat, stages, label) {
         if (!stat && !stages) return undefined;
-        if (!stat || !stages) return `${label} require both a stat and a stages value.`;
-        if (!boostSet.has(stat)) return `${label} must use a supported boost stat.`;
-        if (!/^-?[0-9]+$/.test(stages)) return `${label} stages must be an integer.`;
+        if (!stat || !stages)
+          return `${label} require both a stat and a stages value.`;
+        if (!boostSet.has(stat))
+          return `${label} must use a supported boost stat.`;
+        if (!/^-?[0-9]+$/.test(stages))
+          return `${label} stages must be an integer.`;
         const amount = Number.parseInt(stages, 10);
         if (amount < -6 || amount > 6 || amount === 0) {
           return `${label} stages must be between -6 and 6 and cannot be 0.`;
@@ -629,7 +666,8 @@
 
       function validateFractionPair(numerator, denominator, label) {
         if (!numerator && !denominator) return undefined;
-        if (!numerator || !denominator) return `${label} requires both a numerator and denominator.`;
+        if (!numerator || !denominator)
+          return `${label} requires both a numerator and denominator.`;
         if (!/^[0-9]+$/.test(numerator) || !/^[0-9]+$/.test(denominator)) {
           return `${label} values must be positive integers.`;
         }
@@ -652,7 +690,11 @@
         if (!/^[a-z0-9_.-]+$/.test(data.fileId)) {
           return "File id must use lowercase id characters.";
         }
-        if (data.moveNumber && (!/^[0-9]+$/.test(data.moveNumber) || Number.parseInt(data.moveNumber, 10) < 1)) {
+        if (
+          data.moveNumber &&
+          (!/^[0-9]+$/.test(data.moveNumber) ||
+            Number.parseInt(data.moveNumber, 10) < 1)
+        ) {
           return "Move number must be a positive integer when provided.";
         }
         if (!categorySet.has(data.category)) {
@@ -702,27 +744,55 @@
         if (data.status && !statusSet.has(data.status)) {
           return "Primary status must use a supported status code.";
         }
-        if (data.volatileStatus && !/^[a-z][a-z0-9_]*$/i.test(data.volatileStatus)) {
+        if (
+          data.volatileStatus &&
+          !/^[a-z][a-z0-9_]*$/i.test(data.volatileStatus)
+        ) {
           return "Volatile status must use an identifier-like value.";
         }
-        if (data.sideCondition && !/^[a-z][a-z0-9_]*$/i.test(data.sideCondition)) {
+        if (
+          data.sideCondition &&
+          !/^[a-z][a-z0-9_]*$/i.test(data.sideCondition)
+        ) {
           return "Side condition must use an identifier-like value.";
         }
-        const boostError = validateBoostPair(data.boostStat, data.boostStages, "Primary boosts");
+        const boostError = validateBoostPair(
+          data.boostStat,
+          data.boostStages,
+          "Primary boosts",
+        );
         if (boostError) return boostError;
-        const recoilError = validateFractionPair(data.recoilNumerator, data.recoilDenominator, "Recoil");
+        const recoilError = validateFractionPair(
+          data.recoilNumerator,
+          data.recoilDenominator,
+          "Recoil",
+        );
         if (recoilError) return recoilError;
-        const drainError = validateFractionPair(data.drainNumerator, data.drainDenominator, "Drain");
+        const drainError = validateFractionPair(
+          data.drainNumerator,
+          data.drainDenominator,
+          "Drain",
+        );
         if (drainError) return drainError;
-        const healError = validateFractionPair(data.healNumerator, data.healDenominator, "Heal");
+        const healError = validateFractionPair(
+          data.healNumerator,
+          data.healDenominator,
+          "Heal",
+        );
         if (healError) return healError;
         if (data.critRatio) {
-          if (!/^[0-9]+$/.test(data.critRatio) || Number.parseInt(data.critRatio, 10) < 1) {
+          if (
+            !/^[0-9]+$/.test(data.critRatio) ||
+            Number.parseInt(data.critRatio, 10) < 1
+          ) {
             return "Crit ratio must be a positive integer when provided.";
           }
         }
         if (data.multihitMode === "fixed") {
-          if (!/^[0-9]+$/.test(data.multihitValue) || Number.parseInt(data.multihitValue, 10) < 1) {
+          if (
+            !/^[0-9]+$/.test(data.multihitValue) ||
+            Number.parseInt(data.multihitValue, 10) < 1
+          ) {
             return "Fixed multihit count must be a positive integer.";
           }
         }
@@ -803,7 +873,9 @@
         fields.status.value = statusSet.has(data.status) ? data.status : "";
         fields.volatileStatus.value = data.volatileStatus || "";
         fields.sideCondition.value = data.sideCondition || "";
-        fields.boostStat.value = boostSet.has(data.boostStat) ? data.boostStat : "";
+        fields.boostStat.value = boostSet.has(data.boostStat)
+          ? data.boostStat
+          : "";
         fields.boostStages.value = data.boostStages || "";
         fields.recoilNumerator.value = data.recoilNumerator || "";
         fields.recoilDenominator.value = data.recoilDenominator || "";
@@ -832,7 +904,8 @@
         fields.secondaryStatus.value = statusSet.has(data.secondaryStatus)
           ? data.secondaryStatus
           : "";
-        fields.secondaryVolatileStatus.value = data.secondaryVolatileStatus || "";
+        fields.secondaryVolatileStatus.value =
+          data.secondaryVolatileStatus || "";
         fields.secondaryBoostStat.value = boostSet.has(data.secondaryBoostStat)
           ? data.secondaryBoostStat
           : "";
@@ -857,7 +930,11 @@
       populateSelect(fields.volatileStatus, config.volatiles, "(none)");
       populateSelect(fields.boostStat, config.boostKeys, "(none)");
       populateSelect(fields.secondaryStatus, config.statuses, "(none)");
-      populateSelect(fields.secondaryVolatileStatus, config.volatiles, "(none)");
+      populateSelect(
+        fields.secondaryVolatileStatus,
+        config.volatiles,
+        "(none)",
+      );
       populateSelect(fields.secondaryBoostStat, config.boostKeys, "(none)");
       populateFlagChecks(config.flags);
 

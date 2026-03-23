@@ -7,14 +7,14 @@ import {
   MOVE_TARGETS,
   MOVE_TYPES,
   MOVE_VOLATILE_STATUSES,
-} from '../../moves/spec';
+} from "../../moves/spec";
 
 export interface MoveBuilderFormData {
   namespace: string;
   moveName: string;
   fileId: string;
   moveNumber: string;
-  accuracyMode: 'number' | 'always';
+  accuracyMode: "number" | "always";
   accuracyValue: string;
   basePower: string;
   category: string;
@@ -36,15 +36,15 @@ export interface MoveBuilderFormData {
   healNumerator: string;
   healDenominator: string;
   critRatio: string;
-  multihitMode: 'none' | 'fixed' | 'range';
+  multihitMode: "none" | "fixed" | "range";
   multihitValue: string;
   multihitMin: string;
   multihitMax: string;
   forceSwitch: boolean;
   stallingMove: boolean;
   ohko: boolean;
-  selfSwitch: '' | 'true' | 'copyvolatile' | 'shedtail';
-  selfdestruct: '' | 'always' | 'ifHit';
+  selfSwitch: "" | "true" | "copyvolatile" | "shedtail";
+  selfdestruct: "" | "always" | "ifHit";
   struggleRecoil: boolean;
   mindBlownRecoil: boolean;
   hasCrashDamage: boolean;
@@ -59,44 +59,44 @@ export interface MoveBuilderFormData {
   secondaryBoostStages: string;
 }
 
-export const MOVE_BUILDER_DEFAULT_NAMESPACE = 'cobblemon';
+export const MOVE_BUILDER_DEFAULT_NAMESPACE = "cobblemon";
 
 export const DEFAULT_MOVE_BUILDER_FORM: MoveBuilderFormData = {
   namespace: MOVE_BUILDER_DEFAULT_NAMESPACE,
-  moveName: 'Custom Move',
-  fileId: 'custom_move',
-  moveNumber: '',
-  accuracyMode: 'number',
-  accuracyValue: '100',
-  basePower: '40',
-  category: 'Physical',
-  pp: '15',
-  priority: '0',
-  target: 'normal',
-  type: 'Normal',
-  contestType: '',
-  selectedFlags: ['protect', 'mirror', 'metronome'],
-  status: '',
-  volatileStatus: '',
-  sideCondition: '',
-  boostStat: '',
-  boostStages: '',
-  recoilNumerator: '',
-  recoilDenominator: '',
-  drainNumerator: '',
-  drainDenominator: '',
-  healNumerator: '',
-  healDenominator: '',
-  critRatio: '',
-  multihitMode: 'none',
-  multihitValue: '',
-  multihitMin: '',
-  multihitMax: '',
+  moveName: "Custom Move",
+  fileId: "custom_move",
+  moveNumber: "",
+  accuracyMode: "number",
+  accuracyValue: "100",
+  basePower: "40",
+  category: "Physical",
+  pp: "15",
+  priority: "0",
+  target: "normal",
+  type: "Normal",
+  contestType: "",
+  selectedFlags: [],
+  status: "",
+  volatileStatus: "",
+  sideCondition: "",
+  boostStat: "",
+  boostStages: "",
+  recoilNumerator: "",
+  recoilDenominator: "",
+  drainNumerator: "",
+  drainDenominator: "",
+  healNumerator: "",
+  healDenominator: "",
+  critRatio: "",
+  multihitMode: "none",
+  multihitValue: "",
+  multihitMin: "",
+  multihitMax: "",
   forceSwitch: false,
   stallingMove: false,
   ohko: false,
-  selfSwitch: '',
-  selfdestruct: '',
+  selfSwitch: "",
+  selfdestruct: "",
   struggleRecoil: false,
   mindBlownRecoil: false,
   hasCrashDamage: false,
@@ -104,11 +104,11 @@ export const DEFAULT_MOVE_BUILDER_FORM: MoveBuilderFormData = {
   ignoreImmunity: false,
   ignoreDefensive: false,
   ignoreEvasion: false,
-  secondaryChance: '',
-  secondaryStatus: '',
-  secondaryVolatileStatus: '',
-  secondaryBoostStat: '',
-  secondaryBoostStages: '',
+  secondaryChance: "",
+  secondaryStatus: "",
+  secondaryVolatileStatus: "",
+  secondaryBoostStat: "",
+  secondaryBoostStages: "",
 };
 
 export const MOVE_BUILDER_CATEGORIES = [...MOVE_CATEGORIES] as const;
