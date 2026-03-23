@@ -15,21 +15,31 @@
       body {
         font-family: var(--vscode-font-family);
         color: var(--vscode-foreground);
-        background: var(--vscode-editor-background);
+        background:
+          linear-gradient(
+            180deg,
+            color-mix(in srgb, var(--vscode-editor-background) 90%, var(--vscode-textBlockQuote-background) 10%),
+            var(--vscode-editor-background)
+          );
         margin: 0;
-        padding: 16px;
+        padding: 18px;
       }
       form {
         display: grid;
         gap: 14px;
-        max-width: 1080px;
+        max-width: 1120px;
       }
       .section {
         border: 1px solid var(--vscode-editorWidget-border);
-        border-radius: 6px;
-        padding: 12px;
+        border-radius: 10px;
+        padding: 14px;
         display: grid;
-        gap: 10px;
+        gap: 12px;
+        background: color-mix(
+          in srgb,
+          var(--vscode-sideBar-background) 28%,
+          var(--vscode-editor-background)
+        );
       }
       .section-header {
         display: flex;
@@ -41,11 +51,45 @@
       .section-title {
         font-size: 12px;
         font-weight: 700;
-        letter-spacing: 0.02em;
+        letter-spacing: 0.06em;
         text-transform: uppercase;
+      }
+      .pill-note {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        border-radius: 999px;
+        padding: 4px 10px;
+        font-size: 11px;
+        border: 1px solid color-mix(in srgb, var(--vscode-focusBorder) 40%, transparent);
+        background: color-mix(
+          in srgb,
+          var(--vscode-textBlockQuote-background) 82%,
+          transparent
+        );
       }
       .helper {
         font-size: 11px;
+        color: var(--vscode-descriptionForeground);
+        line-height: 1.45;
+      }
+      .subsection {
+        border: 1px solid color-mix(in srgb, var(--vscode-panel-border) 80%, transparent);
+        border-radius: 8px;
+        padding: 12px;
+        display: grid;
+        gap: 10px;
+        background: color-mix(
+          in srgb,
+          var(--vscode-editor-background) 84%,
+          var(--vscode-textBlockQuote-background) 16%
+        );
+      }
+      .subsection-title {
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
         color: var(--vscode-descriptionForeground);
       }
       .grid {
@@ -58,6 +102,16 @@
         flex-direction: column;
         gap: 6px;
       }
+      .field-pair {
+        display: grid;
+        gap: 12px;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      .field-triple {
+        display: grid;
+        gap: 12px;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
       label {
         font-size: 12px;
         font-weight: 600;
@@ -68,7 +122,7 @@
         color: var(--vscode-input-foreground);
         background: var(--vscode-input-background);
         padding: 8px 10px;
-        border-radius: 4px;
+        border-radius: 6px;
         outline: none;
       }
       input[type="text"]:focus,
@@ -78,6 +132,11 @@
       input[disabled],
       select[disabled] {
         opacity: 0.7;
+      }
+      .flag-grid {
+        display: grid;
+        gap: 8px 12px;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
       }
       .checks {
         display: grid;
@@ -90,10 +149,46 @@
         align-items: start;
         font-size: 12px;
       }
-      .flag-grid {
+      details.panel {
+        border: 1px solid color-mix(in srgb, var(--vscode-panel-border) 80%, transparent);
+        border-radius: 8px;
+        padding: 10px 12px;
+        background: color-mix(
+          in srgb,
+          var(--vscode-editor-background) 88%,
+          var(--vscode-textBlockQuote-background) 12%
+        );
+      }
+      details.panel[open] {
+        background: color-mix(
+          in srgb,
+          var(--vscode-editor-background) 78%,
+          var(--vscode-textBlockQuote-background) 22%
+        );
+      }
+      details.panel > summary {
+        list-style: none;
+        cursor: pointer;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        align-items: baseline;
+      }
+      details.panel > summary::-webkit-details-marker {
+        display: none;
+      }
+      .summary-title {
+        font-size: 12px;
+        font-weight: 700;
+      }
+      .summary-helper {
+        font-size: 11px;
+        color: var(--vscode-descriptionForeground);
+      }
+      .panel-body {
         display: grid;
-        gap: 8px 12px;
-        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 12px;
+        padding-top: 12px;
       }
       .path-preview {
         margin: 0;
@@ -101,10 +196,7 @@
         display: grid;
         gap: 4px;
         font-size: 12px;
-        font-family: var(
-          --vscode-editor-font-family,
-          var(--vscode-font-family)
-        );
+        font-family: var(--vscode-editor-font-family, var(--vscode-font-family));
       }
       .actions {
         display: flex;
@@ -114,8 +206,8 @@
       }
       button {
         border: 1px solid transparent;
-        border-radius: 4px;
-        padding: 6px 12px;
+        border-radius: 6px;
+        padding: 7px 14px;
         cursor: pointer;
         color: var(--vscode-button-foreground);
         background: var(--vscode-button-background);
@@ -130,18 +222,11 @@
         font-size: 12px;
         font-weight: 600;
       }
-      .pill-note {
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        border-radius: 999px;
-        padding: 4px 8px;
-        font-size: 11px;
-        background: color-mix(
-          in srgb,
-          var(--vscode-textBlockQuote-background) 80%,
-          transparent
-        );
+      @media (max-width: 720px) {
+        .field-pair,
+        .field-triple {
+          grid-template-columns: 1fr;
+        }
       }
     </style>
   </head>
@@ -155,10 +240,9 @@
           </div>
         </div>
         <div class="helper">
-          The file id is auto-derived from the move name until you edit it
-          manually.
+          The file id is auto-derived from the move name until you edit it manually.
         </div>
-        <div class="grid">
+        <div class="field-triple">
           <div class="field">
             <label for="namespace">Namespace</label>
             <input id="namespace" type="text" />
@@ -178,51 +262,65 @@
         <div class="section-header">
           <div class="section-title">Core Move Data</div>
         </div>
-        <div class="grid">
-          <div class="field">
-            <label for="moveNumber">Move Number (Optional)</label>
-            <input id="moveNumber" type="text" />
-          </div>
-          <div class="field">
-            <label for="category">Category</label>
-            <select id="category"></select>
-          </div>
-          <div class="field">
-            <label for="type">Type</label>
-            <select id="type"></select>
-          </div>
-          <div class="field">
-            <label for="target">Target</label>
-            <select id="target"></select>
+        <div class="subsection">
+          <div class="subsection-title">Classification</div>
+          <div class="grid">
+            <div class="field">
+              <label for="moveNumber">Move Number (Optional)</label>
+              <input id="moveNumber" type="text" />
+            </div>
+            <div class="field">
+              <label for="category">Category</label>
+              <select id="category"></select>
+            </div>
+            <div class="field">
+              <label for="type">Type</label>
+              <select id="type"></select>
+            </div>
+            <div class="field">
+              <label for="target">Target</label>
+              <select id="target"></select>
+            </div>
+            <div class="field">
+              <label for="contestType">Contest Type (Optional)</label>
+              <select id="contestType"></select>
+            </div>
           </div>
         </div>
-        <div class="grid">
-          <div class="field">
-            <label for="pp">PP</label>
-            <input id="pp" type="text" />
+        <div class="subsection">
+          <div class="subsection-title">Battle Values</div>
+          <div class="field-pair">
+            <div class="field">
+              <label for="pp">PP</label>
+              <input id="pp" type="text" />
+            </div>
+            <div class="field">
+              <label for="priority">Priority</label>
+              <input id="priority" type="text" />
+            </div>
           </div>
-          <div class="field">
-            <label for="accuracyMode">Accuracy Mode</label>
-            <select id="accuracyMode">
-              <option value="number">Numeric Accuracy</option>
-              <option value="always">Always Hits</option>
-            </select>
+          <div class="field-pair">
+            <div class="field">
+              <label for="accuracyMode">Accuracy Mode</label>
+              <select id="accuracyMode">
+                <option value="number">Numeric Accuracy</option>
+                <option value="always">Always Hits</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="accuracyValue">Accuracy Value</label>
+              <input id="accuracyValue" type="text" />
+            </div>
           </div>
-          <div class="field">
-            <label for="accuracyValue">Accuracy Value</label>
-            <input id="accuracyValue" type="text" />
-          </div>
-          <div class="field">
-            <label for="basePower">Base Power</label>
-            <input id="basePower" type="text" />
-          </div>
-          <div class="field">
-            <label for="priority">Priority</label>
-            <input id="priority" type="text" />
-          </div>
-          <div class="field">
-            <label for="contestType">Contest Type (Optional)</label>
-            <select id="contestType"></select>
+          <div class="field-pair">
+            <div class="field">
+              <label for="basePower">Base Power</label>
+              <input id="basePower" type="text" />
+            </div>
+            <div class="field">
+              <label>Category Rule</label>
+              <div class="pill-note">Status moves automatically lock base power to 0</div>
+            </div>
           </div>
         </div>
       </div>
@@ -232,8 +330,7 @@
           <div class="section-title">Flags</div>
         </div>
         <div class="helper">
-          Pick the interaction flags that apply to the generated move. Unknown
-          or custom flags can still be added manually later.
+          Pick the interaction flags that apply to the generated move. Unknown or custom flags can still be added manually later.
         </div>
         <div id="flagChecks" class="flag-grid"></div>
       </div>
@@ -242,141 +339,192 @@
         <div class="section-header">
           <div class="section-title">Primary Effects</div>
         </div>
-        <div class="grid">
-          <div class="field">
-            <label for="status">Status</label>
-            <select id="status"></select>
+
+        <details id="conditionsPanel" class="panel">
+          <summary>
+            <span class="summary-title">Applied Conditions</span>
+            <span class="summary-helper">Status, volatile status, or side condition</span>
+          </summary>
+          <div class="panel-body">
+            <div class="grid">
+              <div class="field">
+                <label for="status">Status</label>
+                <select id="status"></select>
+              </div>
+              <div class="field">
+                <label for="volatileStatus">Volatile Status</label>
+                <select id="volatileStatus"></select>
+              </div>
+              <div class="field">
+                <label for="sideCondition">Side Condition</label>
+                <input id="sideCondition" type="text" />
+              </div>
+            </div>
           </div>
-          <div class="field">
-            <label for="volatileStatus">Volatile Status</label>
-            <select id="volatileStatus"></select>
+        </details>
+
+        <details id="boostPanel" class="panel">
+          <summary>
+            <span class="summary-title">Stat Boosts</span>
+            <span class="summary-helper">Choose the stat and the stage change together</span>
+          </summary>
+          <div class="panel-body">
+            <div class="field-pair">
+              <div class="field">
+                <label for="boostStat">Boost Stat</label>
+                <select id="boostStat"></select>
+              </div>
+              <div class="field">
+                <label for="boostStages">Boost Stages</label>
+                <input id="boostStages" type="text" />
+              </div>
+            </div>
           </div>
-          <div class="field">
-            <label for="sideCondition">Side Condition</label>
-            <input id="sideCondition" type="text" />
+        </details>
+
+        <details id="recoilPanel" class="panel">
+          <summary>
+            <span class="summary-title">Recoil</span>
+            <span class="summary-helper">Numerator and denominator are shown as one pair</span>
+          </summary>
+          <div class="panel-body">
+            <div class="field-pair">
+              <div class="field">
+                <label for="recoilNumerator">Numerator</label>
+                <input id="recoilNumerator" type="text" />
+              </div>
+              <div class="field">
+                <label for="recoilDenominator">Denominator</label>
+                <input id="recoilDenominator" type="text" />
+              </div>
+            </div>
           </div>
-        </div>
-        <div class="grid">
-          <div class="field">
-            <label for="boostStat">Boost Stat</label>
-            <select id="boostStat"></select>
+        </details>
+
+        <details id="drainPanel" class="panel">
+          <summary>
+            <span class="summary-title">Drain</span>
+            <span class="summary-helper">HP restored from damage dealt</span>
+          </summary>
+          <div class="panel-body">
+            <div class="field-pair">
+              <div class="field">
+                <label for="drainNumerator">Numerator</label>
+                <input id="drainNumerator" type="text" />
+              </div>
+              <div class="field">
+                <label for="drainDenominator">Denominator</label>
+                <input id="drainDenominator" type="text" />
+              </div>
+            </div>
           </div>
-          <div class="field">
-            <label for="boostStages">Boost Stages</label>
-            <input id="boostStages" type="text" />
+        </details>
+
+        <details id="healPanel" class="panel">
+          <summary>
+            <span class="summary-title">Direct Healing</span>
+            <span class="summary-helper">HP recovered as a max-HP fraction</span>
+          </summary>
+          <div class="panel-body">
+            <div class="field-pair">
+              <div class="field">
+                <label for="healNumerator">Numerator</label>
+                <input id="healNumerator" type="text" />
+              </div>
+              <div class="field">
+                <label for="healDenominator">Denominator</label>
+                <input id="healDenominator" type="text" />
+              </div>
+            </div>
           </div>
-          <div class="field">
-            <label for="critRatio">Crit Ratio</label>
-            <input id="critRatio" type="text" />
+        </details>
+
+        <details id="critPanel" class="panel">
+          <summary>
+            <span class="summary-title">Critical Hit Ratio</span>
+            <span class="summary-helper">Use when the move raises its own crit stage</span>
+          </summary>
+          <div class="panel-body">
+            <div class="field">
+              <label for="critRatio">Crit Ratio</label>
+              <input id="critRatio" type="text" />
+            </div>
           </div>
-        </div>
-        <div class="grid">
-          <div class="field">
-            <label for="recoilNumerator">Recoil Numerator</label>
-            <input id="recoilNumerator" type="text" />
+        </details>
+
+        <details id="multihitPanel" class="panel">
+          <summary>
+            <span class="summary-title">Multihit</span>
+            <span class="summary-helper">Fixed count or a min/max range</span>
+          </summary>
+          <div class="panel-body">
+            <div class="field">
+              <label for="multihitMode">Multihit Mode</label>
+              <select id="multihitMode">
+                <option value="none">(none)</option>
+                <option value="fixed">Fixed Count</option>
+                <option value="range">Range</option>
+              </select>
+            </div>
+            <div id="multihitFixedGroup" class="field-pair">
+              <div class="field">
+                <label for="multihitValue">Fixed Hit Count</label>
+                <input id="multihitValue" type="text" />
+              </div>
+            </div>
+            <div id="multihitRangeGroup" class="field-pair">
+              <div class="field">
+                <label for="multihitMin">Range Min</label>
+                <input id="multihitMin" type="text" />
+              </div>
+              <div class="field">
+                <label for="multihitMax">Range Max</label>
+                <input id="multihitMax" type="text" />
+              </div>
+            </div>
           </div>
-          <div class="field">
-            <label for="recoilDenominator">Recoil Denominator</label>
-            <input id="recoilDenominator" type="text" />
-          </div>
-        </div>
-        <div class="grid">
-          <div class="field">
-            <label for="drainNumerator">Drain Numerator</label>
-            <input id="drainNumerator" type="text" />
-          </div>
-          <div class="field">
-            <label for="drainDenominator">Drain Denominator</label>
-            <input id="drainDenominator" type="text" />
-          </div>
-        </div>
-        <div class="grid">
-          <div class="field">
-            <label for="healNumerator">Heal Numerator</label>
-            <input id="healNumerator" type="text" />
-          </div>
-          <div class="field">
-            <label for="healDenominator">Heal Denominator</label>
-            <input id="healDenominator" type="text" />
-          </div>
-        </div>
-        <div class="grid">
-          <div class="field">
-            <label for="multihitMode">Multihit Mode</label>
-            <select id="multihitMode">
-              <option value="none">(none)</option>
-              <option value="fixed">Fixed Count</option>
-              <option value="range">Range</option>
-            </select>
-          </div>
-          <div class="field">
-            <label for="multihitValue">Fixed Hit Count</label>
-            <input id="multihitValue" type="text" />
-          </div>
-          <div class="field">
-            <label for="multihitMin">Range Min</label>
-            <input id="multihitMin" type="text" />
-          </div>
-          <div class="field">
-            <label for="multihitMax">Range Max</label>
-            <input id="multihitMax" type="text" />
-          </div>
-        </div>
+        </details>
       </div>
 
       <div class="section">
         <div class="section-header">
           <div class="section-title">Move Behavior</div>
         </div>
-        <div class="checks">
-          <label class="check"
-            ><input id="forceSwitch" type="checkbox" /> forceSwitch</label
-          >
-          <label class="check"
-            ><input id="stallingMove" type="checkbox" /> stallingMove</label
-          >
-          <label class="check"><input id="ohko" type="checkbox" /> ohko</label>
-          <label class="check"
-            ><input id="struggleRecoil" type="checkbox" /> struggleRecoil</label
-          >
-          <label class="check"
-            ><input id="mindBlownRecoil" type="checkbox" />
-            mindBlownRecoil</label
-          >
-          <label class="check"
-            ><input id="hasCrashDamage" type="checkbox" /> hasCrashDamage</label
-          >
-          <label class="check"
-            ><input id="ignoreAbility" type="checkbox" /> ignoreAbility</label
-          >
-          <label class="check"
-            ><input id="ignoreImmunity" type="checkbox" /> ignoreImmunity</label
-          >
-          <label class="check"
-            ><input id="ignoreDefensive" type="checkbox" />
-            ignoreDefensive</label
-          >
-          <label class="check"
-            ><input id="ignoreEvasion" type="checkbox" /> ignoreEvasion</label
-          >
-        </div>
-        <div class="grid">
-          <div class="field">
-            <label for="selfSwitch">Self Switch</label>
-            <select id="selfSwitch">
-              <option value="">(none)</option>
-              <option value="true">true</option>
-              <option value="copyvolatile">copyvolatile</option>
-              <option value="shedtail">shedtail</option>
-            </select>
+        <div class="subsection">
+          <div class="subsection-title">Toggle Effects</div>
+          <div class="checks">
+            <label class="check"><input id="forceSwitch" type="checkbox" /> forceSwitch</label>
+            <label class="check"><input id="stallingMove" type="checkbox" /> stallingMove</label>
+            <label class="check"><input id="ohko" type="checkbox" /> ohko</label>
+            <label class="check"><input id="struggleRecoil" type="checkbox" /> struggleRecoil</label>
+            <label class="check"><input id="mindBlownRecoil" type="checkbox" /> mindBlownRecoil</label>
+            <label class="check"><input id="hasCrashDamage" type="checkbox" /> hasCrashDamage</label>
+            <label class="check"><input id="ignoreAbility" type="checkbox" /> ignoreAbility</label>
+            <label class="check"><input id="ignoreImmunity" type="checkbox" /> ignoreImmunity</label>
+            <label class="check"><input id="ignoreDefensive" type="checkbox" /> ignoreDefensive</label>
+            <label class="check"><input id="ignoreEvasion" type="checkbox" /> ignoreEvasion</label>
           </div>
-          <div class="field">
-            <label for="selfdestruct">Selfdestruct</label>
-            <select id="selfdestruct">
-              <option value="">(none)</option>
-              <option value="always">always</option>
-              <option value="ifHit">ifHit</option>
-            </select>
+        </div>
+        <div class="subsection">
+          <div class="subsection-title">Special Selectors</div>
+          <div class="field-pair">
+            <div class="field">
+              <label for="selfSwitch">Self Switch</label>
+              <select id="selfSwitch">
+                <option value="">(none)</option>
+                <option value="true">true</option>
+                <option value="copyvolatile">copyvolatile</option>
+                <option value="shedtail">shedtail</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="selfdestruct">Selfdestruct</label>
+              <select id="selfdestruct">
+                <option value="">(none)</option>
+                <option value="always">always</option>
+                <option value="ifHit">ifHit</option>
+              </select>
+            </div>
           </div>
         </div>
       </div>
@@ -385,34 +533,41 @@
         <div class="section-header">
           <div class="section-title">Secondary Effect</div>
         </div>
-        <div class="helper">
-          Leave this blank to emit <code>secondary: null</code>. Advanced
-          callback-based effects can be added manually after generation.
-        </div>
-        <div class="grid">
-          <div class="field">
-            <label for="secondaryChance">Chance</label>
-            <input id="secondaryChance" type="text" />
+        <details id="secondaryPanel" class="panel">
+          <summary>
+            <span class="summary-title">Add Secondary Effect</span>
+            <span class="summary-helper">Leave closed to emit <code>secondary: null</code></span>
+          </summary>
+          <div class="panel-body">
+            <div class="field">
+              <label for="secondaryChance">Chance</label>
+              <input id="secondaryChance" type="text" />
+            </div>
+            <div class="field-pair">
+              <div class="field">
+                <label for="secondaryStatus">Status</label>
+                <select id="secondaryStatus"></select>
+              </div>
+              <div class="field">
+                <label for="secondaryVolatileStatus">Volatile Status</label>
+                <select id="secondaryVolatileStatus"></select>
+              </div>
+            </div>
+            <div class="field-pair">
+              <div class="field">
+                <label for="secondaryBoostStat">Boost Stat</label>
+                <select id="secondaryBoostStat"></select>
+              </div>
+              <div class="field">
+                <label for="secondaryBoostStages">Boost Stages</label>
+                <input id="secondaryBoostStages" type="text" />
+              </div>
+            </div>
+            <div class="helper">
+              Advanced callback-based effects can still be added manually after generation.
+            </div>
           </div>
-          <div class="field">
-            <label for="secondaryStatus">Status</label>
-            <select id="secondaryStatus"></select>
-          </div>
-          <div class="field">
-            <label for="secondaryVolatileStatus">Volatile Status</label>
-            <select id="secondaryVolatileStatus"></select>
-          </div>
-        </div>
-        <div class="grid">
-          <div class="field">
-            <label for="secondaryBoostStat">Boost Stat</label>
-            <select id="secondaryBoostStat"></select>
-          </div>
-          <div class="field">
-            <label for="secondaryBoostStages">Boost Stages</label>
-            <input id="secondaryBoostStages" type="text" />
-          </div>
-        </div>
+        </details>
       </div>
 
       <div class="section">
@@ -487,16 +642,27 @@
         ignoreEvasion: document.getElementById("ignoreEvasion"),
         secondaryChance: document.getElementById("secondaryChance"),
         secondaryStatus: document.getElementById("secondaryStatus"),
-        secondaryVolatileStatus: document.getElementById(
-          "secondaryVolatileStatus",
-        ),
+        secondaryVolatileStatus: document.getElementById("secondaryVolatileStatus"),
         secondaryBoostStat: document.getElementById("secondaryBoostStat"),
         secondaryBoostStages: document.getElementById("secondaryBoostStages"),
+      };
+
+      const panels = {
+        conditions: document.getElementById("conditionsPanel"),
+        boosts: document.getElementById("boostPanel"),
+        recoil: document.getElementById("recoilPanel"),
+        drain: document.getElementById("drainPanel"),
+        heal: document.getElementById("healPanel"),
+        crit: document.getElementById("critPanel"),
+        multihit: document.getElementById("multihitPanel"),
+        secondary: document.getElementById("secondaryPanel"),
       };
 
       const generatedFilesEl = document.getElementById("generatedFiles");
       const errorEl = document.getElementById("error");
       const flagChecksEl = document.getElementById("flagChecks");
+      const multihitFixedGroup = document.getElementById("multihitFixedGroup");
+      const multihitRangeGroup = document.getElementById("multihitRangeGroup");
 
       function setError(message) {
         errorEl.textContent = message || "";
@@ -569,20 +735,28 @@
 
       function applyMultihitState() {
         const mode = fields.multihitMode.value;
-        fields.multihitValue.disabled = mode !== "fixed";
-        fields.multihitMin.disabled = mode !== "range";
-        fields.multihitMax.disabled = mode !== "range";
-        if (mode !== "fixed") fields.multihitValue.value = "";
-        if (mode !== "range") {
+        const fixedVisible = mode === "fixed";
+        const rangeVisible = mode === "range";
+
+        multihitFixedGroup.hidden = !fixedVisible;
+        multihitRangeGroup.hidden = !rangeVisible;
+        fields.multihitValue.disabled = !fixedVisible;
+        fields.multihitMin.disabled = !rangeVisible;
+        fields.multihitMax.disabled = !rangeVisible;
+
+        if (!fixedVisible) {
+          fields.multihitValue.value = "";
+        }
+        if (!rangeVisible) {
           fields.multihitMin.value = "";
           fields.multihitMax.value = "";
         }
       }
 
       function selectedFlags() {
-        return [...document.querySelectorAll("input[data-flag]:checked")].map(
-          (input) => input.dataset.flag,
-        );
+        return [...document.querySelectorAll("input[data-flag]:checked")]
+          .map((input) => input.dataset.flag)
+          .filter(Boolean);
       }
 
       function collectData() {
@@ -651,12 +825,9 @@
 
       function validateBoostPair(stat, stages, label) {
         if (!stat && !stages) return undefined;
-        if (!stat || !stages)
-          return `${label} require both a stat and a stages value.`;
-        if (!boostSet.has(stat))
-          return `${label} must use a supported boost stat.`;
-        if (!/^-?[0-9]+$/.test(stages))
-          return `${label} stages must be an integer.`;
+        if (!stat || !stages) return `${label} require both a stat and a stages value.`;
+        if (!boostSet.has(stat)) return `${label} must use a supported boost stat.`;
+        if (!/^-?[0-9]+$/.test(stages)) return `${label} stages must be an integer.`;
         const amount = Number.parseInt(stages, 10);
         if (amount < -6 || amount > 6 || amount === 0) {
           return `${label} stages must be between -6 and 6 and cannot be 0.`;
@@ -666,8 +837,7 @@
 
       function validateFractionPair(numerator, denominator, label) {
         if (!numerator && !denominator) return undefined;
-        if (!numerator || !denominator)
-          return `${label} requires both a numerator and denominator.`;
+        if (!numerator || !denominator) return `${label} requires both a numerator and denominator.`;
         if (!/^[0-9]+$/.test(numerator) || !/^[0-9]+$/.test(denominator)) {
           return `${label} values must be positive integers.`;
         }
@@ -756,43 +926,21 @@
         ) {
           return "Side condition must use an identifier-like value.";
         }
-        const boostError = validateBoostPair(
-          data.boostStat,
-          data.boostStages,
-          "Primary boosts",
-        );
+        const boostError = validateBoostPair(data.boostStat, data.boostStages, "Primary boosts");
         if (boostError) return boostError;
-        const recoilError = validateFractionPair(
-          data.recoilNumerator,
-          data.recoilDenominator,
-          "Recoil",
-        );
+        const recoilError = validateFractionPair(data.recoilNumerator, data.recoilDenominator, "Recoil");
         if (recoilError) return recoilError;
-        const drainError = validateFractionPair(
-          data.drainNumerator,
-          data.drainDenominator,
-          "Drain",
-        );
+        const drainError = validateFractionPair(data.drainNumerator, data.drainDenominator, "Drain");
         if (drainError) return drainError;
-        const healError = validateFractionPair(
-          data.healNumerator,
-          data.healDenominator,
-          "Heal",
-        );
+        const healError = validateFractionPair(data.healNumerator, data.healDenominator, "Heal");
         if (healError) return healError;
         if (data.critRatio) {
-          if (
-            !/^[0-9]+$/.test(data.critRatio) ||
-            Number.parseInt(data.critRatio, 10) < 1
-          ) {
+          if (!/^[0-9]+$/.test(data.critRatio) || Number.parseInt(data.critRatio, 10) < 1) {
             return "Crit ratio must be a positive integer when provided.";
           }
         }
         if (data.multihitMode === "fixed") {
-          if (
-            !/^[0-9]+$/.test(data.multihitValue) ||
-            Number.parseInt(data.multihitValue, 10) < 1
-          ) {
+          if (!/^[0-9]+$/.test(data.multihitValue) || Number.parseInt(data.multihitValue, 10) < 1) {
             return "Fixed multihit count must be a positive integer.";
           }
         }
@@ -848,6 +996,28 @@
         renderGeneratedFile(data);
       }
 
+      function setPanelsFromData(data) {
+        panels.conditions.open = !!(
+          data.status ||
+          data.volatileStatus ||
+          data.sideCondition
+        );
+        panels.boosts.open = !!(data.boostStat || data.boostStages);
+        panels.recoil.open = !!(data.recoilNumerator || data.recoilDenominator);
+        panels.drain.open = !!(data.drainNumerator || data.drainDenominator);
+        panels.heal.open = !!(data.healNumerator || data.healDenominator);
+        panels.crit.open = !!data.critRatio;
+        panels.multihit.open =
+          data.multihitMode === "fixed" || data.multihitMode === "range";
+        panels.secondary.open = !!(
+          data.secondaryChance ||
+          data.secondaryStatus ||
+          data.secondaryVolatileStatus ||
+          data.secondaryBoostStat ||
+          data.secondaryBoostStages
+        );
+      }
+
       function setFromData(data) {
         fields.namespace.value = data.namespace || "cobblemon";
         fields.moveName.value = data.moveName || "";
@@ -873,9 +1043,7 @@
         fields.status.value = statusSet.has(data.status) ? data.status : "";
         fields.volatileStatus.value = data.volatileStatus || "";
         fields.sideCondition.value = data.sideCondition || "";
-        fields.boostStat.value = boostSet.has(data.boostStat)
-          ? data.boostStat
-          : "";
+        fields.boostStat.value = boostSet.has(data.boostStat) ? data.boostStat : "";
         fields.boostStages.value = data.boostStages || "";
         fields.recoilNumerator.value = data.recoilNumerator || "";
         fields.recoilDenominator.value = data.recoilDenominator || "";
@@ -904,8 +1072,7 @@
         fields.secondaryStatus.value = statusSet.has(data.secondaryStatus)
           ? data.secondaryStatus
           : "";
-        fields.secondaryVolatileStatus.value =
-          data.secondaryVolatileStatus || "";
+        fields.secondaryVolatileStatus.value = data.secondaryVolatileStatus || "";
         fields.secondaryBoostStat.value = boostSet.has(data.secondaryBoostStat)
           ? data.secondaryBoostStat
           : "";
@@ -916,6 +1083,7 @@
           input.checked = selected.has(input.dataset.flag);
         }
 
+        setPanelsFromData(data);
         applyCategoryState();
         applyAccuracyState();
         applyMultihitState();
@@ -930,11 +1098,7 @@
       populateSelect(fields.volatileStatus, config.volatiles, "(none)");
       populateSelect(fields.boostStat, config.boostKeys, "(none)");
       populateSelect(fields.secondaryStatus, config.statuses, "(none)");
-      populateSelect(
-        fields.secondaryVolatileStatus,
-        config.volatiles,
-        "(none)",
-      );
+      populateSelect(fields.secondaryVolatileStatus, config.volatiles, "(none)");
       populateSelect(fields.secondaryBoostStat, config.boostKeys, "(none)");
       populateFlagChecks(config.flags);
 
