@@ -1,4 +1,4 @@
-# 0.7.1 - 2026-03-23
+# 0.8.0 - 2026-03-23
 
 - Preliminary moves support and generator
 
