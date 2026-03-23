@@ -27,6 +27,7 @@ export const MOVE_TARGETS = [
   'self',
   'adjacentAlly',
   'adjacentAllyOrSelf',
+  'adjacentFoe',
   'normal',
   'randomNormal',
   'any',
@@ -34,6 +35,7 @@ export const MOVE_TARGETS = [
   'all',
   'allAdjacentFoes',
   'allAdjacent',
+  'allies',
   'allySide',
   'allyTeam',
   'foeSide',
@@ -53,16 +55,130 @@ export const MOVE_STATUS_CODES = ['brn', 'par', 'slp', 'frz', 'psn', 'tox'] as c
 export const MOVE_STATUS_CODE_SET = new Set<string>(MOVE_STATUS_CODES);
 
 export const MOVE_VOLATILE_STATUSES = [
+  'aquaring',
+  'attract',
+  'banefulbunker',
+  'bide',
+  'burningbulwark',
   'confusion',
-  'flinch',
   'charge',
-  'mustrecharge',
-  'protect',
+  'curse',
+  'defensecurl',
+  'destinybond',
+  'disable',
+  'dragoncheer',
+  'electrify',
+  'embargo',
+  'encore',
+  'endure',
+  'flinch',
+  'focusenergy',
+  'followme',
   'foresight',
-  'substitute',
+  'gastroacid',
+  'glaiverush',
+  'grudge',
+  'healblock',
+  'helpinghand',
+  'imprison',
+  'ingrain',
+  'kingsshield',
+  'laserfocus',
+  'leechseed',
+  'lockedmove',
+  'magiccoat',
+  'magnetrise',
+  'maxguard',
+  'minimize',
+  'miracleeye',
+  'mustrecharge',
+  'nightmare',
+  'noretreat',
+  'obstruct',
+  'octolock',
   'partiallytrapped',
+  'powder',
+  'powershift',
+  'powertrick',
+  'protect',
+  'rage',
+  'ragepowder',
+  'roost',
+  'saltcure',
+  'silktrap',
+  'smackdown',
+  'snatch',
+  'sparklingaria',
+  'spikyshield',
+  'spotlight',
+  'stockpile',
+  'substitute',
+  'syrupbomb',
+  'tarshot',
+  'taunt',
+  'telekinesis',
+  'torment',
+  'uproar',
+  'yawn',
 ] as const;
 export const MOVE_VOLATILE_STATUS_SET = new Set<string>(MOVE_VOLATILE_STATUSES);
+
+export const MOVE_SIDE_CONDITIONS = [
+  'auroraveil',
+  'craftyshield',
+  'lightscreen',
+  'luckychant',
+  'matblock',
+  'mist',
+  'quickguard',
+  'reflect',
+  'safeguard',
+  'spikes',
+  'stealthrock',
+  'stickyweb',
+  'tailwind',
+  'toxicspikes',
+  'waterpledge',
+  'wideguard',
+] as const;
+export const MOVE_SIDE_CONDITION_SET = new Set<string>(MOVE_SIDE_CONDITIONS);
+
+export const MOVE_SLOT_CONDITIONS = [
+  'Wish',
+  'healingwish',
+  'lunardance',
+  'revivalblessing',
+] as const;
+export const MOVE_SLOT_CONDITION_SET = new Set<string>(MOVE_SLOT_CONDITIONS);
+
+export const MOVE_TERRAINS = [
+  'electricterrain',
+  'grassyterrain',
+  'mistyterrain',
+  'psychicterrain',
+] as const;
+export const MOVE_TERRAIN_SET = new Set<string>(MOVE_TERRAINS);
+
+export const MOVE_WEATHERS = [
+  'RainDance',
+  'Sandstorm',
+  'hail',
+  'snow',
+  'sunnyday',
+] as const;
+export const MOVE_WEATHER_SET = new Set<string>(MOVE_WEATHERS);
+
+export const MOVE_PSEUDO_WEATHERS = [
+  'fairylock',
+  'gravity',
+  'iondeluge',
+  'magicroom',
+  'mudsport',
+  'trickroom',
+  'watersport',
+  'wonderroom',
+] as const;
+export const MOVE_PSEUDO_WEATHER_SET = new Set<string>(MOVE_PSEUDO_WEATHERS);
 
 export const MOVE_BOOST_KEYS = [
   'atk',
@@ -76,44 +192,54 @@ export const MOVE_BOOST_KEYS = [
 export const MOVE_BOOST_KEY_SET = new Set<string>(MOVE_BOOST_KEYS);
 
 export const MOVE_FLAGS = [
-  'protect',
-  'mirror',
-  'metronome',
   'allyanim',
-  'contact',
-  'snatch',
-  'reflectable',
+  'bypasssub',
   'bite',
   'bullet',
+  'cantusetwice',
+  'charge',
+  'contact',
   'dance',
   'defrost',
-  'explosive',
-  'powder',
-  'pulse',
-  'punch',
-  'slicing',
-  'sound',
-  'wind',
-  'futuremove',
-  'heal',
-  'pledgecombo',
-  'charge',
-  'recharge',
-  'cantusetwice',
-  'bypasssub',
   'distance',
-  'failencore',
-  'nosleeptalk',
-  'noassist',
   'failcopycat',
-  'failmimic',
+  'failencore',
   'failinstruct',
   'failmefirst',
-  'nonsky',
+  'failmimic',
+  'futuremove',
   'gravity',
+  'heal',
+  'metronome',
+  'mirror',
+  'mustpressure',
+  'noassist',
+  'nonsky',
   'noparentalbond',
+  'nosleeptalk',
+  'pledgecombo',
+  'powder',
+  'protect',
+  'pulse',
+  'punch',
+  'recharge',
+  'reflectable',
+  'slicing',
+  'snatch',
+  'sound',
+  'wind',
 ] as const;
 export const MOVE_FLAG_SET = new Set<string>(MOVE_FLAGS);
+
+export const MOVE_NONSTANDARD_VALUES = [
+  'Past',
+  'Unobtainable',
+  'Gigantamax',
+  'LGPE',
+  'CAP',
+  'Future',
+] as const;
+export const MOVE_NONSTANDARD_VALUE_SET = new Set<string>(MOVE_NONSTANDARD_VALUES);
 
 export const MOVE_SELF_SWITCH_VALUES = ['copyvolatile', 'shedtail'] as const;
 export const MOVE_SELF_SWITCH_VALUE_SET = new Set<string>(MOVE_SELF_SWITCH_VALUES);
@@ -135,7 +261,12 @@ export const MOVE_TOP_LEVEL_DECLARATIVE_KEYS = [
   'type',
   'contestType',
   'isNonstandard',
+  'realMove',
+  'damage',
+  'noPPBoosts',
+  'isMax',
   'forceSwitch',
+  'thawsTarget',
   'recoil',
   'struggleRecoil',
   'mindBlownRecoil',
@@ -143,13 +274,28 @@ export const MOVE_TOP_LEVEL_DECLARATIVE_KEYS = [
   'status',
   'volatileStatus',
   'sideCondition',
+  'slotCondition',
+  'pseudoWeather',
+  'terrain',
+  'weather',
   'boosts',
   'drain',
   'heal',
   'ohko',
+  'breaksProtect',
+  'selfBoost',
+  'stealsBoosts',
   'critRatio',
   'multihit',
-  'stallingMove',
+  'secondaries',
+  'self',
+  'hasSheerForce',
+  'alwaysHit',
+  'baseMoveType',
+  'basePowerModifier',
+  'critModifier',
+  'forceSTAB',
+  'ignoreAccuracy',
   'selfSwitch',
   'selfdestruct',
   'isZ',
@@ -159,12 +305,103 @@ export const MOVE_TOP_LEVEL_DECLARATIVE_KEYS = [
   'ignoreImmunity',
   'ignoreDefensive',
   'ignoreEvasion',
+  'ignoreNegativeOffensive',
+  'ignoreOffensive',
+  'ignorePositiveDefensive',
+  'ignorePositiveEvasion',
+  'multiaccuracy',
+  'multihitType',
+  'noDamageVariance',
+  'nonGhostTarget',
+  'overrideDefensivePokemon',
+  'overrideDefensiveStat',
+  'overrideOffensivePokemon',
+  'overrideOffensiveStat',
+  'pressureTarget',
+  'sleepUsable',
+  'spreadModifier',
+  'stallingMove',
   'condition',
 ] as const;
 export const MOVE_TOP_LEVEL_DECLARATIVE_KEY_SET = new Set<string>(MOVE_TOP_LEVEL_DECLARATIVE_KEYS);
 
 export const MOVE_CONDITION_DECLARATIVE_KEYS = ['duration'] as const;
 export const MOVE_CONDITION_DECLARATIVE_KEY_SET = new Set<string>(MOVE_CONDITION_DECLARATIVE_KEYS);
+
+export const MOVE_HIT_EFFECT_KEYS = [
+  'boosts',
+  'status',
+  'volatileStatus',
+  'sideCondition',
+  'slotCondition',
+  'pseudoWeather',
+  'terrain',
+  'weather',
+] as const;
+export const MOVE_HIT_EFFECT_KEY_SET = new Set<string>(MOVE_HIT_EFFECT_KEYS);
+
+export const MOVE_SECONDARY_EFFECT_KEYS = [
+  'chance',
+  'ability',
+  'dustproof',
+  'kingsrock',
+  'self',
+  ...MOVE_HIT_EFFECT_KEYS,
+] as const;
+export const MOVE_SECONDARY_EFFECT_KEY_SET = new Set<string>(MOVE_SECONDARY_EFFECT_KEYS);
+
+export const MOVE_ZMOVE_KEYS = ['basePower', 'effect', 'boost'] as const;
+export const MOVE_ZMOVE_KEY_SET = new Set<string>(MOVE_ZMOVE_KEYS);
+
+export const MOVE_MAXMOVE_KEYS = ['basePower'] as const;
+export const MOVE_MAXMOVE_KEY_SET = new Set<string>(MOVE_MAXMOVE_KEYS);
+
+export const MOVE_SELF_BOOST_KEYS = ['boosts'] as const;
+export const MOVE_SELF_BOOST_KEY_SET = new Set<string>(MOVE_SELF_BOOST_KEYS);
+
+export const MOVE_OVERRIDE_POKEMON_VALUES = ['target', 'source'] as const;
+export const MOVE_OVERRIDE_POKEMON_VALUE_SET = new Set<string>(MOVE_OVERRIDE_POKEMON_VALUES);
+
+export const MOVE_OVERRIDE_STAT_VALUES = ['atk', 'def', 'spa', 'spd', 'spe'] as const;
+export const MOVE_OVERRIDE_STAT_VALUE_SET = new Set<string>(MOVE_OVERRIDE_STAT_VALUES);
+
+export const MOVE_CALLBACK_KEYS = [
+  'basePowerCallback',
+  'beforeMoveCallback',
+  'beforeTurnCallback',
+  'damageCallback',
+  'priorityChargeCallback',
+  'onDisableMove',
+  'onAfterHit',
+  'onAfterSubDamage',
+  'onAfterMoveSecondarySelf',
+  'onAfterMoveSecondary',
+  'onAfterMove',
+  'onDamagePriority',
+  'onDamage',
+  'onBasePower',
+  'onEffectiveness',
+  'onHit',
+  'onHitField',
+  'onHitSide',
+  'onModifyMove',
+  'onModifyPriority',
+  'onMoveFail',
+  'onModifyType',
+  'onModifyTarget',
+  'onPrepareHit',
+  'onTry',
+  'onTryHit',
+  'onTryHitField',
+  'onTryHitSide',
+  'onTryImmunity',
+  'onTryMove',
+  'onUseMoveMessage',
+] as const;
+export const MOVE_CALLBACK_KEY_SET = new Set<string>(MOVE_CALLBACK_KEYS);
+
+export const MOVE_NUMERIC_CALLBACK_KEYS = ['onDamagePriority'] as const;
+export const MOVE_NUMERIC_CALLBACK_KEY_SET = new Set<string>(MOVE_NUMERIC_CALLBACK_KEYS);
 
 export const MOVE_TEMPLATE_FIELD_ORDER = [
   'num',
@@ -188,6 +425,10 @@ export const MOVE_TEMPLATE_FIELD_ORDER = [
   'status',
   'volatileStatus',
   'sideCondition',
+  'slotCondition',
+  'pseudoWeather',
+  'terrain',
+  'weather',
   'boosts',
   'drain',
   'heal',
@@ -230,6 +471,10 @@ export interface MoveTemplateDefinition {
   status?: typeof MOVE_STATUS_CODES[number];
   volatileStatus?: string;
   sideCondition?: string;
+  slotCondition?: string;
+  pseudoWeather?: string;
+  terrain?: string;
+  weather?: string;
   boosts?: Partial<Record<typeof MOVE_BOOST_KEYS[number], number>>;
   drain?: [number, number];
   heal?: [number, number];
@@ -238,7 +483,7 @@ export interface MoveTemplateDefinition {
   multihit?: number | [number, number];
   stallingMove?: true;
   selfSwitch?: true | typeof MOVE_SELF_SWITCH_VALUES[number];
-  selfdestruct?: typeof MOVE_SELFDESTRUCT_VALUES[number];
+  selfdestruct?: true | typeof MOVE_SELFDESTRUCT_VALUES[number];
   isZ?: string;
   zMove?: Record<string, unknown>;
   maxMove?: Record<string, unknown>;
@@ -256,7 +501,23 @@ export interface MoveSecondaryTemplate {
 }
 
 export function isMoveCallbackKey(key: string): boolean {
+  return MOVE_CALLBACK_KEY_SET.has(key);
+}
+
+export function isMoveCallbackLikeKey(key: string): boolean {
   return /^on[A-Z]/.test(key) || /Callback$/.test(key);
+}
+
+export function isMoveNumericCallbackKey(key: string): boolean {
+  return MOVE_NUMERIC_CALLBACK_KEY_SET.has(key);
+}
+
+export function isConditionCallbackLikeKey(key: string): boolean {
+  return /^on[A-Z]/.test(key);
+}
+
+export function isConditionNumericCallbackKey(key: string): boolean {
+  return /^on[A-Z].*(Priority|Order|SubOrder)$/.test(key);
 }
 
 export function isValidJsIdentifierKey(key: string): boolean {

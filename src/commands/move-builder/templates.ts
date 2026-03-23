@@ -7,10 +7,21 @@ import {
 } from '../../moves/spec';
 import { type MoveBuilderFormData } from './types';
 
-export function buildMoveTemplate(formData: MoveBuilderFormData): string {
+export interface BuildMoveTemplateOptions {
+  moveDataImportPath?: string;
+}
+
+export function buildMoveTemplate(
+  formData: MoveBuilderFormData,
+  options: BuildMoveTemplateOptions = {},
+): string {
   const definition = buildMoveDefinition(formData);
   const ordered = buildOrderedMoveRecord(definition);
-  return `({\n${renderObjectBody(ordered, 1)}\n})\n`;
+  const objectLiteral = `({\n${renderObjectBody(ordered, 1)}\n})`;
+  if (options.moveDataImportPath) {
+    return `import type { MoveData } from ${JSON.stringify(options.moveDataImportPath)};\n\nexport default ${objectLiteral} satisfies MoveData;\n`;
+  }
+  return `export default ${objectLiteral};\n`;
 }
 
 function buildMoveDefinition(formData: MoveBuilderFormData): MoveTemplateDefinition {
@@ -61,6 +72,18 @@ function buildMoveDefinition(formData: MoveBuilderFormData): MoveTemplateDefinit
   if (formData.sideCondition.trim().length > 0) {
     definition.sideCondition = formData.sideCondition.trim();
   }
+  if (formData.slotCondition.trim().length > 0) {
+    definition.slotCondition = formData.slotCondition.trim();
+  }
+  if (formData.pseudoWeather.trim().length > 0) {
+    definition.pseudoWeather = formData.pseudoWeather.trim();
+  }
+  if (formData.terrain.trim().length > 0) {
+    definition.terrain = formData.terrain.trim();
+  }
+  if (formData.weather.trim().length > 0) {
+    definition.weather = formData.weather.trim();
+  }
 
   const boosts = buildBoosts(formData.boostStat, formData.boostStages);
   if (boosts) {
@@ -94,7 +117,9 @@ function buildMoveDefinition(formData: MoveBuilderFormData): MoveTemplateDefinit
   } else if (formData.selfSwitch) {
     definition.selfSwitch = formData.selfSwitch;
   }
-  if (formData.selfdestruct) {
+  if (formData.selfdestruct === 'true') {
+    definition.selfdestruct = true;
+  } else if (formData.selfdestruct) {
     definition.selfdestruct = formData.selfdestruct;
   }
   if (formData.ignoreAbility) {

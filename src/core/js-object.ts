@@ -96,7 +96,7 @@ export function parseJsObjectText(
     text,
     ts.ScriptTarget.Latest,
     true,
-    ts.ScriptKind.JS,
+    uri.fsPath.endsWith('.ts') ? ts.ScriptKind.TS : ts.ScriptKind.JS,
   );
   const parseDiagnostics =
     (sourceFile as ts.SourceFile & {
@@ -116,7 +116,7 @@ export function parseJsObjectText(
   if (!expression) {
     parseErrors.push({
       message:
-        'Move file must contain a single parenthesized object literal like ({ ... }).',
+        'Move file must contain either ({ ... }) or export default ({ ... }) satisfies MoveData.',
       start: 0,
       length: Math.max(1, text.length),
     });
@@ -164,25 +164,41 @@ export function rangeForJsSpan(
 function unwrapRootObjectExpression(
   sourceFile: ts.SourceFile,
 ): ts.ObjectLiteralExpression | undefined {
-  if (sourceFile.statements.length !== 1) {
+  const relevantStatements = sourceFile.statements.filter(
+    (statement) => !ts.isImportDeclaration(statement),
+  );
+  if (relevantStatements.length !== 1) {
     return undefined;
   }
 
-  const statement = sourceFile.statements[0];
+  const statement = relevantStatements[0];
   if (!ts.isExpressionStatement(statement)) {
+    if (ts.isExportAssignment(statement)) {
+      return unwrapObjectLikeExpression(statement.expression);
+    }
     return undefined;
   }
 
-  let expression = statement.expression;
-  if (!ts.isParenthesizedExpression(expression)) {
-    return undefined;
+  return unwrapObjectLikeExpression(statement.expression);
+}
+
+function unwrapObjectLikeExpression(
+  expression: ts.Expression,
+): ts.ObjectLiteralExpression | undefined {
+  let current: ts.Expression = expression;
+  while (true) {
+    if (ts.isParenthesizedExpression(current)) {
+      current = current.expression;
+      continue;
+    }
+    if (ts.isSatisfiesExpression(current) || ts.isAsExpression(current)) {
+      current = current.expression;
+      continue;
+    }
+    break;
   }
 
-  while (ts.isParenthesizedExpression(expression)) {
-    expression = expression.expression;
-  }
-
-  return ts.isObjectLiteralExpression(expression) ? expression : undefined;
+  return ts.isObjectLiteralExpression(current) ? current : undefined;
 }
 
 function parseObjectLiteral(node: ts.ObjectLiteralExpression): JsObjectNode {

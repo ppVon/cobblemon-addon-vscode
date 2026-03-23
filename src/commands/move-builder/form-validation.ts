@@ -108,6 +108,34 @@ export function validateMoveBuilderFormData(
     return 'Side condition must use an identifier-like value.';
   }
 
+  if (
+    data.slotCondition.trim().length > 0 &&
+    !/^[a-z][a-z0-9_]*$/i.test(data.slotCondition.trim())
+  ) {
+    return 'Slot condition must use an identifier-like value.';
+  }
+
+  if (
+    data.pseudoWeather.trim().length > 0 &&
+    !/^[a-z][a-z0-9_]*$/i.test(data.pseudoWeather.trim())
+  ) {
+    return 'Pseudo-weather must use an identifier-like value.';
+  }
+
+  if (
+    data.terrain.trim().length > 0 &&
+    !/^[a-z][a-z0-9_]*$/i.test(data.terrain.trim())
+  ) {
+    return 'Terrain must use an identifier-like value.';
+  }
+
+  if (
+    data.weather.trim().length > 0 &&
+    !/^[a-z][a-z0-9_]*$/i.test(data.weather.trim())
+  ) {
+    return 'Weather must use an identifier-like value.';
+  }
+
   const boostError = validateBoostPair(
     data.boostStat.trim(),
     data.boostStages.trim(),
@@ -186,9 +214,10 @@ export function validateMoveBuilderFormData(
 
   if (
     data.selfdestruct.trim().length > 0 &&
+    data.selfdestruct !== 'true' &&
     !MOVE_SELFDESTRUCT_VALUE_SET.has(data.selfdestruct)
   ) {
-    return 'Selfdestruct must be empty, always, or ifHit.';
+    return 'Selfdestruct must be empty, true, always, or ifHit.';
   }
 
   const secondaryStatus = data.secondaryStatus.trim();
@@ -260,6 +289,10 @@ export function isMoveBuilderFormData(
     && typeof obj.status === 'string'
     && typeof obj.volatileStatus === 'string'
     && typeof obj.sideCondition === 'string'
+    && typeof obj.slotCondition === 'string'
+    && typeof obj.pseudoWeather === 'string'
+    && typeof obj.terrain === 'string'
+    && typeof obj.weather === 'string'
     && typeof obj.boostStat === 'string'
     && typeof obj.boostStages === 'string'
     && typeof obj.recoilNumerator === 'string'

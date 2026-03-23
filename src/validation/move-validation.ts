@@ -16,13 +16,20 @@ import {
   MOVE_CONDITION_DECLARATIVE_KEY_SET,
   MOVE_CONTEST_TYPE_SET,
   MOVE_FLAG_SET,
+  MOVE_NONSTANDARD_VALUE_SET,
+  MOVE_OVERRIDE_POKEMON_VALUE_SET,
+  MOVE_OVERRIDE_STAT_VALUE_SET,
   MOVE_SELFDESTRUCT_VALUE_SET,
   MOVE_SELF_SWITCH_VALUE_SET,
   MOVE_STATUS_CODE_SET,
   MOVE_TARGET_SET,
   MOVE_TOP_LEVEL_DECLARATIVE_KEY_SET,
   MOVE_TYPE_SET,
+  isConditionCallbackLikeKey,
+  isConditionNumericCallbackKey,
   isMoveCallbackKey,
+  isMoveCallbackLikeKey,
+  isMoveNumericCallbackKey,
 } from '../moves/spec';
 import { normalizeSlug, workspaceWarningSeverity } from '../core/utils';
 
@@ -41,7 +48,7 @@ export async function validateMoveJsFile(
     diagnostics.push(
       createDiagnostic(
         rangeForJsSpan(parsed, error.start, Math.max(error.length, 1)),
-        `JS parse error: ${error.message}`,
+        `Move parse error: ${error.message}`,
         vscode.DiagnosticSeverity.Error,
       ),
     );
@@ -161,20 +168,34 @@ function validateMoveTopLevel(
       continue;
     }
     const member = group[0];
-    if (!MOVE_TOP_LEVEL_DECLARATIVE_KEY_SET.has(key) && !isMoveCallbackKey(key)) {
-      diagnostics.push(
-        createDiagnostic(
-          rangeForMemberKey(parsed, member),
-          `Unknown move property '${key}'.`,
-          workspaceWarningSeverity(),
-        ),
-      );
+    if (MOVE_TOP_LEVEL_DECLARATIVE_KEY_SET.has(key)) {
       continue;
     }
 
     if (isMoveCallbackKey(key)) {
-      diagnostics.push(...validateCallbackMember(parsed, member, false));
+      diagnostics.push(...validateMoveCallbackMember(parsed, member));
+      continue;
     }
+
+    if (isMoveCallbackLikeKey(key)) {
+      diagnostics.push(
+        createDiagnostic(
+          rangeForMemberKey(parsed, member),
+          `Unknown move callback property '${key}'.`,
+          workspaceWarningSeverity(),
+        ),
+      );
+      diagnostics.push(...validateLooseCallbackLikeMember(parsed, member));
+      continue;
+    }
+
+    diagnostics.push(
+      createDiagnostic(
+        rangeForMemberKey(parsed, member),
+        `Unknown move property '${key}'.`,
+        workspaceWarningSeverity(),
+      ),
+    );
   }
 
   diagnostics.push(
@@ -250,10 +271,41 @@ function validateMoveTopLevel(
     ),
   );
   diagnostics.push(
+    ...validateOptionalStringEnumProperty(
+      parsed,
+      members.first.get('isNonstandard'),
+      MOVE_NONSTANDARD_VALUE_SET,
+      'isNonstandard',
+    ),
+  );
+  diagnostics.push(
+    ...validateOptionalStringProperty(
+      parsed,
+      members.first.get('realMove'),
+      'realMove',
+    ),
+  );
+  diagnostics.push(...validateDamageProperty(parsed, members.first.get('damage')));
+  diagnostics.push(
+    ...validateOptionalBooleanProperty(
+      parsed,
+      members.first.get('noPPBoosts'),
+      'noPPBoosts',
+    ),
+  );
+  diagnostics.push(...validateBooleanOrStringProperty(parsed, members.first.get('isMax'), 'isMax'));
+  diagnostics.push(
     ...validateOptionalBooleanProperty(
       parsed,
       members.first.get('forceSwitch'),
       'forceSwitch',
+    ),
+  );
+  diagnostics.push(
+    ...validateOptionalBooleanProperty(
+      parsed,
+      members.first.get('thawsTarget'),
+      'thawsTarget',
     ),
   );
   diagnostics.push(
@@ -289,17 +341,45 @@ function validateMoveTopLevel(
     ),
   );
   diagnostics.push(
-    ...validateIdentifierLikeStringProperty(
+    ...validateOptionalStringProperty(
       parsed,
       members.first.get('volatileStatus'),
       'volatileStatus',
     ),
   );
   diagnostics.push(
-    ...validateIdentifierLikeStringProperty(
+    ...validateOptionalStringProperty(
       parsed,
       members.first.get('sideCondition'),
       'sideCondition',
+    ),
+  );
+  diagnostics.push(
+    ...validateOptionalStringProperty(
+      parsed,
+      members.first.get('slotCondition'),
+      'slotCondition',
+    ),
+  );
+  diagnostics.push(
+    ...validateOptionalStringProperty(
+      parsed,
+      members.first.get('pseudoWeather'),
+      'pseudoWeather',
+    ),
+  );
+  diagnostics.push(
+    ...validateOptionalStringProperty(
+      parsed,
+      members.first.get('terrain'),
+      'terrain',
+    ),
+  );
+  diagnostics.push(
+    ...validateOptionalStringProperty(
+      parsed,
+      members.first.get('weather'),
+      'weather',
     ),
   );
   diagnostics.push(...validateBoostsProperty(parsed, members.first.get('boosts')));
@@ -307,10 +387,25 @@ function validateMoveTopLevel(
     ...validateFractionProperty(parsed, members.first.get('drain'), 'drain'),
   );
   diagnostics.push(
-    ...validateFractionProperty(parsed, members.first.get('heal'), 'heal'),
+    ...validateFractionProperty(parsed, members.first.get('heal'), 'heal', true),
+  );
+  diagnostics.push(...validateBooleanOrStringProperty(parsed, members.first.get('ohko'), 'ohko'));
+  diagnostics.push(
+    ...validateOptionalBooleanProperty(
+      parsed,
+      members.first.get('breaksProtect'),
+      'breaksProtect',
+    ),
   );
   diagnostics.push(
-    ...validateOptionalBooleanProperty(parsed, members.first.get('ohko'), 'ohko'),
+    ...validateSelfBoostProperty(parsed, members.first.get('selfBoost')),
+  );
+  diagnostics.push(
+    ...validateOptionalBooleanProperty(
+      parsed,
+      members.first.get('stealsBoosts'),
+      'stealsBoosts',
+    ),
   );
   diagnostics.push(
     ...validateNumberProperty(parsed, members.first.get('critRatio'), {
@@ -322,6 +417,55 @@ function validateMoveTopLevel(
   );
   diagnostics.push(
     ...validateMultihitProperty(parsed, members.first.get('multihit')),
+  );
+  diagnostics.push(
+    ...validateSecondariesProperty(parsed, members.first.get('secondaries')),
+  );
+  diagnostics.push(...validateSelfProperty(parsed, members.first.get('self')));
+  diagnostics.push(
+    ...validateOptionalBooleanProperty(
+      parsed,
+      members.first.get('hasSheerForce'),
+      'hasSheerForce',
+    ),
+  );
+  diagnostics.push(
+    ...validateOptionalBooleanProperty(
+      parsed,
+      members.first.get('alwaysHit'),
+      'alwaysHit',
+    ),
+  );
+  diagnostics.push(
+    ...validateOptionalStringEnumProperty(
+      parsed,
+      members.first.get('baseMoveType'),
+      MOVE_TYPE_SET,
+      'baseMoveType',
+    ),
+  );
+  diagnostics.push(
+    ...validateNumberProperty(parsed, members.first.get('basePowerModifier'), {
+      allowFloat: true,
+      min: Number.NEGATIVE_INFINITY,
+      label: 'basePowerModifier',
+      optional: true,
+    }),
+  );
+  diagnostics.push(
+    ...validateNumberProperty(parsed, members.first.get('critModifier'), {
+      allowFloat: true,
+      min: Number.NEGATIVE_INFINITY,
+      label: 'critModifier',
+      optional: true,
+    }),
+  );
+  diagnostics.push(
+    ...validateOptionalBooleanProperty(
+      parsed,
+      members.first.get('forceSTAB'),
+      'forceSTAB',
+    ),
   );
   diagnostics.push(
     ...validateOptionalBooleanProperty(
@@ -337,7 +481,7 @@ function validateMoveTopLevel(
     ...validateSelfdestructProperty(parsed, members.first.get('selfdestruct')),
   );
   diagnostics.push(
-    ...validateOptionalStringProperty(parsed, members.first.get('isZ'), 'isZ'),
+    ...validateBooleanOrStringProperty(parsed, members.first.get('isZ'), 'isZ'),
   );
   diagnostics.push(
     ...validateSimpleObjectProperty(parsed, members.first.get('zMove'), 'zMove'),
@@ -357,10 +501,13 @@ function validateMoveTopLevel(
     ),
   );
   diagnostics.push(
+    ...validateIgnoreImmunityProperty(parsed, members.first.get('ignoreImmunity')),
+  );
+  diagnostics.push(
     ...validateOptionalBooleanProperty(
       parsed,
-      members.first.get('ignoreImmunity'),
-      'ignoreImmunity',
+      members.first.get('ignoreAccuracy'),
+      'ignoreAccuracy',
     ),
   );
   diagnostics.push(
@@ -376,6 +523,116 @@ function validateMoveTopLevel(
       members.first.get('ignoreEvasion'),
       'ignoreEvasion',
     ),
+  );
+  diagnostics.push(
+    ...validateOptionalBooleanProperty(
+      parsed,
+      members.first.get('ignoreNegativeOffensive'),
+      'ignoreNegativeOffensive',
+    ),
+  );
+  diagnostics.push(
+    ...validateOptionalBooleanProperty(
+      parsed,
+      members.first.get('ignoreOffensive'),
+      'ignoreOffensive',
+    ),
+  );
+  diagnostics.push(
+    ...validateOptionalBooleanProperty(
+      parsed,
+      members.first.get('ignorePositiveDefensive'),
+      'ignorePositiveDefensive',
+    ),
+  );
+  diagnostics.push(
+    ...validateOptionalBooleanProperty(
+      parsed,
+      members.first.get('ignorePositiveEvasion'),
+      'ignorePositiveEvasion',
+    ),
+  );
+  diagnostics.push(
+    ...validateOptionalBooleanProperty(
+      parsed,
+      members.first.get('multiaccuracy'),
+      'multiaccuracy',
+    ),
+  );
+  diagnostics.push(
+    ...validateOptionalStringProperty(
+      parsed,
+      members.first.get('multihitType'),
+      'multihitType',
+    ),
+  );
+  diagnostics.push(
+    ...validateOptionalBooleanProperty(
+      parsed,
+      members.first.get('noDamageVariance'),
+      'noDamageVariance',
+    ),
+  );
+  diagnostics.push(
+    ...validateOptionalStringProperty(
+      parsed,
+      members.first.get('nonGhostTarget'),
+      'nonGhostTarget',
+    ),
+  );
+  diagnostics.push(
+    ...validateOptionalStringEnumProperty(
+      parsed,
+      members.first.get('overrideOffensivePokemon'),
+      MOVE_OVERRIDE_POKEMON_VALUE_SET,
+      'overrideOffensivePokemon',
+    ),
+  );
+  diagnostics.push(
+    ...validateOptionalStringEnumProperty(
+      parsed,
+      members.first.get('overrideDefensivePokemon'),
+      MOVE_OVERRIDE_POKEMON_VALUE_SET,
+      'overrideDefensivePokemon',
+    ),
+  );
+  diagnostics.push(
+    ...validateOptionalStringEnumProperty(
+      parsed,
+      members.first.get('overrideOffensiveStat'),
+      MOVE_OVERRIDE_STAT_VALUE_SET,
+      'overrideOffensiveStat',
+    ),
+  );
+  diagnostics.push(
+    ...validateOptionalStringEnumProperty(
+      parsed,
+      members.first.get('overrideDefensiveStat'),
+      MOVE_OVERRIDE_STAT_VALUE_SET,
+      'overrideDefensiveStat',
+    ),
+  );
+  diagnostics.push(
+    ...validateOptionalStringProperty(
+      parsed,
+      members.first.get('pressureTarget'),
+      'pressureTarget',
+    ),
+  );
+  diagnostics.push(
+    ...validateOptionalBooleanProperty(
+      parsed,
+      members.first.get('sleepUsable'),
+      'sleepUsable',
+    ),
+  );
+  diagnostics.push(
+    ...validateNumberProperty(parsed, members.first.get('spreadModifier'), {
+      allowFloat: true,
+      min: Number.NEGATIVE_INFINITY,
+      label: 'spreadModifier',
+      optional: true,
+    }),
   );
   diagnostics.push(
     ...validateConditionProperty(parsed, members.first.get('condition')),
@@ -395,7 +652,7 @@ function validateMoveTopLevel(
 
   const name = readStringMemberValue(members.first.get('name'));
   if (name) {
-    const fileStem = path.basename(parsed.uri.fsPath, '.js');
+    const fileStem = path.basename(parsed.uri.fsPath, path.extname(parsed.uri.fsPath));
     if (normalizeSlug(name) !== normalizeSlug(fileStem)) {
       diagnostics.push(
         createDiagnostic(
@@ -503,78 +760,7 @@ function validateSecondaryProperty(
     ];
   }
 
-  const diagnostics: vscode.Diagnostic[] = [];
-  const members = indexObjectMembers(property.value);
-
-  if (!members.first.has('chance')) {
-    diagnostics.push(
-      createDiagnostic(
-        rangeForMember(parsed, member),
-        "Secondary effect objects must define 'chance'.",
-        vscode.DiagnosticSeverity.Error,
-      ),
-    );
-  } else {
-    diagnostics.push(
-      ...validateNumberProperty(parsed, members.first.get('chance'), {
-        allowFloat: false,
-        min: 1,
-        max: 100,
-        label: 'secondary.chance',
-      }),
-    );
-  }
-
-  diagnostics.push(
-    ...validateOptionalStringEnumProperty(
-      parsed,
-      members.first.get('status'),
-      MOVE_STATUS_CODE_SET,
-      'secondary.status',
-    ),
-  );
-  diagnostics.push(
-    ...validateIdentifierLikeStringProperty(
-      parsed,
-      members.first.get('volatileStatus'),
-      'secondary.volatileStatus',
-    ),
-  );
-  diagnostics.push(
-    ...validateBoostsProperty(
-      parsed,
-      members.first.get('boosts'),
-      'secondary.boosts',
-    ),
-  );
-
-  const effectCount = ['status', 'volatileStatus', 'boosts'].filter((key) =>
-    members.first.has(key),
-  ).length;
-  if (effectCount === 0) {
-    diagnostics.push(
-      createDiagnostic(
-        rangeForMember(parsed, member),
-        'Secondary effect objects should define at least one effect besides chance.',
-        vscode.DiagnosticSeverity.Error,
-      ),
-    );
-  }
-
-  for (const [key, group] of members.all.entries()) {
-    if (key === 'chance' || key === 'status' || key === 'volatileStatus' || key === 'boosts') {
-      continue;
-    }
-    diagnostics.push(
-      createDiagnostic(
-        rangeForMemberKey(parsed, group[0]),
-        `Unknown secondary property '${key}'.`,
-        workspaceWarningSeverity(),
-      ),
-    );
-  }
-
-  return diagnostics;
+  return validateSecondaryEffectObject(parsed, property.value, 'secondary');
 }
 
 function validateBoostsProperty(
@@ -587,6 +773,10 @@ function validateBoostsProperty(
   }
 
   const property = asPropertyMember(member);
+  if (property && isNullLiteral(property.value)) {
+    return [];
+  }
+
   if (!property || property.value.kind !== 'object') {
     return [
       createDiagnostic(
@@ -620,6 +810,347 @@ function validateBoostsProperty(
         disallowZero: true,
         label: `${label}.${key}`,
       }),
+    );
+  }
+
+  return diagnostics;
+}
+
+function validateSecondaryEffectObject(
+  parsed: Awaited<ReturnType<typeof parseWorkspaceJsObject>>,
+  objectNode: JsObjectNode,
+  label: string,
+): vscode.Diagnostic[] {
+  const diagnostics: vscode.Diagnostic[] = [];
+  const members = indexObjectMembers(objectNode);
+
+  diagnostics.push(
+    ...validateNumberProperty(parsed, members.first.get('chance'), {
+      allowFloat: false,
+      min: 1,
+      max: 100,
+      label: `${label}.chance`,
+      optional: true,
+    }),
+  );
+  diagnostics.push(...validateHitEffectMembers(parsed, members, label));
+  diagnostics.push(
+    ...validateOptionalBooleanProperty(
+      parsed,
+      members.first.get('dustproof'),
+      `${label}.dustproof`,
+    ),
+  );
+  diagnostics.push(
+    ...validateOptionalBooleanProperty(
+      parsed,
+      members.first.get('kingsrock'),
+      `${label}.kingsrock`,
+    ),
+  );
+  diagnostics.push(
+    ...validateOptionalAnyProperty(
+      parsed,
+      members.first.get('ability'),
+      `${label}.ability`,
+    ),
+  );
+  diagnostics.push(
+    ...validateHitEffectContainerProperty(
+      parsed,
+      members.first.get('self'),
+      `${label}.self`,
+    ),
+  );
+
+  const effectCount = [
+    'status',
+    'volatileStatus',
+    'sideCondition',
+    'slotCondition',
+    'pseudoWeather',
+    'terrain',
+    'weather',
+    'boosts',
+    'self',
+  ].filter((key) => members.first.has(key)).length;
+  if (effectCount === 0) {
+    diagnostics.push(
+      createDiagnostic(
+        rangeForJsNode(parsed, objectNode.node),
+        `${label} should define at least one effect.`,
+        vscode.DiagnosticSeverity.Error,
+      ),
+    );
+  }
+
+  for (const [key, group] of members.all.entries()) {
+    if (
+      key === 'chance' ||
+      key === 'ability' ||
+      key === 'dustproof' ||
+      key === 'kingsrock' ||
+      key === 'self' ||
+      key === 'boosts' ||
+      key === 'status' ||
+      key === 'volatileStatus' ||
+      key === 'sideCondition' ||
+      key === 'slotCondition' ||
+      key === 'pseudoWeather' ||
+      key === 'terrain' ||
+      key === 'weather'
+    ) {
+      continue;
+    }
+    diagnostics.push(
+      createDiagnostic(
+        rangeForMemberKey(parsed, group[0]),
+        `Unknown ${label} property '${key}'.`,
+        workspaceWarningSeverity(),
+      ),
+    );
+  }
+
+  return diagnostics;
+}
+
+function validateHitEffectMembers(
+  parsed: Awaited<ReturnType<typeof parseWorkspaceJsObject>>,
+  members: IndexedObjectMembers,
+  label: string,
+): vscode.Diagnostic[] {
+  const diagnostics: vscode.Diagnostic[] = [];
+  diagnostics.push(
+    ...validateOptionalStringEnumProperty(
+      parsed,
+      members.first.get('status'),
+      MOVE_STATUS_CODE_SET,
+      `${label}.status`,
+    ),
+  );
+  diagnostics.push(
+    ...validateOptionalStringProperty(
+      parsed,
+      members.first.get('volatileStatus'),
+      `${label}.volatileStatus`,
+    ),
+  );
+  diagnostics.push(
+    ...validateOptionalStringProperty(
+      parsed,
+      members.first.get('sideCondition'),
+      `${label}.sideCondition`,
+    ),
+  );
+  diagnostics.push(
+    ...validateOptionalStringProperty(
+      parsed,
+      members.first.get('slotCondition'),
+      `${label}.slotCondition`,
+    ),
+  );
+  diagnostics.push(
+    ...validateOptionalStringProperty(
+      parsed,
+      members.first.get('pseudoWeather'),
+      `${label}.pseudoWeather`,
+    ),
+  );
+  diagnostics.push(
+    ...validateOptionalStringProperty(
+      parsed,
+      members.first.get('terrain'),
+      `${label}.terrain`,
+    ),
+  );
+  diagnostics.push(
+    ...validateOptionalStringProperty(
+      parsed,
+      members.first.get('weather'),
+      `${label}.weather`,
+    ),
+  );
+  diagnostics.push(
+    ...validateBoostsProperty(parsed, members.first.get('boosts'), `${label}.boosts`),
+  );
+  return diagnostics;
+}
+
+function validateSelfBoostProperty(
+  parsed: Awaited<ReturnType<typeof parseWorkspaceJsObject>>,
+  member: JsObjectMember | undefined,
+): vscode.Diagnostic[] {
+  if (!member) {
+    return [];
+  }
+
+  const property = asPropertyMember(member);
+  if (!property || property.value.kind !== 'object') {
+    return [
+      createDiagnostic(
+        rangeForMember(parsed, member),
+        "Property 'selfBoost' must be an object.",
+        vscode.DiagnosticSeverity.Error,
+      ),
+    ];
+  }
+
+  const diagnostics = validateBoostsProperty(
+    parsed,
+    indexObjectMembers(property.value).first.get('boosts'),
+    'selfBoost.boosts',
+  );
+
+  for (const [key, group] of indexObjectMembers(property.value).all.entries()) {
+    if (key === 'boosts') {
+      continue;
+    }
+    diagnostics.push(
+      createDiagnostic(
+        rangeForMemberKey(parsed, group[0]),
+        `Unknown selfBoost property '${key}'.`,
+        workspaceWarningSeverity(),
+      ),
+    );
+  }
+
+  return diagnostics;
+}
+
+function validateSecondariesProperty(
+  parsed: Awaited<ReturnType<typeof parseWorkspaceJsObject>>,
+  member: JsObjectMember | undefined,
+): vscode.Diagnostic[] {
+  if (!member) {
+    return [];
+  }
+
+  const property = asPropertyMember(member);
+  if (!property) {
+    return [
+      createDiagnostic(
+        rangeForMember(parsed, member),
+        "Property 'secondaries' must be an array or null.",
+        vscode.DiagnosticSeverity.Error,
+      ),
+    ];
+  }
+
+  if (isNullLiteral(property.value)) {
+    return [];
+  }
+
+  if (property.value.kind !== 'array') {
+    return [
+      createDiagnostic(
+        rangeForMember(parsed, member),
+        "Property 'secondaries' must be an array or null.",
+        vscode.DiagnosticSeverity.Error,
+      ),
+    ];
+  }
+
+  const diagnostics: vscode.Diagnostic[] = [];
+  property.value.elements.forEach((element, index) => {
+    if (element.kind !== 'object') {
+      diagnostics.push(
+        createDiagnostic(
+          rangeForJsNode(parsed, element.node),
+          `secondaries[${index}] must be an object.`,
+          vscode.DiagnosticSeverity.Error,
+        ),
+      );
+      return;
+    }
+
+    diagnostics.push(
+      ...validateSecondaryEffectObject(parsed, element, `secondaries[${index}]`),
+    );
+  });
+  return diagnostics;
+}
+
+function validateSelfProperty(
+  parsed: Awaited<ReturnType<typeof parseWorkspaceJsObject>>,
+  member: JsObjectMember | undefined,
+): vscode.Diagnostic[] {
+  if (!member) {
+    return [];
+  }
+
+  const property = asPropertyMember(member);
+  if (!property) {
+    return [
+      createDiagnostic(
+        rangeForMember(parsed, member),
+        "Property 'self' must be an object or null.",
+        vscode.DiagnosticSeverity.Error,
+      ),
+    ];
+  }
+
+  if (isNullLiteral(property.value)) {
+    return [];
+  }
+
+  if (property.value.kind !== 'object') {
+    return [
+      createDiagnostic(
+        rangeForMember(parsed, member),
+        "Property 'self' must be an object or null.",
+        vscode.DiagnosticSeverity.Error,
+      ),
+    ];
+  }
+
+  return validateSecondaryEffectObject(parsed, property.value, 'self');
+}
+
+function validateHitEffectContainerProperty(
+  parsed: Awaited<ReturnType<typeof parseWorkspaceJsObject>>,
+  member: JsObjectMember | undefined,
+  label: string,
+): vscode.Diagnostic[] {
+  if (!member) {
+    return [];
+  }
+
+  const property = asPropertyMember(member);
+  if (!property || property.value.kind !== 'object') {
+    return [
+      createDiagnostic(
+        rangeForMember(parsed, member),
+        `Property '${label}' must be an object.`,
+        vscode.DiagnosticSeverity.Error,
+      ),
+    ];
+  }
+
+  const diagnostics = validateHitEffectMembers(
+    parsed,
+    indexObjectMembers(property.value),
+    label,
+  );
+
+  for (const [key, group] of indexObjectMembers(property.value).all.entries()) {
+    if (
+      key === 'boosts' ||
+      key === 'status' ||
+      key === 'volatileStatus' ||
+      key === 'sideCondition' ||
+      key === 'slotCondition' ||
+      key === 'pseudoWeather' ||
+      key === 'terrain' ||
+      key === 'weather'
+    ) {
+      continue;
+    }
+    diagnostics.push(
+      createDiagnostic(
+        rangeForMemberKey(parsed, group[0]),
+        `Unknown ${label} property '${key}'.`,
+        workspaceWarningSeverity(),
+      ),
     );
   }
 
@@ -663,8 +1194,8 @@ function validateConditionProperty(
       continue;
     }
 
-    if (isMoveCallbackKey(key)) {
-      diagnostics.push(...validateCallbackMember(parsed, conditionMember, true));
+    if (isConditionCallbackLikeKey(key)) {
+      diagnostics.push(...validateConditionCallbackMember(parsed, conditionMember));
       continue;
     }
 
@@ -702,6 +1233,15 @@ function validateSimpleObjectProperty(
 
   const diagnostics: vscode.Diagnostic[] = [];
   const members = indexObjectMembers(property.value);
+  if (label === 'maxMove' && !members.first.has('basePower')) {
+    diagnostics.push(
+      createDiagnostic(
+        rangeForMember(parsed, member),
+        "Property 'maxMove' must define 'basePower'.",
+        vscode.DiagnosticSeverity.Error,
+      ),
+    );
+  }
   diagnostics.push(
     ...validateNumberProperty(parsed, members.first.get('basePower'), {
       allowFloat: false,
@@ -711,8 +1251,24 @@ function validateSimpleObjectProperty(
     }),
   );
 
+  if (label === 'zMove') {
+    diagnostics.push(
+      ...validateOptionalStringProperty(
+        parsed,
+        members.first.get('effect'),
+        'zMove.effect',
+      ),
+    );
+    diagnostics.push(
+      ...validateBoostsProperty(parsed, members.first.get('boost'), 'zMove.boost'),
+    );
+  }
+
   for (const [key, group] of members.all.entries()) {
-    if (key === 'basePower') {
+    if (
+      key === 'basePower' ||
+      (label === 'zMove' && (key === 'effect' || key === 'boost'))
+    ) {
       continue;
     }
     diagnostics.push(
@@ -727,10 +1283,44 @@ function validateSimpleObjectProperty(
   return diagnostics;
 }
 
-function validateCallbackMember(
+function validateMoveCallbackMember(
   parsed: Awaited<ReturnType<typeof parseWorkspaceJsObject>>,
   member: JsObjectMember,
-  allowBooleanLiteral: boolean,
+): vscode.Diagnostic[] {
+  if (member.kind === 'unsupported-member') {
+    return [
+      createDiagnostic(
+        rangeForMember(parsed, member),
+        'Callback entries must use supported property names.',
+        vscode.DiagnosticSeverity.Error,
+      ),
+    ];
+  }
+
+  if (isMoveNumericCallbackKey(member.key)) {
+    if (member.kind === 'method') {
+      return [
+        createDiagnostic(
+          rangeForMember(parsed, member),
+          `Callback property '${member.key}' must use a numeric value.`,
+          vscode.DiagnosticSeverity.Error,
+        ),
+      ];
+    }
+
+    return validateNumberProperty(parsed, member, {
+      allowFloat: true,
+      min: Number.NEGATIVE_INFINITY,
+      label: member.key,
+    });
+  }
+
+  return validateFunctionCallbackMember(parsed, member);
+}
+
+function validateFunctionCallbackMember(
+  parsed: Awaited<ReturnType<typeof parseWorkspaceJsObject>>,
+  member: JsObjectMember,
 ): vscode.Diagnostic[] {
   if (member.kind === 'method') {
     return [];
@@ -750,10 +1340,54 @@ function validateCallbackMember(
     return [];
   }
 
+  return [
+    createDiagnostic(
+      rangeForMember(parsed, member),
+      `Callback property '${member.key}' must use a function.`,
+      vscode.DiagnosticSeverity.Error,
+    ),
+  ];
+}
+
+function validateLooseCallbackLikeMember(
+  parsed: Awaited<ReturnType<typeof parseWorkspaceJsObject>>,
+  member: JsObjectMember,
+): vscode.Diagnostic[] {
+  if (member.kind === 'unsupported-member') {
+    return [
+      createDiagnostic(
+        rangeForMember(parsed, member),
+        'Callback entries must use supported property names.',
+        vscode.DiagnosticSeverity.Error,
+      ),
+    ];
+  }
+
+  if (member.kind === 'method') {
+    return [];
+  }
+
+  if (member.kind !== 'property') {
+    return [
+      createDiagnostic(
+        rangeForMember(parsed, member),
+        'Callback entries must use methods or property assignments.',
+        vscode.DiagnosticSeverity.Error,
+      ),
+    ];
+  }
+
+  if (member.value.kind === 'function') {
+    return [];
+  }
+
   if (
-    allowBooleanLiteral &&
     member.value.kind === 'literal' &&
-    member.value.literalType === 'boolean'
+    (
+      member.value.literalType === 'boolean' ||
+      member.value.literalType === 'number' ||
+      member.value.literalType === 'string'
+    )
   ) {
     return [];
   }
@@ -761,7 +1395,64 @@ function validateCallbackMember(
   return [
     createDiagnostic(
       rangeForMember(parsed, member),
-      `Callback-like property '${member.key}' must use a function${allowBooleanLiteral ? ' or boolean literal' : ''}.`,
+      `Callback-like property '${member.key}' must use a function, string, number, or boolean literal.`,
+      vscode.DiagnosticSeverity.Error,
+    ),
+  ];
+}
+
+function validateConditionCallbackMember(
+  parsed: Awaited<ReturnType<typeof parseWorkspaceJsObject>>,
+  member: JsObjectMember,
+): vscode.Diagnostic[] {
+  if (member.kind === 'unsupported-member') {
+    return [
+      createDiagnostic(
+        rangeForMember(parsed, member),
+        'Condition callback entries must use supported property names.',
+        vscode.DiagnosticSeverity.Error,
+      ),
+    ];
+  }
+
+  if (member.kind === 'method') {
+    return [];
+  }
+
+  if (member.kind !== 'property') {
+    return [
+      createDiagnostic(
+        rangeForMember(parsed, member),
+        'Condition callback entries must use methods or property assignments.',
+        vscode.DiagnosticSeverity.Error,
+      ),
+    ];
+  }
+
+  if (member.value.kind === 'function') {
+    return [];
+  }
+
+  if (member.value.kind === 'literal') {
+    if (
+      member.value.literalType === 'boolean' ||
+      member.value.literalType === 'string'
+    ) {
+      return [];
+    }
+
+    if (
+      member.value.literalType === 'number' &&
+      isConditionNumericCallbackKey(member.key)
+    ) {
+      return [];
+    }
+  }
+
+  return [
+    createDiagnostic(
+      rangeForMember(parsed, member),
+      `Condition callback-like property '${member.key}' must use a function or a supported literal value.`,
       vscode.DiagnosticSeverity.Error,
     ),
   ];
@@ -792,17 +1483,22 @@ function validateFractionProperty(
   parsed: Awaited<ReturnType<typeof parseWorkspaceJsObject>>,
   member: JsObjectMember | undefined,
   label: string,
+  allowNull = false,
 ): vscode.Diagnostic[] {
   if (!member) {
     return [];
   }
 
   const property = asPropertyMember(member);
+  if (property && allowNull && isNullLiteral(property.value)) {
+    return [];
+  }
+
   if (!property || property.value.kind !== 'array') {
     return [
       createDiagnostic(
         rangeForMember(parsed, member),
-        `Property '${label}' must be a [numerator, denominator] array.`,
+        `Property '${label}' must be a [numerator, denominator] array${allowNull ? ' or null' : ''}.`,
         vscode.DiagnosticSeverity.Error,
       ),
     ];
@@ -940,6 +1636,11 @@ function validateSelfdestructProperty(
     return [];
   }
 
+  const booleanValue = readBooleanMemberValue(member);
+  if (booleanValue !== undefined) {
+    return [];
+  }
+
   const stringValue = readStringMemberValue(member);
   if (stringValue && MOVE_SELFDESTRUCT_VALUE_SET.has(stringValue)) {
     return [];
@@ -948,7 +1649,7 @@ function validateSelfdestructProperty(
   return [
     createDiagnostic(
       rangeForMember(parsed, member),
-      "Property 'selfdestruct' must be 'always' or 'ifHit'.",
+      "Property 'selfdestruct' must be true, 'always', or 'ifHit'.",
       vscode.DiagnosticSeverity.Error,
     ),
   ];
@@ -1000,6 +1701,98 @@ function validateOptionalStringProperty(
   ];
 }
 
+function validateBooleanOrStringProperty(
+  parsed: Awaited<ReturnType<typeof parseWorkspaceJsObject>>,
+  member: JsObjectMember | undefined,
+  label: string,
+): vscode.Diagnostic[] {
+  if (!member) {
+    return [];
+  }
+
+  if (
+    readBooleanMemberValue(member) !== undefined ||
+    readStringMemberValue(member)?.trim().length
+  ) {
+    return [];
+  }
+
+  return [
+    createDiagnostic(
+      rangeForMember(parsed, member),
+      `Property '${label}' must be a boolean or non-empty string.`,
+      vscode.DiagnosticSeverity.Error,
+    ),
+  ];
+}
+
+function validateDamageProperty(
+  parsed: Awaited<ReturnType<typeof parseWorkspaceJsObject>>,
+  member: JsObjectMember | undefined,
+): vscode.Diagnostic[] {
+  if (!member) {
+    return [];
+  }
+
+  const numericValue = readNumericMemberValue(member);
+  if (numericValue !== undefined) {
+    if (!Number.isInteger(numericValue) || numericValue < 0) {
+      return [
+        createDiagnostic(
+          rangeForMember(parsed, member),
+          "Property 'damage' must be a non-negative integer, 'level', false, or null.",
+          vscode.DiagnosticSeverity.Error,
+        ),
+      ];
+    }
+    return [];
+  }
+
+  const stringValue = readStringMemberValue(member);
+  if (stringValue === 'level') {
+    return [];
+  }
+
+  if (readBooleanMemberValue(member) === false) {
+    return [];
+  }
+
+  const property = asPropertyMember(member);
+  if (property && isNullLiteral(property.value)) {
+    return [];
+  }
+
+  return [
+    createDiagnostic(
+      rangeForMember(parsed, member),
+      "Property 'damage' must be a non-negative integer, 'level', false, or null.",
+      vscode.DiagnosticSeverity.Error,
+    ),
+  ];
+}
+
+function validateOptionalAnyProperty(
+  parsed: Awaited<ReturnType<typeof parseWorkspaceJsObject>>,
+  member: JsObjectMember | undefined,
+  label: string,
+): vscode.Diagnostic[] {
+  if (!member) {
+    return [];
+  }
+
+  if (member.kind === 'property') {
+    return [];
+  }
+
+  return [
+    createDiagnostic(
+      rangeForMember(parsed, member),
+      `Property '${label}' must use a value.`,
+      vscode.DiagnosticSeverity.Error,
+    ),
+  ];
+}
+
 function validateIdentifierLikeStringProperty(
   parsed: Awaited<ReturnType<typeof parseWorkspaceJsObject>>,
   member: JsObjectMember | undefined,
@@ -1043,6 +1836,56 @@ function validateOptionalBooleanProperty(
       vscode.DiagnosticSeverity.Error,
     ),
   ];
+}
+
+function validateIgnoreImmunityProperty(
+  parsed: Awaited<ReturnType<typeof parseWorkspaceJsObject>>,
+  member: JsObjectMember | undefined,
+): vscode.Diagnostic[] {
+  if (!member) {
+    return [];
+  }
+
+  if (readBooleanMemberValue(member) !== undefined) {
+    return [];
+  }
+
+  const property = asPropertyMember(member);
+  if (!property || property.value.kind !== 'object') {
+    return [
+      createDiagnostic(
+        rangeForMember(parsed, member),
+        "Property 'ignoreImmunity' must be a boolean or an object of booleans.",
+        vscode.DiagnosticSeverity.Error,
+      ),
+    ];
+  }
+
+  const diagnostics: vscode.Diagnostic[] = [];
+  for (const entry of property.value.members) {
+    if (entry.kind !== 'property') {
+      diagnostics.push(
+        createDiagnostic(
+          rangeForMember(parsed, entry),
+          "Property 'ignoreImmunity' entries must use property assignments.",
+          vscode.DiagnosticSeverity.Error,
+        ),
+      );
+      continue;
+    }
+
+    if (readBooleanMemberValue(entry) === undefined) {
+      diagnostics.push(
+        createDiagnostic(
+          rangeForMember(parsed, entry),
+          "Property 'ignoreImmunity' entries must use boolean values.",
+          vscode.DiagnosticSeverity.Error,
+        ),
+      );
+    }
+  }
+
+  return diagnostics;
 }
 
 function validateStringEnumProperty(

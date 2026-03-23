@@ -48,6 +48,10 @@ export async function runWorkspaceValidation(
     "**/data/*/moves/**/*.js",
     DATA_ROOT_EXCLUDE,
   );
+  const moveTsFiles = await vscode.workspace.findFiles(
+    "**/data/*/moves/**/*.ts",
+    DATA_ROOT_EXCLUDE,
+  );
   const textureFiles = await vscode.workspace.findFiles(
     "**/assets/*/**/*.png",
     DATA_ROOT_EXCLUDE,
@@ -222,7 +226,7 @@ export async function runWorkspaceValidation(
     }
   }
 
-  for (const uri of moveFiles) {
+  for (const uri of [...moveFiles, ...moveTsFiles]) {
     const diags = await validateMoveJsFile(uri);
     addDiagnostics(byUri, uri, diags);
   }

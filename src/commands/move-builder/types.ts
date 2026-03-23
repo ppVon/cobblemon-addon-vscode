@@ -3,10 +3,15 @@ import {
   MOVE_CATEGORIES,
   MOVE_CONTEST_TYPES,
   MOVE_FLAGS,
+  MOVE_PSEUDO_WEATHERS,
+  MOVE_SIDE_CONDITIONS,
+  MOVE_SLOT_CONDITIONS,
   MOVE_STATUS_CODES,
+  MOVE_TERRAINS,
   MOVE_TARGETS,
   MOVE_TYPES,
   MOVE_VOLATILE_STATUSES,
+  MOVE_WEATHERS,
 } from "../../moves/spec";
 
 export interface MoveBuilderFormData {
@@ -27,6 +32,10 @@ export interface MoveBuilderFormData {
   status: string;
   volatileStatus: string;
   sideCondition: string;
+  slotCondition: string;
+  pseudoWeather: string;
+  terrain: string;
+  weather: string;
   boostStat: string;
   boostStages: string;
   recoilNumerator: string;
@@ -44,7 +53,7 @@ export interface MoveBuilderFormData {
   stallingMove: boolean;
   ohko: boolean;
   selfSwitch: "" | "true" | "copyvolatile" | "shedtail";
-  selfdestruct: "" | "always" | "ifHit";
+  selfdestruct: "" | "true" | "always" | "ifHit";
   struggleRecoil: boolean;
   mindBlownRecoil: boolean;
   hasCrashDamage: boolean;
@@ -79,6 +88,10 @@ export const DEFAULT_MOVE_BUILDER_FORM: MoveBuilderFormData = {
   status: "",
   volatileStatus: "",
   sideCondition: "",
+  slotCondition: "",
+  pseudoWeather: "",
+  terrain: "",
+  weather: "",
   boostStat: "",
   boostStages: "",
   recoilNumerator: "",
@@ -118,4 +131,9 @@ export const MOVE_BUILDER_CONTEST_TYPES = [...MOVE_CONTEST_TYPES] as const;
 export const MOVE_BUILDER_FLAGS = [...MOVE_FLAGS] as const;
 export const MOVE_BUILDER_STATUS_CODES = [...MOVE_STATUS_CODES] as const;
 export const MOVE_BUILDER_VOLATILES = [...MOVE_VOLATILE_STATUSES] as const;
+export const MOVE_BUILDER_SIDE_CONDITIONS = [...MOVE_SIDE_CONDITIONS] as const;
+export const MOVE_BUILDER_SLOT_CONDITIONS = [...MOVE_SLOT_CONDITIONS] as const;
+export const MOVE_BUILDER_PSEUDO_WEATHERS = [...MOVE_PSEUDO_WEATHERS] as const;
+export const MOVE_BUILDER_TERRAINS = [...MOVE_TERRAINS] as const;
+export const MOVE_BUILDER_WEATHERS = [...MOVE_WEATHERS] as const;
 export const MOVE_BUILDER_BOOST_KEYS = [...MOVE_BOOST_KEYS] as const;

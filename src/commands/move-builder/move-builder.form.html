@@ -236,11 +236,11 @@
         <div class="section-header">
           <div class="section-title">Move Identity</div>
           <div class="pill-note">
-            Writes to <code>data/&lt;namespace&gt;/moves</code>
+            Creates <code>data/&lt;namespace&gt;/moves/&lt;file&gt;.ts</code>
           </div>
         </div>
         <div class="helper">
-          The file id is auto-derived from the move name until you edit it manually.
+          The file id becomes the move file name. It fills in from the move name, and you can change it if needed.
         </div>
         <div class="field-triple">
           <div class="field">
@@ -318,8 +318,8 @@
               <input id="basePower" type="text" />
             </div>
             <div class="field">
-              <label>Category Rule</label>
-              <div class="pill-note">Status moves automatically lock base power to 0</div>
+              <label>Status Moves</label>
+              <div class="pill-note">Status moves always use base power 0</div>
             </div>
           </div>
         </div>
@@ -330,7 +330,7 @@
           <div class="section-title">Flags</div>
         </div>
         <div class="helper">
-          Pick the interaction flags that apply to the generated move. Unknown or custom flags can still be added manually later.
+          Pick the flags that match how this move behaves in battle.
         </div>
         <div id="flagChecks" class="flag-grid"></div>
       </div>
@@ -343,7 +343,7 @@
         <details id="conditionsPanel" class="panel">
           <summary>
             <span class="summary-title">Applied Conditions</span>
-            <span class="summary-helper">Status, volatile status, or side condition</span>
+            <span class="summary-helper">Apply a status, a volatile effect, or a side condition</span>
           </summary>
           <div class="panel-body">
             <div class="grid">
@@ -357,7 +357,23 @@
               </div>
               <div class="field">
                 <label for="sideCondition">Side Condition</label>
-                <input id="sideCondition" type="text" />
+                <input id="sideCondition" type="text" list="sideConditionList" />
+              </div>
+              <div class="field">
+                <label for="slotCondition">Slot Condition</label>
+                <input id="slotCondition" type="text" list="slotConditionList" />
+              </div>
+              <div class="field">
+                <label for="terrain">Terrain</label>
+                <input id="terrain" type="text" list="terrainList" />
+              </div>
+              <div class="field">
+                <label for="weather">Weather</label>
+                <input id="weather" type="text" list="weatherList" />
+              </div>
+              <div class="field">
+                <label for="pseudoWeather">Pseudo-Weather</label>
+                <input id="pseudoWeather" type="text" list="pseudoWeatherList" />
               </div>
             </div>
           </div>
@@ -366,7 +382,7 @@
         <details id="boostPanel" class="panel">
           <summary>
             <span class="summary-title">Stat Boosts</span>
-            <span class="summary-helper">Choose the stat and the stage change together</span>
+            <span class="summary-helper">Raise or lower one stat, like Attack +1 or Defense -1</span>
           </summary>
           <div class="panel-body">
             <div class="field-pair">
@@ -385,7 +401,7 @@
         <details id="recoilPanel" class="panel">
           <summary>
             <span class="summary-title">Recoil</span>
-            <span class="summary-helper">Numerator and denominator are shown as one pair</span>
+            <span class="summary-helper">Set how much damage the user takes back, such as 1 / 4</span>
           </summary>
           <div class="panel-body">
             <div class="field-pair">
@@ -404,7 +420,7 @@
         <details id="drainPanel" class="panel">
           <summary>
             <span class="summary-title">Drain</span>
-            <span class="summary-helper">HP restored from damage dealt</span>
+            <span class="summary-helper">Set how much HP the user regains from the damage dealt, such as 1 / 2</span>
           </summary>
           <div class="panel-body">
             <div class="field-pair">
@@ -423,7 +439,7 @@
         <details id="healPanel" class="panel">
           <summary>
             <span class="summary-title">Direct Healing</span>
-            <span class="summary-helper">HP recovered as a max-HP fraction</span>
+            <span class="summary-helper">Set how much HP the move restores, such as 1 / 2</span>
           </summary>
           <div class="panel-body">
             <div class="field-pair">
@@ -442,7 +458,7 @@
         <details id="critPanel" class="panel">
           <summary>
             <span class="summary-title">Critical Hit Ratio</span>
-            <span class="summary-helper">Use when the move raises its own crit stage</span>
+            <span class="summary-helper">Use this for moves with a higher critical-hit chance</span>
           </summary>
           <div class="panel-body">
             <div class="field">
@@ -455,7 +471,7 @@
         <details id="multihitPanel" class="panel">
           <summary>
             <span class="summary-title">Multihit</span>
-            <span class="summary-helper">Fixed count or a min/max range</span>
+            <span class="summary-helper">Choose whether the move hits a fixed number of times or a random range</span>
           </summary>
           <div class="panel-body">
             <div class="field">
@@ -521,6 +537,7 @@
               <label for="selfdestruct">Selfdestruct</label>
               <select id="selfdestruct">
                 <option value="">(none)</option>
+                <option value="true">true</option>
                 <option value="always">always</option>
                 <option value="ifHit">ifHit</option>
               </select>
@@ -536,7 +553,7 @@
         <details id="secondaryPanel" class="panel">
           <summary>
             <span class="summary-title">Add Secondary Effect</span>
-            <span class="summary-helper">Leave closed to emit <code>secondary: null</code></span>
+            <span class="summary-helper">Open this if the move has an extra effect with a percent chance to happen</span>
           </summary>
           <div class="panel-body">
             <div class="field">
@@ -564,7 +581,7 @@
               </div>
             </div>
             <div class="helper">
-              Advanced callback-based effects can still be added manually after generation.
+              A common example is a damaging move with a burn, flinch, or stat-drop chance.
             </div>
           </div>
         </details>
@@ -574,9 +591,15 @@
         <div class="section-header">
           <div class="section-title">Generated File</div>
         </div>
-        <div class="helper">Relative to the selected workspace folder.</div>
+        <div class="helper">This is the typed move file the builder will create.</div>
         <ul id="generatedFiles" class="path-preview"></ul>
       </div>
+
+      <datalist id="sideConditionList"></datalist>
+      <datalist id="slotConditionList"></datalist>
+      <datalist id="terrainList"></datalist>
+      <datalist id="weatherList"></datalist>
+      <datalist id="pseudoWeatherList"></datalist>
 
       <div id="error"></div>
       <div class="actions">
@@ -615,6 +638,10 @@
         status: document.getElementById("status"),
         volatileStatus: document.getElementById("volatileStatus"),
         sideCondition: document.getElementById("sideCondition"),
+        slotCondition: document.getElementById("slotCondition"),
+        pseudoWeather: document.getElementById("pseudoWeather"),
+        terrain: document.getElementById("terrain"),
+        weather: document.getElementById("weather"),
         boostStat: document.getElementById("boostStat"),
         boostStages: document.getElementById("boostStages"),
         recoilNumerator: document.getElementById("recoilNumerator"),
@@ -663,6 +690,11 @@
       const flagChecksEl = document.getElementById("flagChecks");
       const multihitFixedGroup = document.getElementById("multihitFixedGroup");
       const multihitRangeGroup = document.getElementById("multihitRangeGroup");
+      const sideConditionListEl = document.getElementById("sideConditionList");
+      const slotConditionListEl = document.getElementById("slotConditionList");
+      const terrainListEl = document.getElementById("terrainList");
+      const weatherListEl = document.getElementById("weatherList");
+      const pseudoWeatherListEl = document.getElementById("pseudoWeatherList");
 
       function setError(message) {
         errorEl.textContent = message || "";
@@ -707,6 +739,16 @@
             label.appendChild(input);
             label.appendChild(document.createTextNode(flag));
             return label;
+          }),
+        );
+      }
+
+      function populateDataList(listEl, values) {
+        listEl.replaceChildren(
+          ...values.map((value) => {
+            const option = document.createElement("option");
+            option.value = value;
+            return option;
           }),
         );
       }
@@ -778,6 +820,10 @@
           status: fields.status.value,
           volatileStatus: fields.volatileStatus.value,
           sideCondition: fields.sideCondition.value.trim(),
+          slotCondition: fields.slotCondition.value.trim(),
+          pseudoWeather: fields.pseudoWeather.value.trim(),
+          terrain: fields.terrain.value.trim(),
+          weather: fields.weather.value.trim(),
           boostStat: fields.boostStat.value,
           boostStages: fields.boostStages.value.trim(),
           recoilNumerator: fields.recoilNumerator.value.trim(),
@@ -817,7 +863,7 @@
         generatedFilesEl.replaceChildren(
           (() => {
             const item = document.createElement("li");
-            item.textContent = `data/${namespace}/moves/${fileId}.js`;
+            item.textContent = `data/${namespace}/moves/${fileId}.ts`;
             return item;
           })(),
         );
@@ -926,6 +972,30 @@
         ) {
           return "Side condition must use an identifier-like value.";
         }
+        if (
+          data.slotCondition &&
+          !/^[a-z][a-z0-9_]*$/i.test(data.slotCondition)
+        ) {
+          return "Slot condition must use an identifier-like value.";
+        }
+        if (
+          data.pseudoWeather &&
+          !/^[a-z][a-z0-9_]*$/i.test(data.pseudoWeather)
+        ) {
+          return "Pseudo-weather must use an identifier-like value.";
+        }
+        if (
+          data.terrain &&
+          !/^[a-z][a-z0-9_]*$/i.test(data.terrain)
+        ) {
+          return "Terrain must use an identifier-like value.";
+        }
+        if (
+          data.weather &&
+          !/^[a-z][a-z0-9_]*$/i.test(data.weather)
+        ) {
+          return "Weather must use an identifier-like value.";
+        }
         const boostError = validateBoostPair(data.boostStat, data.boostStages, "Primary boosts");
         if (boostError) return boostError;
         const recoilError = validateFractionPair(data.recoilNumerator, data.recoilDenominator, "Recoil");
@@ -1000,7 +1070,11 @@
         panels.conditions.open = !!(
           data.status ||
           data.volatileStatus ||
-          data.sideCondition
+          data.sideCondition ||
+          data.slotCondition ||
+          data.pseudoWeather ||
+          data.terrain ||
+          data.weather
         );
         panels.boosts.open = !!(data.boostStat || data.boostStages);
         panels.recoil.open = !!(data.recoilNumerator || data.recoilDenominator);
@@ -1043,6 +1117,10 @@
         fields.status.value = statusSet.has(data.status) ? data.status : "";
         fields.volatileStatus.value = data.volatileStatus || "";
         fields.sideCondition.value = data.sideCondition || "";
+        fields.slotCondition.value = data.slotCondition || "";
+        fields.pseudoWeather.value = data.pseudoWeather || "";
+        fields.terrain.value = data.terrain || "";
+        fields.weather.value = data.weather || "";
         fields.boostStat.value = boostSet.has(data.boostStat) ? data.boostStat : "";
         fields.boostStages.value = data.boostStages || "";
         fields.recoilNumerator.value = data.recoilNumerator || "";
@@ -1101,6 +1179,11 @@
       populateSelect(fields.secondaryVolatileStatus, config.volatiles, "(none)");
       populateSelect(fields.secondaryBoostStat, config.boostKeys, "(none)");
       populateFlagChecks(config.flags);
+      populateDataList(sideConditionListEl, config.sideConditions);
+      populateDataList(slotConditionListEl, config.slotConditions);
+      populateDataList(terrainListEl, config.terrains);
+      populateDataList(weatherListEl, config.weathers);
+      populateDataList(pseudoWeatherListEl, config.pseudoWeathers);
 
       fields.fileId.addEventListener("input", () => {
         fileIdEdited = true;
