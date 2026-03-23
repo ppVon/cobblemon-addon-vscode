@@ -23,7 +23,7 @@ export function normalizeResourceId(raw: string, namespace: string): string {
 }
 
 export function normalizeSlug(value: string): string {
-  return value.replace(/[^a-z0-9]/g, '').toLowerCase();
+  return value.toLowerCase().replace(/[^a-z0-9]/g, '');
 }
 
 export function normalizePath(value: string): string {

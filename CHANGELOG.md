@@ -1,3 +1,7 @@
+# 0.7.1 - 2026-03-23
+
+- Preliminary moves support and generator
+
 # 0.7.0 - 2026-03-19
 
 - Resolver and poser filepath dex_name convention is now a warning
