@@ -90,6 +90,21 @@ export function isValidationEnabled(): boolean {
   return vscode.workspace.getConfiguration('cobblemonSchemaTools').get<boolean>('enableWorkspaceValidation', true);
 }
 
+export function useTypescriptForMoves(): boolean {
+  return vscode.workspace
+    .getConfiguration('cobblemonSchemaTools')
+    .get<boolean>('useTypescriptForMoves', false);
+}
+
+export function moveFileExtension(): 'js' | 'ts' {
+  return useTypescriptForMoves() ? 'ts' : 'js';
+}
+
+export function isMoveFilePath(filePath: string): boolean {
+  const normalized = normalizePath(filePath);
+  return /\/data\/[^/]+\/moves\/.+\.(js|ts)$/i.test(normalized);
+}
+
 export function isPokemonAssetFolderNamingWarningEnabled(): boolean {
   return vscode.workspace.getConfiguration('cobblemonSchemaTools').get<boolean>('warnOnPokemonAssetFolderNaming', true);
 }

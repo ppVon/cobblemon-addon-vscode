@@ -2,6 +2,7 @@ import * as vscode from 'vscode';
 import { registerCommands } from './commands';
 import { isValidationEnabled } from './core/utils';
 import { registerJsonSchemaAssistProviders } from './providers/json-schema-assist';
+import { registerMoveFileAssistProviders } from './providers/move-file-assist';
 import { CobblemonSchemaEngine } from './schema/schema-engine';
 import { runWorkspaceValidation } from './validation/workspace-validation';
 
@@ -12,6 +13,7 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
   const engine = new CobblemonSchemaEngine();
   await engine.initialize(context);
   registerJsonSchemaAssistProviders(context, engine);
+  registerMoveFileAssistProviders(context);
 
   let timeoutHandle: NodeJS.Timeout | undefined;
   const scheduleValidation = (): void => {

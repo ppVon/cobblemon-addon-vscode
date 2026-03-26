@@ -6,7 +6,8 @@ It helps you catch data issues quickly and generate common Cobblemon files from 
 ## What You Can Do
 
 - Validate your workspace data and view issues in the **Problems** panel.
-- Generate custom move TS files with **Cobblemon: Move Builder Form**.
+- Generate custom move JS files, or opt into typed TS move files, with **Cobblemon: Move Builder Form**.
+- Insert move callback snippets in JS or TS move files with **Cobblemon: Insert Move Callback**.
 - Generate Pokemon starter files with **Cobblemon: Pokemon Builder Form**.
 - Scaffold a data JSON file with **Cobblemon: Scaffold Data JSON File**.
 - Generate a spawn pool world entry with **Cobblemon: Generate Spawn Pool World**.
@@ -24,4 +25,5 @@ It helps you catch data issues quickly and generate common Cobblemon files from 
 - `cobblemonSchemaTools.enableWorkspaceValidation`
 - `cobblemonSchemaTools.strictWorkspaceValidation`
 - `cobblemonSchemaTools.strictAssetNaming`
+- `cobblemonSchemaTools.useTypescriptForMoves`
 - `cobblemonSchemaTools.warnOnPokemonAssetFolderNaming`

@@ -236,10 +236,10 @@
         <div class="section-header">
           <div class="section-title">Move Identity</div>
           <div class="pill-note">
-            Creates <code>data/&lt;namespace&gt;/moves/&lt;file&gt;.ts</code>
+            Creates <code id="moveFilePattern">data/&lt;namespace&gt;/moves/&lt;file&gt;.js</code>
           </div>
         </div>
-        <div class="helper">
+        <div id="moveFileHelper" class="helper">
           The file id becomes the move file name. It fills in from the move name, and you can change it if needed.
         </div>
         <div class="field-triple">
@@ -612,6 +612,7 @@
       const vscode = acquireVsCodeApi();
       const initial = __INITIAL_JSON__;
       const config = __CONFIG_JSON__;
+      const moveFileExtension = config.useTypescriptForMoves ? "ts" : "js";
       const categorySet = new Set(config.categories);
       const typeSet = new Set(config.types);
       const targetSet = new Set(config.targets);
@@ -690,6 +691,8 @@
       const flagChecksEl = document.getElementById("flagChecks");
       const multihitFixedGroup = document.getElementById("multihitFixedGroup");
       const multihitRangeGroup = document.getElementById("multihitRangeGroup");
+      const moveFilePatternEl = document.getElementById("moveFilePattern");
+      const moveFileHelperEl = document.getElementById("moveFileHelper");
       const sideConditionListEl = document.getElementById("sideConditionList");
       const slotConditionListEl = document.getElementById("slotConditionList");
       const terrainListEl = document.getElementById("terrainList");
@@ -863,7 +866,7 @@
         generatedFilesEl.replaceChildren(
           (() => {
             const item = document.createElement("li");
-            item.textContent = `data/${namespace}/moves/${fileId}.ts`;
+            item.textContent = `data/${namespace}/moves/${fileId}.${moveFileExtension}`;
             return item;
           })(),
         );
@@ -1184,6 +1187,10 @@
       populateDataList(terrainListEl, config.terrains);
       populateDataList(weatherListEl, config.weathers);
       populateDataList(pseudoWeatherListEl, config.pseudoWeathers);
+      moveFilePatternEl.textContent = `data/<namespace>/moves/<file>.${moveFileExtension}`;
+      moveFileHelperEl.textContent = config.useTypescriptForMoves
+        ? "The file id becomes the move file name. It fills in from the move name, and you can change it if needed. Typescript move generation also updates a hidden helper file so callback typing works in the editor."
+        : "The file id becomes the move file name. It fills in from the move name, and you can change it if needed.";
 
       fields.fileId.addEventListener("input", () => {
         fileIdEdited = true;

@@ -23,6 +23,7 @@ import {
 
 export async function showMoveBuilderForm(
   initial: MoveBuilderFormData,
+  useTypescriptForMoves: boolean,
 ): Promise<MoveBuilderFormData | undefined> {
   const panel = vscode.window.createWebviewPanel(
     'cobblemonMoveBuilder',
@@ -35,7 +36,12 @@ export async function showMoveBuilderForm(
   );
 
   const nonce = createNonce();
-  panel.webview.html = renderMoveBuilderWebviewHtml(panel.webview, initial, nonce);
+  panel.webview.html = renderMoveBuilderWebviewHtml(
+    panel.webview,
+    initial,
+    nonce,
+    useTypescriptForMoves,
+  );
 
   return await new Promise<MoveBuilderFormData | undefined>((resolve) => {
     const disposables: vscode.Disposable[] = [];
@@ -92,8 +98,10 @@ function renderMoveBuilderWebviewHtml(
   webview: vscode.Webview,
   initial: MoveBuilderFormData,
   nonce: string,
+  useTypescriptForMoves: boolean,
 ): string {
   const config = {
+    useTypescriptForMoves,
     categories: MOVE_BUILDER_CATEGORIES,
     types: MOVE_BUILDER_TYPES,
     targets: MOVE_BUILDER_TARGETS,

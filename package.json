@@ -21,6 +21,8 @@
     "onStartupFinished",
     "onLanguage:json",
     "onLanguage:javascript",
+    "onLanguage:typescript",
+    "onCommand:cobblemonSchemaTools.insertMoveCallback",
     "onCommand:cobblemonSchemaTools.validateWorkspace",
     "onCommand:cobblemonSchemaTools.scaffoldMoveFile",
     "onCommand:cobblemonSchemaTools.scaffoldPokemonAssets",
@@ -33,6 +35,10 @@
       {
         "command": "cobblemonSchemaTools.validateWorkspace",
         "title": "Cobblemon: Validate Workspace Data"
+      },
+      {
+        "command": "cobblemonSchemaTools.insertMoveCallback",
+        "title": "Cobblemon: Insert Move Callback"
       },
       {
         "command": "cobblemonSchemaTools.scaffoldMoveFile",
@@ -51,6 +57,21 @@
         "title": "Cobblemon: Generate Spawn Pool World"
       }
     ],
+    "menus": {
+      "commandPalette": [
+        {
+          "command": "cobblemonSchemaTools.insertMoveCallback",
+          "when": "editorTextFocus && cobblemonSchemaTools.inMoveFile"
+        }
+      ],
+      "editor/context": [
+        {
+          "command": "cobblemonSchemaTools.insertMoveCallback",
+          "when": "editorTextFocus && cobblemonSchemaTools.inMoveFile",
+          "group": "cobblemon@10"
+        }
+      ]
+    },
     "configuration": {
       "title": "Cobblemon Schema Tools",
       "properties": {
@@ -68,6 +89,11 @@
           "type": "boolean",
           "default": true,
           "description": "Enable automatic workspace-wide Cobblemon JSON validation and linkage diagnostics."
+        },
+        "cobblemonSchemaTools.useTypescriptForMoves": {
+          "type": "boolean",
+          "default": false,
+          "description": "Use Typescript for Moves? When enabled, the move builder generates .ts move files and writes a hidden helper type file for MoveData callback typing."
         },
         "cobblemonSchemaTools.warnOnPokemonAssetFolderNaming": {
           "type": "boolean",

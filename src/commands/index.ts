@@ -1,5 +1,6 @@
 import * as vscode from 'vscode';
 import { generateSpawnPoolWorldCommand } from './generate-spawn-pool-world.command';
+import { insertMoveCallbackCommand } from './insert-move-callback.command';
 import { scaffoldMoveFileCommand } from './move-builder.command';
 import { scaffoldPokemonAssetsCommand } from './pokemon-builder.command';
 import { scaffoldDataFileCommand } from './scaffold-data-file.command';
@@ -8,6 +9,7 @@ import { type CommandExecutionContext, type CommandDefinition } from './types';
 
 const COMMAND_DEFINITIONS: CommandDefinition[] = [
   validateWorkspaceCommand,
+  insertMoveCallbackCommand,
   scaffoldMoveFileCommand,
   scaffoldPokemonAssetsCommand,
   scaffoldDataFileCommand,
