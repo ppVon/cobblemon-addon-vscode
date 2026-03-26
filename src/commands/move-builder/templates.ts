@@ -19,7 +19,7 @@ export function buildMoveTemplate(
   const ordered = buildOrderedMoveRecord(definition);
   const objectBody = `{\n${renderObjectBody(ordered, 1)}\n}`;
   if (options.moveDataImportPath) {
-    return `import type { MoveData } from ${JSON.stringify(options.moveDataImportPath)};\n\n(${objectBody} satisfies MoveData);\n`;
+    return `// This move uses Typescript-only typing helpers.\n// You MUST use "Cobblemon: Package Addon Zip" before putting this addon into the game.\nimport type { MoveData } from ${JSON.stringify(options.moveDataImportPath)};\n\n(${objectBody} satisfies MoveData);\n`;
   }
   return `(${objectBody})\n`;
 }
