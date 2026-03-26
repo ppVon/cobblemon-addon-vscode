@@ -269,8 +269,8 @@ export interface Field {
   suppressingWeather(): boolean;
 }
 
-export type GenericMoveCallback = (this: Battle, ...args: unknown[]) => unknown;
-export type GenericConditionCallback = (this: Battle, ...args: unknown[]) => unknown;
+export type GenericMoveCallback = (this: Battle, ...args: any[]) => unknown;
+export type GenericConditionCallback = (this: Battle, ...args: any[]) => unknown;
 export type ResultMoveCallback = (
   this: Battle,
   target: Pokemon,
