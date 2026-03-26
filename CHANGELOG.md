@@ -1,13 +1,11 @@
 # 0.8.0 - 2026-03-23
 
-- Preliminary moves support and generator
 - Workspace validation now covers custom move files
 - Move builder supports JS by default with optional TS generation
 - Added move callback snippets and insert callback command
-- Move builder form includes more move fields and improved layout
 - Added `pack.mcmeta` generation and validation
 - Added addon zip packaging command
-- TS move files are converted to packaged JS move files when zipping
+  - TS move files are converted to packaged JS move files when zipping
 
 # 0.7.0 - 2026-03-19
 
