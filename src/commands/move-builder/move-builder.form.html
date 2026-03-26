@@ -357,23 +357,23 @@
               </div>
               <div class="field">
                 <label for="sideCondition">Side Condition</label>
-                <input id="sideCondition" type="text" list="sideConditionList" />
+                <select id="sideCondition"></select>
               </div>
               <div class="field">
                 <label for="slotCondition">Slot Condition</label>
-                <input id="slotCondition" type="text" list="slotConditionList" />
+                <select id="slotCondition"></select>
               </div>
               <div class="field">
                 <label for="terrain">Terrain</label>
-                <input id="terrain" type="text" list="terrainList" />
+                <select id="terrain"></select>
               </div>
               <div class="field">
                 <label for="weather">Weather</label>
-                <input id="weather" type="text" list="weatherList" />
+                <select id="weather"></select>
               </div>
               <div class="field">
                 <label for="pseudoWeather">Pseudo-Weather</label>
-                <input id="pseudoWeather" type="text" list="pseudoWeatherList" />
+                <select id="pseudoWeather"></select>
               </div>
             </div>
           </div>
@@ -595,12 +595,6 @@
         <ul id="generatedFiles" class="path-preview"></ul>
       </div>
 
-      <datalist id="sideConditionList"></datalist>
-      <datalist id="slotConditionList"></datalist>
-      <datalist id="terrainList"></datalist>
-      <datalist id="weatherList"></datalist>
-      <datalist id="pseudoWeatherList"></datalist>
-
       <div id="error"></div>
       <div class="actions">
         <button id="cancel" type="button" class="secondary">Cancel</button>
@@ -619,6 +613,11 @@
       const contestTypeSet = new Set(config.contestTypes);
       const flagSet = new Set(config.flags);
       const statusSet = new Set(config.statuses);
+      const sideConditionSet = new Set(config.sideConditions);
+      const slotConditionSet = new Set(config.slotConditions);
+      const pseudoWeatherSet = new Set(config.pseudoWeathers);
+      const terrainSet = new Set(config.terrains);
+      const weatherSet = new Set(config.weathers);
       const boostSet = new Set(config.boostKeys);
       let fileIdEdited = false;
 
@@ -693,11 +692,6 @@
       const multihitRangeGroup = document.getElementById("multihitRangeGroup");
       const moveFilePatternEl = document.getElementById("moveFilePattern");
       const moveFileHelperEl = document.getElementById("moveFileHelper");
-      const sideConditionListEl = document.getElementById("sideConditionList");
-      const slotConditionListEl = document.getElementById("slotConditionList");
-      const terrainListEl = document.getElementById("terrainList");
-      const weatherListEl = document.getElementById("weatherList");
-      const pseudoWeatherListEl = document.getElementById("pseudoWeatherList");
 
       function setError(message) {
         errorEl.textContent = message || "";
@@ -742,16 +736,6 @@
             label.appendChild(input);
             label.appendChild(document.createTextNode(flag));
             return label;
-          }),
-        );
-      }
-
-      function populateDataList(listEl, values) {
-        listEl.replaceChildren(
-          ...values.map((value) => {
-            const option = document.createElement("option");
-            option.value = value;
-            return option;
           }),
         );
       }
@@ -1119,11 +1103,21 @@
           : "";
         fields.status.value = statusSet.has(data.status) ? data.status : "";
         fields.volatileStatus.value = data.volatileStatus || "";
-        fields.sideCondition.value = data.sideCondition || "";
-        fields.slotCondition.value = data.slotCondition || "";
-        fields.pseudoWeather.value = data.pseudoWeather || "";
-        fields.terrain.value = data.terrain || "";
-        fields.weather.value = data.weather || "";
+        fields.sideCondition.value = sideConditionSet.has(data.sideCondition)
+          ? data.sideCondition
+          : "";
+        fields.slotCondition.value = slotConditionSet.has(data.slotCondition)
+          ? data.slotCondition
+          : "";
+        fields.pseudoWeather.value = pseudoWeatherSet.has(data.pseudoWeather)
+          ? data.pseudoWeather
+          : "";
+        fields.terrain.value = terrainSet.has(data.terrain)
+          ? data.terrain
+          : "";
+        fields.weather.value = weatherSet.has(data.weather)
+          ? data.weather
+          : "";
         fields.boostStat.value = boostSet.has(data.boostStat) ? data.boostStat : "";
         fields.boostStages.value = data.boostStages || "";
         fields.recoilNumerator.value = data.recoilNumerator || "";
@@ -1177,16 +1171,16 @@
       populateSelect(fields.contestType, config.contestTypes, "(omit)");
       populateSelect(fields.status, config.statuses, "(none)");
       populateSelect(fields.volatileStatus, config.volatiles, "(none)");
+      populateSelect(fields.sideCondition, config.sideConditions, "(none)");
+      populateSelect(fields.slotCondition, config.slotConditions, "(none)");
+      populateSelect(fields.pseudoWeather, config.pseudoWeathers, "(none)");
+      populateSelect(fields.terrain, config.terrains, "(none)");
+      populateSelect(fields.weather, config.weathers, "(none)");
       populateSelect(fields.boostStat, config.boostKeys, "(none)");
       populateSelect(fields.secondaryStatus, config.statuses, "(none)");
       populateSelect(fields.secondaryVolatileStatus, config.volatiles, "(none)");
       populateSelect(fields.secondaryBoostStat, config.boostKeys, "(none)");
       populateFlagChecks(config.flags);
-      populateDataList(sideConditionListEl, config.sideConditions);
-      populateDataList(slotConditionListEl, config.slotConditions);
-      populateDataList(terrainListEl, config.terrains);
-      populateDataList(weatherListEl, config.weathers);
-      populateDataList(pseudoWeatherListEl, config.pseudoWeathers);
       moveFilePatternEl.textContent = `data/<namespace>/moves/<file>.${moveFileExtension}`;
       moveFileHelperEl.textContent = config.useTypescriptForMoves
         ? "The file id becomes the move file name. It fills in from the move name, and you can change it if needed. Typescript move generation also updates a hidden helper file so callback typing works in the editor."
