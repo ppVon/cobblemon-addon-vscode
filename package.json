@@ -6,7 +6,7 @@
     "type": "git",
     "url": "https://github.com/ppVon/cobblemon-addon-vscode"
   },
-  "version": "0.7.11",
+  "version": "0.7.12",
   "publisher": "ppVon",
   "license": "MIT",
   "engines": {
