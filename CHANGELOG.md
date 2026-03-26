@@ -6,6 +6,7 @@
 - Added `pack.mcmeta` generation and validation
 - Added addon zip packaging command
   - TS move files are converted to packaged JS move files when zipping
+- Egg Groups are now validated on lower-case variants
 
 # 0.7.0 - 2026-03-19
 
