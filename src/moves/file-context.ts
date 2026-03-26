@@ -48,6 +48,13 @@ function findContextInObject(
   }
 
   for (const member of objectNode.members) {
+    if (member.kind === 'method') {
+      if (nodeContainsOffset(parsed.sourceFile, member.node, offset)) {
+        return undefined;
+      }
+      continue;
+    }
+
     if (member.kind !== 'property') {
       continue;
     }
