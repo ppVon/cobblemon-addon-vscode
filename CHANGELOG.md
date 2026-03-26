@@ -3,6 +3,7 @@
 - Add icon
 - Move builder now adds default move name and description lang keys
 - Move validation now warns on missing move lang keys
+- Edited some validation text to be more human readable
 
 # 0.8.0 - 2026-03-26
 
