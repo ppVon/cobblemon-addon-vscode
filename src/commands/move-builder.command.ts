@@ -2,6 +2,7 @@ import * as path from 'path';
 import * as vscode from 'vscode';
 import { type CommandDefinition } from './types';
 import { pickWorkspaceFolder, writeFileIfMissing } from './command-utils';
+import { upsertMoveLangEntries } from './lang-utils';
 import { showMoveBuilderForm } from './move-builder/webview';
 import { buildMoveTemplate } from './move-builder/templates';
 import {
@@ -54,6 +55,15 @@ async function scaffoldMoveFile(): Promise<void> {
     : undefined;
   const content = buildMoveTemplate(formData, { moveDataImportPath });
   await writeFileIfMissing(targetUri, content);
+
+  await upsertMoveLangEntries(
+    folder.uri,
+    formData.namespace,
+    formData.fileId,
+    formData.moveName.trim(),
+    `TODO: Add move description for ${formData.moveName.trim()}.`,
+    'en_us',
+  );
 
   void vscode.window.showInformationMessage(
     `Move builder generated ${formData.namespace}:${formData.fileId}.`,

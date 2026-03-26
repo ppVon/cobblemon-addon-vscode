@@ -88,7 +88,7 @@ function validateObjectStructure(
       diagnostics.push(
         createDiagnostic(
           rangeForJsNode(parsed, member.keyNode),
-          `Duplicate property '${member.key}'.`,
+          `You already set '${member.key}' once in this move. Remove the extra copy.`,
           vscode.DiagnosticSeverity.Error,
         ),
       );
@@ -156,7 +156,7 @@ function validateMoveTopLevel(
       diagnostics.push(
         createDiagnostic(
           rangeForJsNode(parsed, root.node),
-          `Missing required move property '${key}'.`,
+          `This move is missing '${key}'.`,
           vscode.DiagnosticSeverity.Error,
         ),
       );
@@ -181,7 +181,7 @@ function validateMoveTopLevel(
       diagnostics.push(
         createDiagnostic(
           rangeForMemberKey(parsed, member),
-          `Unknown move callback property '${key}'.`,
+          `The callback '${key}' is not recognized. Check the name for a typo.`,
           workspaceWarningSeverity(),
         ),
       );
@@ -192,7 +192,7 @@ function validateMoveTopLevel(
     diagnostics.push(
       createDiagnostic(
         rangeForMemberKey(parsed, member),
-        `Unknown move property '${key}'.`,
+        `'${key}' is not a recognized move setting. Check the spelling.`,
         workspaceWarningSeverity(),
       ),
     );
@@ -680,7 +680,7 @@ function validateFlagsProperty(
     return [
       createDiagnostic(
         rangeForMember(parsed, member),
-        "Property 'flags' must be an object.",
+        "'flags' must look like 'flags: { protect: 1, contact: 1 }'.",
         vscode.DiagnosticSeverity.Error,
       ),
     ];
@@ -695,7 +695,7 @@ function validateFlagsProperty(
       diagnostics.push(
         createDiagnostic(
           rangeForMember(parsed, flagMember),
-          'Flag entries must use property assignments.',
+          "Inside 'flags', only flag names like 'protect: 1' are allowed. Functions do not belong here.",
           vscode.DiagnosticSeverity.Error,
         ),
       );
@@ -707,7 +707,7 @@ function validateFlagsProperty(
       diagnostics.push(
         createDiagnostic(
           rangeForMember(parsed, flagMember),
-          `Flag '${key}' must use the numeric value 1.`,
+          `Flag '${key}' must be set to 1.`,
           vscode.DiagnosticSeverity.Error,
         ),
       );
@@ -717,7 +717,7 @@ function validateFlagsProperty(
       diagnostics.push(
         createDiagnostic(
           rangeForMemberKey(parsed, flagMember),
-          `Unknown move flag '${key}'.`,
+          `'${key}' is not a recognized flag name.`,
           workspaceWarningSeverity(),
         ),
       );
@@ -740,7 +740,7 @@ function validateSecondaryProperty(
     return [
       createDiagnostic(
         rangeForMember(parsed, member),
-        "Property 'secondary' must use a value.",
+        "Give 'secondary' a value like null or an object.",
         vscode.DiagnosticSeverity.Error,
       ),
     ];
@@ -754,7 +754,7 @@ function validateSecondaryProperty(
     return [
       createDiagnostic(
         rangeForMember(parsed, member),
-        "Property 'secondary' must be null or an object.",
+        "'secondary' must be null or an object like 'secondary: { chance: 30, status: \"brn\" }'.",
         vscode.DiagnosticSeverity.Error,
       ),
     ];
@@ -781,7 +781,7 @@ function validateBoostsProperty(
     return [
       createDiagnostic(
         rangeForMember(parsed, member),
-        `Property '${label}' must be an object.`,
+        `'${label}' must be an object of stat changes, like '{ atk: 1 }'.`,
         vscode.DiagnosticSeverity.Error,
       ),
     ];
@@ -795,7 +795,7 @@ function validateBoostsProperty(
       diagnostics.push(
         createDiagnostic(
           rangeForMemberKey(parsed, boostMember),
-          `Unknown boost stat '${key}'.`,
+          `'${key}' is not a recognized stat for '${label}'.`,
           workspaceWarningSeverity(),
         ),
       );
@@ -878,7 +878,7 @@ function validateSecondaryEffectObject(
     diagnostics.push(
       createDiagnostic(
         rangeForJsNode(parsed, objectNode.node),
-        `${label} should define at least one effect.`,
+        `${label} is empty. Add at least one effect, like status, volatileStatus, boosts, or self.`,
         vscode.DiagnosticSeverity.Error,
       ),
     );
@@ -905,7 +905,7 @@ function validateSecondaryEffectObject(
     diagnostics.push(
       createDiagnostic(
         rangeForMemberKey(parsed, group[0]),
-        `Unknown ${label} property '${key}'.`,
+        `'${key}' is not a recognized ${label} setting. Check the spelling.`,
         workspaceWarningSeverity(),
       ),
     );
@@ -989,7 +989,7 @@ function validateSelfBoostProperty(
     return [
       createDiagnostic(
         rangeForMember(parsed, member),
-        "Property 'selfBoost' must be an object.",
+        "'selfBoost' must look like 'selfBoost: { boosts: { atk: 1 } }'.",
         vscode.DiagnosticSeverity.Error,
       ),
     ];
@@ -1008,7 +1008,7 @@ function validateSelfBoostProperty(
     diagnostics.push(
       createDiagnostic(
         rangeForMemberKey(parsed, group[0]),
-        `Unknown selfBoost property '${key}'.`,
+        `'${key}' is not a recognized selfBoost setting. Check the spelling.`,
         workspaceWarningSeverity(),
       ),
     );
@@ -1030,7 +1030,7 @@ function validateSecondariesProperty(
     return [
       createDiagnostic(
         rangeForMember(parsed, member),
-        "Property 'secondaries' must be an array or null.",
+        "'secondaries' must be null or a list like '[{ chance: 30, status: \"brn\" }]'.",
         vscode.DiagnosticSeverity.Error,
       ),
     ];
@@ -1044,7 +1044,7 @@ function validateSecondariesProperty(
     return [
       createDiagnostic(
         rangeForMember(parsed, member),
-        "Property 'secondaries' must be an array or null.",
+        "'secondaries' must be null or a list like '[{ chance: 30, status: \"brn\" }]'.",
         vscode.DiagnosticSeverity.Error,
       ),
     ];
@@ -1056,7 +1056,7 @@ function validateSecondariesProperty(
       diagnostics.push(
         createDiagnostic(
           rangeForJsNode(parsed, element.node),
-          `secondaries[${index}] must be an object.`,
+          `Each entry in 'secondaries' must be an object. Problem found at secondaries[${index}].`,
           vscode.DiagnosticSeverity.Error,
         ),
       );
@@ -1083,7 +1083,7 @@ function validateSelfProperty(
     return [
       createDiagnostic(
         rangeForMember(parsed, member),
-        "Property 'self' must be an object or null.",
+        "'self' must be null or an object like 'self: { boosts: { atk: 1 } }'.",
         vscode.DiagnosticSeverity.Error,
       ),
     ];
@@ -1097,7 +1097,7 @@ function validateSelfProperty(
     return [
       createDiagnostic(
         rangeForMember(parsed, member),
-        "Property 'self' must be an object or null.",
+        "'self' must be null or an object like 'self: { boosts: { atk: 1 } }'.",
         vscode.DiagnosticSeverity.Error,
       ),
     ];
@@ -1120,7 +1120,7 @@ function validateHitEffectContainerProperty(
     return [
       createDiagnostic(
         rangeForMember(parsed, member),
-        `Property '${label}' must be an object.`,
+        `'${label}' must be an object.`,
         vscode.DiagnosticSeverity.Error,
       ),
     ];
@@ -1148,7 +1148,7 @@ function validateHitEffectContainerProperty(
     diagnostics.push(
       createDiagnostic(
         rangeForMemberKey(parsed, group[0]),
-        `Unknown ${label} property '${key}'.`,
+        `'${key}' is not a recognized ${label} setting. Check the spelling.`,
         workspaceWarningSeverity(),
       ),
     );
@@ -1170,7 +1170,7 @@ function validateConditionProperty(
     return [
       createDiagnostic(
         rangeForMember(parsed, member),
-        "Property 'condition' must be an object.",
+        "'condition' must be an object like 'condition: { duration: 2, onStart() {} }'.",
         vscode.DiagnosticSeverity.Error,
       ),
     ];
@@ -1202,7 +1202,7 @@ function validateConditionProperty(
     diagnostics.push(
       createDiagnostic(
         rangeForMemberKey(parsed, conditionMember),
-        `Unknown condition property '${key}'.`,
+        `'${key}' is not a recognized condition setting. Check the spelling.`,
         workspaceWarningSeverity(),
       ),
     );
@@ -1225,7 +1225,7 @@ function validateSimpleObjectProperty(
     return [
       createDiagnostic(
         rangeForMember(parsed, member),
-        `Property '${label}' must be an object.`,
+        `'${label}' must be an object.`,
         vscode.DiagnosticSeverity.Error,
       ),
     ];
@@ -1274,7 +1274,7 @@ function validateSimpleObjectProperty(
     diagnostics.push(
       createDiagnostic(
         rangeForMemberKey(parsed, group[0]),
-        `Unknown ${label} property '${key}'.`,
+        `'${key}' is not a recognized ${label} setting. Check the spelling.`,
         workspaceWarningSeverity(),
       ),
     );
@@ -1291,7 +1291,7 @@ function validateMoveCallbackMember(
     return [
       createDiagnostic(
         rangeForMember(parsed, member),
-        'Callback entries must use supported property names.',
+        "This callback entry is not written in a valid way. Use a normal callback name like 'onHit(...) {}'.",
         vscode.DiagnosticSeverity.Error,
       ),
     ];
@@ -1302,7 +1302,7 @@ function validateMoveCallbackMember(
       return [
         createDiagnostic(
           rangeForMember(parsed, member),
-          `Callback property '${member.key}' must use a numeric value.`,
+          `'${member.key}' must be a number here, not a function.`,
           vscode.DiagnosticSeverity.Error,
         ),
       ];
@@ -1330,7 +1330,7 @@ function validateFunctionCallbackMember(
     return [
       createDiagnostic(
         rangeForMember(parsed, member),
-        'Callback entries must use methods or function-valued properties.',
+        "Callbacks must be written as functions, like 'onHit(...) {}' or 'onHit: function (...) {}'.",
         vscode.DiagnosticSeverity.Error,
       ),
     ];
@@ -1343,7 +1343,7 @@ function validateFunctionCallbackMember(
   return [
     createDiagnostic(
       rangeForMember(parsed, member),
-      `Callback property '${member.key}' must use a function.`,
+      `'${member.key}' must be a function.`,
       vscode.DiagnosticSeverity.Error,
     ),
   ];
@@ -1357,7 +1357,7 @@ function validateLooseCallbackLikeMember(
     return [
       createDiagnostic(
         rangeForMember(parsed, member),
-        'Callback entries must use supported property names.',
+        "This callback entry is not written in a valid way. Use a normal callback name like 'onHit(...) {}'.",
         vscode.DiagnosticSeverity.Error,
       ),
     ];
@@ -1371,7 +1371,7 @@ function validateLooseCallbackLikeMember(
     return [
       createDiagnostic(
         rangeForMember(parsed, member),
-        'Callback entries must use methods or property assignments.',
+        "This callback-like setting must be written as a normal property or function.",
         vscode.DiagnosticSeverity.Error,
       ),
     ];
@@ -1395,7 +1395,7 @@ function validateLooseCallbackLikeMember(
   return [
     createDiagnostic(
       rangeForMember(parsed, member),
-      `Callback-like property '${member.key}' must use a function, string, number, or boolean literal.`,
+      `'${member.key}' must be a function, string, number, or true/false value.`,
       vscode.DiagnosticSeverity.Error,
     ),
   ];
@@ -1409,7 +1409,7 @@ function validateConditionCallbackMember(
     return [
       createDiagnostic(
         rangeForMember(parsed, member),
-        'Condition callback entries must use supported property names.',
+        "This condition callback is not written in a valid way. Use a normal callback name like 'onStart() {}'.",
         vscode.DiagnosticSeverity.Error,
       ),
     ];
@@ -1423,7 +1423,7 @@ function validateConditionCallbackMember(
     return [
       createDiagnostic(
         rangeForMember(parsed, member),
-        'Condition callback entries must use methods or property assignments.',
+        "Condition callbacks must be written as functions or normal value properties.",
         vscode.DiagnosticSeverity.Error,
       ),
     ];
@@ -1452,7 +1452,7 @@ function validateConditionCallbackMember(
   return [
     createDiagnostic(
       rangeForMember(parsed, member),
-      `Condition callback-like property '${member.key}' must use a function or a supported literal value.`,
+      `'${member.key}' must be a function, or a true/false, text, or number value when that setting allows it.`,
       vscode.DiagnosticSeverity.Error,
     ),
   ];
@@ -1498,7 +1498,7 @@ function validateFractionProperty(
     return [
       createDiagnostic(
         rangeForMember(parsed, member),
-        `Property '${label}' must be a [numerator, denominator] array${allowNull ? ' or null' : ''}.`,
+        `'${label}' must be two positive whole numbers in brackets, like [1, 2]${allowNull ? ' or null' : ''}.`,
         vscode.DiagnosticSeverity.Error,
       ),
     ];
@@ -1508,7 +1508,7 @@ function validateFractionProperty(
     return [
       createDiagnostic(
         rangeForMember(parsed, member),
-        `Property '${label}' must contain exactly two integers.`,
+        `'${label}' must have exactly two numbers, like [1, 2].`,
         vscode.DiagnosticSeverity.Error,
       ),
     ];
@@ -1526,7 +1526,7 @@ function validateFractionProperty(
       diagnostics.push(
         createDiagnostic(
           rangeForJsNode(parsed, property.value.elements[i].node),
-          `Property '${label}' must use positive integers.`,
+          `Each number in '${label}' must be a positive whole number.`,
           vscode.DiagnosticSeverity.Error,
         ),
       );
@@ -1549,7 +1549,7 @@ function validateMultihitProperty(
     return [
       createDiagnostic(
         rangeForMember(parsed, member),
-        "Property 'multihit' must use a numeric value or [min, max] array.",
+        "'multihit' must be a positive whole number or a range like [2, 5].",
         vscode.DiagnosticSeverity.Error,
       ),
     ];
@@ -1561,7 +1561,7 @@ function validateMultihitProperty(
       return [
         createDiagnostic(
           rangeForMember(parsed, member),
-          "Property 'multihit' must be a positive integer.",
+          "'multihit' must be a positive whole number.",
           vscode.DiagnosticSeverity.Error,
         ),
       ];
@@ -1573,7 +1573,7 @@ function validateMultihitProperty(
     return [
       createDiagnostic(
         rangeForMember(parsed, member),
-        "Property 'multihit' must be a positive integer or [min, max] array.",
+        "'multihit' must be a positive whole number or a range like [2, 5].",
         vscode.DiagnosticSeverity.Error,
       ),
     ];
@@ -1592,7 +1592,7 @@ function validateMultihitProperty(
     return [
       createDiagnostic(
         rangeForMember(parsed, member),
-        "Property 'multihit' must use positive integers where max >= min.",
+        "In 'multihit: [min, max]', both numbers must be positive whole numbers and max must be at least min.",
         vscode.DiagnosticSeverity.Error,
       ),
     ];
@@ -1672,7 +1672,7 @@ function validateRequiredStringProperty(
   return [
     createDiagnostic(
       rangeForMember(parsed, member),
-      `Property '${label}' must be a non-empty string.`,
+      `'${label}' must be text and cannot be empty.`,
       vscode.DiagnosticSeverity.Error,
     ),
   ];
@@ -1695,7 +1695,7 @@ function validateOptionalStringProperty(
   return [
     createDiagnostic(
       rangeForMember(parsed, member),
-      `Property '${label}' must be a non-empty string.`,
+      `'${label}' must be text and cannot be empty.`,
       vscode.DiagnosticSeverity.Error,
     ),
   ];
@@ -1720,7 +1720,7 @@ function validateBooleanOrStringProperty(
   return [
     createDiagnostic(
       rangeForMember(parsed, member),
-      `Property '${label}' must be a boolean or non-empty string.`,
+      `'${label}' must be true/false or text.`,
       vscode.DiagnosticSeverity.Error,
     ),
   ];
@@ -1787,7 +1787,7 @@ function validateOptionalAnyProperty(
   return [
     createDiagnostic(
       rangeForMember(parsed, member),
-      `Property '${label}' must use a value.`,
+      `'${label}' needs a value.`,
       vscode.DiagnosticSeverity.Error,
     ),
   ];
@@ -1810,7 +1810,7 @@ function validateIdentifierLikeStringProperty(
   return [
     createDiagnostic(
       rangeForMember(parsed, member),
-      `Property '${label}' must be an identifier-like string.`,
+      `'${label}' should use a simple id with letters, numbers, or underscores.`,
       vscode.DiagnosticSeverity.Error,
     ),
   ];
@@ -1832,7 +1832,7 @@ function validateOptionalBooleanProperty(
   return [
     createDiagnostic(
       rangeForMember(parsed, member),
-      `Property '${label}' must be a boolean.`,
+      `'${label}' must be true or false.`,
       vscode.DiagnosticSeverity.Error,
     ),
   ];
@@ -1855,7 +1855,7 @@ function validateIgnoreImmunityProperty(
     return [
       createDiagnostic(
         rangeForMember(parsed, member),
-        "Property 'ignoreImmunity' must be a boolean or an object of booleans.",
+        "'ignoreImmunity' must be true/false or an object like '{ Fire: true }'.",
         vscode.DiagnosticSeverity.Error,
       ),
     ];
@@ -1867,7 +1867,7 @@ function validateIgnoreImmunityProperty(
       diagnostics.push(
         createDiagnostic(
           rangeForMember(parsed, entry),
-          "Property 'ignoreImmunity' entries must use property assignments.",
+          "Inside 'ignoreImmunity', use type names with true/false values, like 'Fire: true'.",
           vscode.DiagnosticSeverity.Error,
         ),
       );
@@ -1878,7 +1878,7 @@ function validateIgnoreImmunityProperty(
       diagnostics.push(
         createDiagnostic(
           rangeForMember(parsed, entry),
-          "Property 'ignoreImmunity' entries must use boolean values.",
+          "Each 'ignoreImmunity' entry must be true or false.",
           vscode.DiagnosticSeverity.Error,
         ),
       );
@@ -1906,7 +1906,7 @@ function validateStringEnumProperty(
   return [
     createDiagnostic(
       rangeForMember(parsed, member),
-      `Property '${label}' must be one of the supported values.`,
+      `'${label}' must use one of the allowed values.`,
       vscode.DiagnosticSeverity.Error,
     ),
   ];
@@ -1946,7 +1946,7 @@ function validateNumberProperty(
     return [
       createDiagnostic(
         rangeForMember(parsed, member),
-        `Property '${options.label}' must be a number.`,
+        `'${options.label}' must be a number.`,
         vscode.DiagnosticSeverity.Error,
       ),
     ];
@@ -1956,7 +1956,7 @@ function validateNumberProperty(
     return [
       createDiagnostic(
         rangeForMember(parsed, member),
-        `Property '${options.label}' must be an integer.`,
+        `'${options.label}' must be a whole number.`,
         vscode.DiagnosticSeverity.Error,
       ),
     ];
@@ -1966,7 +1966,7 @@ function validateNumberProperty(
     return [
       createDiagnostic(
         rangeForMember(parsed, member),
-        `Property '${options.label}' is out of range.`,
+        numberRangeMessage(options.label, options.min, options.max),
         vscode.DiagnosticSeverity.Error,
       ),
     ];
@@ -1976,13 +1976,30 @@ function validateNumberProperty(
     return [
       createDiagnostic(
         rangeForMember(parsed, member),
-        `Property '${options.label}' cannot be 0.`,
+        `'${options.label}' cannot be 0 here.`,
         vscode.DiagnosticSeverity.Error,
       ),
     ];
   }
 
   return [];
+}
+
+function numberRangeMessage(
+  label: string,
+  min: number,
+  max: number | undefined,
+): string {
+  if (max !== undefined && Number.isFinite(min)) {
+    return `'${label}' must be between ${min} and ${max}.`;
+  }
+  if (Number.isFinite(min)) {
+    return `'${label}' must be at least ${min}.`;
+  }
+  if (max !== undefined) {
+    return `'${label}' must be at most ${max}.`;
+  }
+  return `'${label}' is out of range.`;
 }
 
 function readNumericMemberValue(member: JsObjectMember | undefined): number | undefined {

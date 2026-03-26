@@ -1,6 +1,7 @@
 import * as path from "path";
 import * as vscode from "vscode";
 import { parseWorkspaceJson } from "../core/json";
+import { parseWorkspaceJsObject, rangeForJsNode } from "../core/js-object";
 import {
   DATA_ROOT_EXCLUDE,
   getStringProperty,
@@ -238,6 +239,11 @@ export async function runWorkspaceValidation(
   for (const uri of [...moveFiles, ...moveTsFiles]) {
     const diags = await validateMoveJsFile(uri);
     addDiagnostics(byUri, uri, diags);
+    addDiagnostics(
+      byUri,
+      uri,
+      await validateMoveLangRequirements(uri, langKeys, cobblemonDefaults),
+    );
   }
 
   for (const record of dexEntryRecords) {
@@ -771,4 +777,72 @@ async function pathExists(uri: vscode.Uri): Promise<boolean> {
   } catch {
     return false;
   }
+}
+
+async function validateMoveLangRequirements(
+  uri: vscode.Uri,
+  langKeys: Set<string>,
+  cobblemonDefaults: CobblemonDefaultResourceIndex,
+): Promise<vscode.Diagnostic[]> {
+  const parsed = await parseWorkspaceJsObject(uri);
+  if (parsed.parseErrors.length > 0 || !parsed.root) {
+    return [];
+  }
+
+  const normalized = normalizePath(uri.fsPath);
+  const namespace = inferNamespaceFromPath(normalized, "/data/") ?? "minecraft";
+  const moveStem = path.basename(normalized, path.extname(normalized));
+  const moveSlug = normalizeSlug(moveStem);
+  if (!moveSlug) {
+    return [];
+  }
+
+  const nameMember = parsed.root.members.find(
+    (
+      member,
+    ): member is Extract<typeof parsed.root.members[number], { keyNode: unknown }> =>
+      (member.kind === "property" || member.kind === "method") &&
+      member.key === "name",
+  );
+  const range = rangeForJsNode(
+    parsed,
+    nameMember?.keyNode ?? parsed.root.node,
+  );
+
+  const diagnostics: vscode.Diagnostic[] = [];
+  const nameKey = `${namespace}.move.${moveSlug}`;
+  const descKey = `${namespace}.move.${moveSlug}.desc`;
+
+  if (!langKeys.has(nameKey) && !cobblemonDefaults.langKeys.has(nameKey)) {
+    diagnostics.push(
+      createWorkspaceWarningDiagnostic(
+        range,
+        `Lang key '${nameKey}' was not found in any assets/*/lang/*.json file.`,
+      ),
+    );
+  }
+
+  if (!langKeys.has(descKey) && !cobblemonDefaults.langKeys.has(descKey)) {
+    diagnostics.push(
+      createWorkspaceWarningDiagnostic(
+        range,
+        `Lang key '${descKey}' was not found in any assets/*/lang/*.json file.`,
+      ),
+    );
+  }
+
+  return diagnostics;
+}
+
+function createWorkspaceWarningDiagnostic(
+  range: vscode.Range,
+  message: string,
+): vscode.Diagnostic {
+  const diagnostic = new vscode.Diagnostic(
+    range,
+    message,
+    workspaceWarningSeverity(),
+  );
+  diagnostic.source = "cobblemon-schema-tools";
+  return diagnostic;
 }

@@ -74,12 +74,18 @@ class MoveFileCompletionProvider implements vscode.CompletionItemProvider {
   provideCompletionItems(
     document: vscode.TextDocument,
     position: vscode.Position,
+    _token: vscode.CancellationToken,
+    completionContext: vscode.CompletionContext,
   ): vscode.CompletionItem[] {
     if (!isMoveFilePath(document.uri.fsPath)) {
       return [];
     }
 
-    const keyTarget = resolvePropertyKeyTarget(document, position);
+    const keyTarget = resolvePropertyKeyTarget(
+      document,
+      position,
+      completionContext,
+    );
     if (!keyTarget) {
       return [];
     }
@@ -281,6 +287,7 @@ interface PropertyKeyTarget {
 function resolvePropertyKeyTarget(
   document: vscode.TextDocument,
   position: vscode.Position,
+  completionContext: vscode.CompletionContext,
 ): PropertyKeyTarget | undefined {
   const wordRange =
     document.getWordRangeAtPosition(position, /[$A-Za-z_][$0-9A-Za-z_]*/)
@@ -291,6 +298,13 @@ function resolvePropertyKeyTarget(
   const keyStartOffset = document.offsetAt(wordRange.start);
   const previous = findPreviousNonWhitespace(text, keyStartOffset - 1);
   if (previous !== '{' && previous !== ',') {
+    return undefined;
+  }
+
+  if (
+    currentWord.length === 0 &&
+    completionContext.triggerKind !== vscode.CompletionTriggerKind.Invoke
+  ) {
     return undefined;
   }
 
