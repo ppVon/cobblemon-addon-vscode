@@ -24,6 +24,8 @@
     "onLanguage:typescript",
     "onCommand:cobblemonSchemaTools.insertMoveCallback",
     "onCommand:cobblemonSchemaTools.validateWorkspace",
+    "onCommand:cobblemonSchemaTools.generatePackMcmeta",
+    "onCommand:cobblemonSchemaTools.packageAddon",
     "onCommand:cobblemonSchemaTools.scaffoldMoveFile",
     "onCommand:cobblemonSchemaTools.scaffoldPokemonAssets",
     "onCommand:cobblemonSchemaTools.scaffoldDataFile",
@@ -39,6 +41,14 @@
       {
         "command": "cobblemonSchemaTools.insertMoveCallback",
         "title": "Cobblemon: Insert Move Callback"
+      },
+      {
+        "command": "cobblemonSchemaTools.generatePackMcmeta",
+        "title": "Cobblemon: Generate pack.mcmeta"
+      },
+      {
+        "command": "cobblemonSchemaTools.packageAddon",
+        "title": "Cobblemon: Package Addon Zip"
       },
       {
         "command": "cobblemonSchemaTools.scaffoldMoveFile",

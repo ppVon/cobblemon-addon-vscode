@@ -32,6 +32,10 @@ import {
   type CobblemonDefaultResourceIndex,
 } from "./cobblemon-default-index";
 import { validateMoveJsFile } from "./move-validation";
+import {
+  createMissingPackMcmetaDiagnostic,
+  validatePackMcmetaFile,
+} from "../pack/pack-mcmeta";
 
 export async function runWorkspaceValidation(
   engine: CobblemonSchemaEngine,
@@ -80,6 +84,11 @@ export async function runWorkspaceValidation(
     parsed: ParsedJsonFile;
     namespace: string;
   }> = [];
+  const workspaceFolders = vscode.workspace.workspaceFolders ?? [];
+
+  for (const folder of workspaceFolders) {
+    await validateWorkspacePackRoot(folder, byUri);
+  }
 
   for (const textureUri of textureFiles) {
     const textureId = toAssetResourceId(textureUri.fsPath);
@@ -724,4 +733,42 @@ function extractBedrockGroups(value: unknown): string[] {
 
   visit(value);
   return Array.from(groups);
+}
+
+async function validateWorkspacePackRoot(
+  folder: vscode.WorkspaceFolder,
+  byUri: Map<string, vscode.Diagnostic[]>,
+): Promise<void> {
+  if (!(await hasDirectory(vscode.Uri.joinPath(folder.uri, "data")))) {
+    return;
+  }
+
+  const packUri = vscode.Uri.joinPath(folder.uri, "pack.mcmeta");
+  if (!(await pathExists(packUri))) {
+    addDiagnostics(byUri, packUri, [
+      createMissingPackMcmetaDiagnostic(workspaceWarningSeverity()),
+    ]);
+    return;
+  }
+
+  const diagnostics = await validatePackMcmetaFile(packUri);
+  addDiagnostics(byUri, packUri, diagnostics);
+}
+
+async function hasDirectory(uri: vscode.Uri): Promise<boolean> {
+  try {
+    const stat = await vscode.workspace.fs.stat(uri);
+    return stat.type === vscode.FileType.Directory;
+  } catch {
+    return false;
+  }
+}
+
+async function pathExists(uri: vscode.Uri): Promise<boolean> {
+  try {
+    await vscode.workspace.fs.stat(uri);
+    return true;
+  } catch {
+    return false;
+  }
 }

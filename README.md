@@ -6,6 +6,8 @@ It helps you catch data issues quickly and generate common Cobblemon files from 
 ## What You Can Do
 
 - Validate your workspace data and view issues in the **Problems** panel.
+- Generate a root `pack.mcmeta` with **Cobblemon: Generate pack.mcmeta**.
+- Package your addon workspace as a zip with **Cobblemon: Package Addon Zip**.
 - Generate custom move JS files, or opt into typed TS move files, with **Cobblemon: Move Builder Form**.
 - Insert move callback snippets in JS or TS move files with **Cobblemon: Insert Move Callback**.
 - Generate Pokemon starter files with **Cobblemon: Pokemon Builder Form**.

@@ -5,6 +5,8 @@
 - Move builder supports JS by default with optional TS generation
 - Added move callback snippets and insert callback command
 - Move builder form includes more move fields and improved layout
+- Added `pack.mcmeta` generation and validation
+- Added addon zip packaging command
 
 # 0.7.0 - 2026-03-19
 
