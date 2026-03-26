@@ -7,6 +7,7 @@
 - Move builder form includes more move fields and improved layout
 - Added `pack.mcmeta` generation and validation
 - Added addon zip packaging command
+- TS move files are converted to packaged JS move files when zipping
 
 # 0.7.0 - 2026-03-19
 

@@ -1,7 +1,9 @@
 import * as path from 'path';
+import * as ts from 'typescript';
 import * as zlib from 'zlib';
 import * as vscode from 'vscode';
 import { normalizePath } from '../core/utils';
+import { parseJsObjectText } from '../core/js-object';
 
 export interface ZipEntry {
   relativePath: string;
@@ -24,7 +26,16 @@ export async function collectWorkspaceZipEntries(
   workspaceRoot: vscode.Uri,
 ): Promise<ZipEntry[]> {
   const entries: ZipEntry[] = [];
+  const seenRelativePaths = new Set<string>();
   await walkDirectory(workspaceRoot, workspaceRoot, entries);
+  for (const entry of entries) {
+    if (seenRelativePaths.has(entry.relativePath)) {
+      throw new Error(
+        `Packaging would create duplicate output file '${entry.relativePath}'.`,
+      );
+    }
+    seenRelativePaths.add(entry.relativePath);
+  }
   entries.sort((a, b) => a.relativePath.localeCompare(b.relativePath));
   return entries;
 }
@@ -130,11 +141,14 @@ async function walkDirectory(
 
     const content = await vscode.workspace.fs.readFile(childUri);
     const stat = await vscode.workspace.fs.stat(childUri);
-    entries.push({
-      relativePath,
-      content,
-      modifiedAt: new Date(stat.mtime || Date.now()),
-    });
+    entries.push(
+      await toZipEntry(
+        childUri,
+        relativePath,
+        content,
+        new Date(stat.mtime || Date.now()),
+      ),
+    );
   }
 }
 
@@ -160,6 +174,66 @@ function shouldExclude(relativePath: string): boolean {
 
 function normalizeZipPath(value: string): string {
   return normalizePath(value).replace(/^\/+/, '');
+}
+
+async function toZipEntry(
+  uri: vscode.Uri,
+  relativePath: string,
+  content: Uint8Array,
+  modifiedAt: Date,
+): Promise<ZipEntry> {
+  if (!isMoveTypescriptFile(relativePath)) {
+    return {
+      relativePath,
+      content,
+      modifiedAt,
+    };
+  }
+
+  const transpiled = transpileMoveTypescriptToJavascript(uri, content);
+  return {
+    relativePath: relativePath.replace(/\.ts$/i, '.js'),
+    content: Buffer.from(transpiled, 'utf8'),
+    modifiedAt,
+  };
+}
+
+function isMoveTypescriptFile(relativePath: string): boolean {
+  return /^data\/[^/]+\/moves\/.+\.ts$/i.test(normalizeZipPath(relativePath));
+}
+
+function transpileMoveTypescriptToJavascript(
+  uri: vscode.Uri,
+  content: Uint8Array,
+): string {
+  const sourceText = Buffer.from(content).toString('utf8');
+  const transpiled = ts.transpileModule(sourceText, {
+    compilerOptions: {
+      target: ts.ScriptTarget.ES2022,
+      module: ts.ModuleKind.ES2022,
+      removeComments: false,
+    },
+    fileName: uri.fsPath,
+  }).outputText;
+
+  const withoutModuleArtifacts = transpiled.replace(
+    /\n?export\s*\{\s*\};?\s*$/u,
+    '\n',
+  );
+  const jsUri = uri.with({
+    path: uri.path.replace(/\.ts$/i, '.js'),
+  });
+  const parsed = parseJsObjectText(jsUri, withoutModuleArtifacts);
+
+  if (!parsed.root) {
+    throw new Error(
+      `Could not package move file '${uri.fsPath}' as JavaScript. The transpiled output was not a single move object.`,
+    );
+  }
+
+  const objectStart = parsed.root.node.getStart(parsed.sourceFile, false);
+  const objectText = withoutModuleArtifacts.slice(objectStart, parsed.root.node.end);
+  return `(${objectText})\n`;
 }
 
 function toDosDateTime(date: Date): { time: number; date: number } {

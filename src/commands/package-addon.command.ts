@@ -43,9 +43,16 @@ async function packageAddon(): Promise<void> {
     return;
   }
 
-  const entries = await collectWorkspaceZipEntries(folder.uri);
-  const archive = buildZipArchive(entries);
-  await vscode.workspace.fs.writeFile(targetUri, archive);
+  try {
+    const entries = await collectWorkspaceZipEntries(folder.uri);
+    const archive = buildZipArchive(entries);
+    await vscode.workspace.fs.writeFile(targetUri, archive);
+  } catch (error) {
+    const message =
+      error instanceof Error ? error.message : 'Failed to package addon zip.';
+    void vscode.window.showErrorMessage(message);
+    return;
+  }
 
   void vscode.window.showInformationMessage(
     `Packaged ${folder.name} to ${targetUri.fsPath}.`,
