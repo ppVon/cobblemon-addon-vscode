@@ -7,6 +7,7 @@
   - Warns when the animation group file is missing
   - Warns when the expected `animation.<group>.<animation>` key is missing from the animation file
 - Edited some validation text to be more human readable
+- Fixed egg group validation
 
 # 0.8.0 - 2026-03-26
 
