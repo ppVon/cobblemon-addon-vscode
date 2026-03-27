@@ -3,6 +3,9 @@
 - Add icon
 - Move builder now adds default move name and description lang keys
 - Move validation now warns on missing move lang keys
+- Bedrock poser validation now detects legacy `bedrock(group, animation)` references
+  - Warns when the animation group file is missing
+  - Warns when the expected `animation.<group>.<animation>` key is missing from the animation file
 - Edited some validation text to be more human readable
 
 # 0.8.0 - 2026-03-26

@@ -38,6 +38,12 @@ import {
   validatePackMcmetaFile,
 } from "../pack/pack-mcmeta";
 
+interface BedrockAnimationReference {
+  group: string;
+  animation: string;
+  pointer: Array<string | number>;
+}
+
 export async function runWorkspaceValidation(
   engine: CobblemonSchemaEngine,
   diagnostics: vscode.DiagnosticCollection,
@@ -73,6 +79,7 @@ export async function runWorkspaceValidation(
   const referencedPosers = new Set<string>();
   const modelIds = new Set<string>();
   const animationGroupNames = new Set<string>();
+  const animationNamesByGroup = new Map<string, Set<string>>();
   const textureIds = new Set<string>();
   const langKeys = new Set<string>();
   const langRequirements: LangRequirement[] = [];
@@ -125,6 +132,14 @@ export async function runWorkspaceValidation(
   for (const uri of files) {
     const filePath = uri.fsPath;
     const normalized = normalizePath(filePath);
+    let parsedFile: ParsedJsonFile | undefined;
+
+    const getParsedFile = async (): Promise<ParsedJsonFile> => {
+      if (!parsedFile) {
+        parsedFile = await parseWorkspaceJson(uri);
+      }
+      return parsedFile;
+    };
 
     const modelId = toModelResourceId(normalized);
     if (modelId) {
@@ -135,6 +150,13 @@ export async function runWorkspaceValidation(
     if (animationGroup) {
       animationGroupNames.add(animationGroup);
       const animationNamespace = inferNamespaceFromPath(normalized, "/assets/");
+      const animationNames = extractAnimationNames(await getParsedFile());
+      indexAnimationGroupNames(
+        animationNamesByGroup,
+        animationGroup,
+        animationNamespace,
+        animationNames,
+      );
       if (animationNamespace) {
         animationGroupNames.add(`${animationNamespace}:${animationGroup}`);
       }
@@ -145,7 +167,7 @@ export async function runWorkspaceValidation(
       continue;
     }
 
-    const parsed = await parseWorkspaceJson(uri);
+    const parsed = await getParsedFile();
     const schemaDiagnostics = engine.validateJsonFile(
       parsed,
       resolution.schemaPath,
@@ -284,6 +306,7 @@ export async function runWorkspaceValidation(
       record,
       referencedPosers,
       animationGroupNames,
+      animationNamesByGroup,
       cobblemonDefaults,
     );
     addDiagnostics(byUri, record.parsed.uri, diags);
@@ -577,6 +600,7 @@ function validatePoserRecord(
   record: PoserRecord,
   referencedPosers: Set<string>,
   animationGroupNames: Set<string>,
+  animationNamesByGroup: Map<string, Set<string>>,
   cobblemonDefaults: CobblemonDefaultResourceIndex,
 ): vscode.Diagnostic[] {
   const diagnostics: vscode.Diagnostic[] = [];
@@ -622,9 +646,9 @@ function validatePoserRecord(
     }
   }
 
-  const groups = extractBedrockGroups(record.parsed.value);
-  for (const group of groups) {
-    const normalizedGroup = normalizeResourceId(group, record.namespace);
+  const refs = extractBedrockAnimationReferences(record.parsed.value);
+  for (const ref of refs) {
+    const normalizedGroup = normalizeResourceId(ref.group, record.namespace);
     const shortGroup = normalizedGroup.split(":", 2)[1] ?? normalizedGroup;
 
     if (
@@ -634,10 +658,31 @@ function validatePoserRecord(
       !cobblemonDefaults.animationGroupNames.has(normalizedGroup)
     ) {
       diagnostics.push(
-        new vscode.Diagnostic(
-          new vscode.Range(0, 0, 0, 1),
-          `Animation group '${group}' referenced by poser '${record.poserId}' was not found in assets/*/bedrock/**/animations/*.animation.json.`,
+        createCustomDiagnostic(
+          record.parsed,
+          `Animation group '${ref.group}' referenced by poser '${record.poserId}' was not found in assets/*/bedrock/**/animations/*.animation.json.`,
           workspaceWarningSeverity(),
+          ref.pointer,
+        ),
+      );
+      continue;
+    }
+
+    const animationNames =
+      animationNamesByGroup.get(shortGroup) ??
+      animationNamesByGroup.get(normalizedGroup);
+    if (!animationNames) {
+      continue;
+    }
+
+    const expectedAnimationName = `animation.${shortGroup}.${ref.animation}`;
+    if (!animationNames.has(expectedAnimationName)) {
+      diagnostics.push(
+        createCustomDiagnostic(
+          record.parsed,
+          `Animation '${ref.animation}' referenced by poser '${record.poserId}' was not found in animation group '${ref.group}'. Cobblemon looks for '${expectedAnimationName}'.`,
+          workspaceWarningSeverity(),
+          ref.pointer,
         ),
       );
     }
@@ -710,35 +755,98 @@ function validateTextureRef(
   return diagnostics;
 }
 
-function extractBedrockGroups(value: unknown): string[] {
-  const groups = new Set<string>();
-  const regex = /q\.bedrock(?:_[a-zA-Z]+)?\('([^']+)'\s*,\s*'[^']+'/g;
+function extractAnimationNames(parsed: ParsedJsonFile): string[] {
+  if (
+    parsed.parseErrors.length > 0 ||
+    !parsed.value ||
+    typeof parsed.value !== "object" ||
+    Array.isArray(parsed.value)
+  ) {
+    return [];
+  }
 
-  const visit = (item: unknown): void => {
+  const animations = (parsed.value as Record<string, unknown>).animations;
+  if (
+    !animations ||
+    typeof animations !== "object" ||
+    Array.isArray(animations)
+  ) {
+    return [];
+  }
+
+  return Object.keys(animations as Record<string, unknown>);
+}
+
+function indexAnimationGroupNames(
+  index: Map<string, Set<string>>,
+  groupName: string,
+  namespace: string | undefined,
+  animationNames: Iterable<string>,
+): void {
+  const namespacedGroup = namespace ? `${namespace}:${groupName}` : undefined;
+  for (const key of [groupName, namespacedGroup]) {
+    if (!key) {
+      continue;
+    }
+
+    let current = index.get(key);
+    if (!current) {
+      current = new Set<string>();
+      index.set(key, current);
+    }
+
+    for (const animationName of animationNames) {
+      current.add(animationName);
+    }
+  }
+}
+
+function extractBedrockAnimationReferences(
+  value: unknown,
+): BedrockAnimationReference[] {
+  const refs: BedrockAnimationReference[] = [];
+  const queryRegex =
+    /q\.bedrock(?:_[a-zA-Z]+)?\(\s*(['"])([^'"()]+)\1\s*,\s*(['"])([^'"()]+)\3/g;
+  const legacyRegex =
+    /(?<![\w.])bedrock\(\s*([^,()]+?)\s*,\s*([^,()]+?)\s*\)/g;
+
+  const visit = (item: unknown, pointer: Array<string | number>): void => {
     if (typeof item === "string") {
       let match: RegExpExecArray | null;
-      while ((match = regex.exec(item)) !== null) {
-        groups.add(match[1]);
+      while ((match = queryRegex.exec(item)) !== null) {
+        refs.push({
+          group: match[2].trim(),
+          animation: match[4].trim(),
+          pointer,
+        });
+      }
+
+      while ((match = legacyRegex.exec(item)) !== null) {
+        refs.push({
+          group: match[1].trim(),
+          animation: match[2].trim(),
+          pointer,
+        });
       }
       return;
     }
 
     if (Array.isArray(item)) {
-      for (const child of item) {
-        visit(child);
+      for (let i = 0; i < item.length; i++) {
+        visit(item[i], [...pointer, i]);
       }
       return;
     }
 
     if (item && typeof item === "object") {
-      for (const child of Object.values(item as Record<string, unknown>)) {
-        visit(child);
+      for (const [key, child] of Object.entries(item as Record<string, unknown>)) {
+        visit(child, [...pointer, key]);
       }
     }
   };
 
-  visit(value);
-  return Array.from(groups);
+  visit(value, []);
+  return refs;
 }
 
 async function validateWorkspacePackRoot(
