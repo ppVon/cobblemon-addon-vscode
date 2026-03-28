@@ -119,6 +119,52 @@ export async function upsertMoveLangEntries(
   return langUri;
 }
 
+export async function upsertAbilityLangEntries(
+  workspaceRoot: vscode.Uri,
+  namespace: string,
+  abilityIdSource: string,
+  abilityName: string,
+  abilityDescription: string,
+  langCode: string
+): Promise<vscode.Uri | undefined> {
+  const abilitySlug = normalizeSlug(abilityIdSource);
+  if (!abilitySlug) {
+    return undefined;
+  }
+
+  const langDir = vscode.Uri.joinPath(workspaceRoot, 'assets', namespace, 'lang');
+  await vscode.workspace.fs.createDirectory(langDir);
+  const langUri = vscode.Uri.joinPath(langDir, `${langCode}.json`);
+
+  const nameKey = `${namespace}.ability.${abilitySlug}`;
+  const descKey = `${namespace}.ability.${abilitySlug}.desc`;
+
+  const langObject = await readWritableLangObject(langUri);
+  if (!langObject) {
+    return undefined;
+  }
+
+  let changed = !(await exists(langUri));
+
+  const currentName = langObject[nameKey];
+  if (typeof currentName !== 'string' || currentName.trim().length === 0) {
+    langObject[nameKey] = abilityName;
+    changed = true;
+  }
+
+  const currentDesc = langObject[descKey];
+  if (typeof currentDesc !== 'string' || currentDesc.trim().length === 0) {
+    langObject[descKey] = abilityDescription;
+    changed = true;
+  }
+
+  if (changed) {
+    await vscode.workspace.fs.writeFile(langUri, Buffer.from(JSON.stringify(langObject, null, 2) + '\n', 'utf8'));
+  }
+
+  return langUri;
+}
+
 async function readWritableLangObject(
   langUri: vscode.Uri,
 ): Promise<Record<string, unknown> | undefined> {

@@ -1,3 +1,4 @@
+import * as path from 'path';
 import * as vscode from 'vscode';
 import {
   type JsObjectMember,
@@ -8,7 +9,12 @@ import {
   rangeForJsNode,
   rangeForJsSpan,
 } from '../core/js-object';
-import { workspaceWarningSeverity } from '../core/utils';
+import {
+  inferNamespaceFromPath,
+  normalizePath,
+  normalizeSlug,
+  workspaceWarningSeverity,
+} from '../core/utils';
 import {
   ABILITY_CONDITION_DECLARATIVE_KEY_SET,
   ABILITY_FLAG_KEY_SET,
@@ -16,8 +22,10 @@ import {
   ABILITY_TOP_LEVEL_DECLARATIVE_KEY_SET,
   isAbilityCallbackKey,
   isAbilityCallbackLikeKey,
+  isAbilityConditionCallbackKey,
   isAbilityNumericCallbackKey,
 } from '../abilities/spec';
+import { type CobblemonDefaultResourceIndex } from './cobblemon-default-index';
 
 interface IndexedObjectMembers {
   readonly all: Map<string, SupportedJsObjectMember[]>;
@@ -27,10 +35,6 @@ interface IndexedObjectMembers {
 type SupportedJsObjectMember = Exclude<JsObjectMember, { kind: 'unsupported-member' }>;
 
 const REQUIRED_ABILITY_KEYS = ['name', 'num', 'rating', 'flags'] as const;
-const EXTRA_CONDITION_CALLBACK_KEYS = new Set<string>([
-  'onRestart',
-  'onDisableMove',
-]);
 
 export async function validateAbilityJsFile(
   uri: vscode.Uri,
@@ -54,6 +58,61 @@ export async function validateAbilityJsFile(
 
   diagnostics.push(...validateObjectStructure(parsed, parsed.root));
   diagnostics.push(...validateAbilityTopLevel(parsed, parsed.root));
+
+  return diagnostics;
+}
+
+export async function validateAbilityLangRequirements(
+  uri: vscode.Uri,
+  langKeys: Set<string>,
+  cobblemonDefaults: CobblemonDefaultResourceIndex,
+): Promise<vscode.Diagnostic[]> {
+  const parsed = await parseWorkspaceJsObject(uri);
+  if (parsed.parseErrors.length > 0 || !parsed.root) {
+    return [];
+  }
+
+  const normalized = normalizePath(uri.fsPath);
+  const namespace = inferNamespaceFromPath(normalized, '/data/') ?? 'minecraft';
+  const abilitySlug = normalizeSlug(
+    path.basename(uri.fsPath).replace(/\.(js|ts)$/i, ''),
+  );
+  if (!abilitySlug) {
+    return [];
+  }
+
+  const nameMember = parsed.root.members.find(
+    (
+      member,
+    ): member is Extract<typeof parsed.root.members[number], { keyNode: unknown }> =>
+      (member.kind === 'property' || member.kind === 'method') &&
+      member.key === 'name',
+  );
+  const range = rangeForJsNode(parsed, nameMember?.keyNode ?? parsed.root.node);
+
+  const diagnostics: vscode.Diagnostic[] = [];
+  const nameKey = `${namespace}.ability.${abilitySlug}`;
+  const descKey = `${namespace}.ability.${abilitySlug}.desc`;
+
+  if (!langKeys.has(nameKey) && !cobblemonDefaults.langKeys.has(nameKey)) {
+    diagnostics.push(
+      createDiagnostic(
+        range,
+        `Lang key '${nameKey}' was not found in any assets/*/lang/*.json file.`,
+        workspaceWarningSeverity(),
+      ),
+    );
+  }
+
+  if (!langKeys.has(descKey) && !cobblemonDefaults.langKeys.has(descKey)) {
+    diagnostics.push(
+      createDiagnostic(
+        range,
+        `Lang key '${descKey}' was not found in any assets/*/lang/*.json file.`,
+        workspaceWarningSeverity(),
+      ),
+    );
+  }
 
   return diagnostics;
 }
@@ -319,7 +378,7 @@ function validateConditionProperty(
       continue;
     }
 
-    if (isAbilityCallbackKey(key) || EXTRA_CONDITION_CALLBACK_KEYS.has(key)) {
+    if (isAbilityConditionCallbackKey(key)) {
       diagnostics.push(...validateKnownConditionCallbackMember(parsed, conditionMember));
       continue;
     }
@@ -352,7 +411,7 @@ function validateKnownConditionCallbackMember(
   parsed: Awaited<ReturnType<typeof parseWorkspaceJsObject>>,
   member: SupportedJsObjectMember,
 ): vscode.Diagnostic[] {
-  if (member.key === 'onResidualOrder' || member.key === 'onResidualPriority' || member.key === 'onResidualSubOrder') {
+  if (isAbilityNumericCallbackKey(member.key)) {
     return validateNumericCallbackMember(parsed, member);
   }
 
@@ -626,10 +685,6 @@ function rangeForMember(
 ): vscode.Range {
   if (!member) {
     return new vscode.Range(0, 0, 0, 0);
-  }
-
-  if (member.kind === 'unsupported-member') {
-    return rangeForJsNode(parsed, member.node);
   }
 
   return rangeForJsNode(parsed, member.node);

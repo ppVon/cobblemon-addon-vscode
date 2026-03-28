@@ -93,6 +93,21 @@ export const ABILITY_NUMERIC_CALLBACK_KEY_SET = new Set<string>(
   ABILITY_NUMERIC_CALLBACK_KEYS,
 );
 
+export const ABILITY_CONDITION_CALLBACK_KEYS = [
+  'onStart',
+  'onEnd',
+  'onResidual',
+  'onResidualOrder',
+  'onResidualPriority',
+  'onResidualSubOrder',
+  'onRestart',
+  'onTryMove',
+  'onDisableMove',
+] as const;
+export const ABILITY_CONDITION_CALLBACK_KEY_SET = new Set<string>(
+  ABILITY_CONDITION_CALLBACK_KEYS,
+);
+
 export const ABILITY_TEMPLATE_FIELD_ORDER = [
   'num',
   'name',
@@ -123,6 +138,10 @@ export function isAbilityCallbackLikeKey(key: string): boolean {
 
 export function isAbilityNumericCallbackKey(key: string): boolean {
   return ABILITY_NUMERIC_CALLBACK_KEY_SET.has(key);
+}
+
+export function isAbilityConditionCallbackKey(key: string): boolean {
+  return ABILITY_CONDITION_CALLBACK_KEY_SET.has(key);
 }
 
 export { isValidJsIdentifierKey } from '../moves/spec';

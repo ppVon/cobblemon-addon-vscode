@@ -32,7 +32,10 @@ import {
   getCobblemonDefaultResourceIndex,
   type CobblemonDefaultResourceIndex,
 } from "./cobblemon-default-index";
-import { validateAbilityJsFile } from "./ability-validation";
+import {
+  validateAbilityJsFile,
+  validateAbilityLangRequirements,
+} from "./ability-validation";
 import { validateMoveJsFile } from "./move-validation";
 import {
   createMissingPackMcmetaDiagnostic,
@@ -280,6 +283,11 @@ export async function runWorkspaceValidation(
   for (const uri of [...abilityFiles, ...abilityTsFiles]) {
     const diags = await validateAbilityJsFile(uri);
     addDiagnostics(byUri, uri, diags);
+    addDiagnostics(
+      byUri,
+      uri,
+      await validateAbilityLangRequirements(uri, langKeys, cobblemonDefaults),
+    );
   }
 
   for (const record of dexEntryRecords) {

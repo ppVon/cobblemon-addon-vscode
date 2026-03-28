@@ -1,5 +1,6 @@
 import {
   ABILITY_CALLBACK_KEYS,
+  ABILITY_CONDITION_CALLBACK_KEYS,
   ABILITY_CONDITION_DECLARATIVE_KEYS,
   ABILITY_FLAG_KEYS,
   ABILITY_NONSTANDARD_VALUES,
@@ -16,7 +17,10 @@ export interface CallbackSnippetDefinition {
 }
 
 const ABILITY_CALLBACK_DETAILS: Readonly<
-  Record<string, Omit<CallbackSnippetDefinition, 'key'>>
+  Record<
+    typeof ABILITY_CALLBACK_KEYS[number],
+    Omit<CallbackSnippetDefinition, 'key'>
+  >
 > = {
   onStart: {
     detail: 'Run when the ability activates',
@@ -164,6 +168,50 @@ const ABILITY_CALLBACK_DETAILS: Readonly<
   },
 };
 
+const ABILITY_CONDITION_CALLBACK_DETAILS: Readonly<
+  Record<
+    typeof ABILITY_CONDITION_CALLBACK_KEYS[number],
+    Omit<CallbackSnippetDefinition, 'key'>
+  >
+> = {
+  onStart: {
+    detail: 'Run when the condition starts',
+    parameters: ['target', 'source', 'effect'],
+  },
+  onEnd: {
+    detail: 'Run when the condition ends',
+    parameters: ['target'],
+  },
+  onResidual: {
+    detail: 'Run during residual processing',
+    parameters: ['target', 'source', 'effect'],
+  },
+  onResidualOrder: {
+    detail: 'Set residual order',
+    numericPlaceholder: '28',
+  },
+  onResidualPriority: {
+    detail: 'Set residual priority',
+    numericPlaceholder: '0',
+  },
+  onResidualSubOrder: {
+    detail: 'Set residual sub-order',
+    numericPlaceholder: '0',
+  },
+  onRestart: {
+    detail: 'Run when the condition is applied again',
+    parameters: ['target', 'source', 'effect'],
+  },
+  onTryMove: {
+    detail: 'Run before the affected Pokemon moves',
+    parameters: ['target', 'source', 'move'],
+  },
+  onDisableMove: {
+    detail: 'Disable move choices while the condition is active',
+    parameters: ['pokemon'],
+  },
+};
+
 export const ABILITY_CALLBACK_SNIPPETS: readonly CallbackSnippetDefinition[] =
   ABILITY_CALLBACK_KEYS.map((key) => ({
     key,
@@ -171,53 +219,10 @@ export const ABILITY_CALLBACK_SNIPPETS: readonly CallbackSnippetDefinition[] =
   }));
 
 export const ABILITY_CONDITION_CALLBACK_SNIPPETS: readonly CallbackSnippetDefinition[] =
-  [
-    {
-      key: 'onStart',
-      detail: 'Run when the condition starts',
-      parameters: ['target', 'source', 'effect'],
-    },
-    {
-      key: 'onEnd',
-      detail: 'Run when the condition ends',
-      parameters: ['target'],
-    },
-    {
-      key: 'onResidual',
-      detail: 'Run during residual processing',
-      parameters: ['target', 'source', 'effect'],
-    },
-    {
-      key: 'onResidualOrder',
-      detail: 'Set residual order',
-      numericPlaceholder: '28',
-    },
-    {
-      key: 'onResidualPriority',
-      detail: 'Set residual priority',
-      numericPlaceholder: '0',
-    },
-    {
-      key: 'onResidualSubOrder',
-      detail: 'Set residual sub-order',
-      numericPlaceholder: '0',
-    },
-    {
-      key: 'onRestart',
-      detail: 'Run when the condition is applied again',
-      parameters: ['target', 'source', 'effect'],
-    },
-    {
-      key: 'onTryMove',
-      detail: 'Run before the affected Pokemon moves',
-      parameters: ['target', 'source', 'move'],
-    },
-    {
-      key: 'onDisableMove',
-      detail: 'Disable move choices while the condition is active',
-      parameters: ['pokemon'],
-    },
-  ] as const;
+  ABILITY_CONDITION_CALLBACK_KEYS.map((key) => ({
+    key,
+    ...ABILITY_CONDITION_CALLBACK_DETAILS[key],
+  }));
 
 export function buildCallbackMemberSnippet(
   definition: CallbackSnippetDefinition,
