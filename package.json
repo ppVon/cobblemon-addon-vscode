@@ -23,6 +23,8 @@
     "onLanguage:json",
     "onLanguage:javascript",
     "onLanguage:typescript",
+    "onCommand:cobblemonSchemaTools.scaffoldAbilityFile",
+    "onCommand:cobblemonSchemaTools.insertAbilityCallback",
     "onCommand:cobblemonSchemaTools.insertMoveCallback",
     "onCommand:cobblemonSchemaTools.validateWorkspace",
     "onCommand:cobblemonSchemaTools.generatePackMcmeta",
@@ -44,12 +46,20 @@
         "title": "Cobblemon: Insert Move Callback"
       },
       {
+        "command": "cobblemonSchemaTools.insertAbilityCallback",
+        "title": "Cobblemon: Insert Ability Callback"
+      },
+      {
         "command": "cobblemonSchemaTools.generatePackMcmeta",
         "title": "Cobblemon: Generate pack.mcmeta"
       },
       {
         "command": "cobblemonSchemaTools.packageAddon",
         "title": "Cobblemon: Package Addon Zip"
+      },
+      {
+        "command": "cobblemonSchemaTools.scaffoldAbilityFile",
+        "title": "Cobblemon: Ability Builder Form"
       },
       {
         "command": "cobblemonSchemaTools.scaffoldMoveFile",
@@ -71,11 +81,20 @@
     "menus": {
       "commandPalette": [
         {
+          "command": "cobblemonSchemaTools.insertAbilityCallback",
+          "when": "editorTextFocus && cobblemonSchemaTools.inAbilityFile"
+        },
+        {
           "command": "cobblemonSchemaTools.insertMoveCallback",
           "when": "editorTextFocus && cobblemonSchemaTools.inMoveFile"
         }
       ],
       "editor/context": [
+        {
+          "command": "cobblemonSchemaTools.insertAbilityCallback",
+          "when": "editorTextFocus && cobblemonSchemaTools.inAbilityFile",
+          "group": "cobblemon@11"
+        },
         {
           "command": "cobblemonSchemaTools.insertMoveCallback",
           "when": "editorTextFocus && cobblemonSchemaTools.inMoveFile",
@@ -105,6 +124,11 @@
           "type": "boolean",
           "default": false,
           "description": "Use Typescript for Moves? When enabled, the move builder generates .ts move files and writes a hidden helper type file for MoveData callback typing."
+        },
+        "cobblemonSchemaTools.useTypescriptForAbilities": {
+          "type": "boolean",
+          "default": false,
+          "description": "Use Typescript for Abilities? When enabled, the ability builder generates .ts ability files and writes a hidden helper type file for AbilityData callback typing."
         },
         "cobblemonSchemaTools.warnOnPokemonAssetFolderNaming": {
           "type": "boolean",

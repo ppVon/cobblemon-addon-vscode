@@ -32,6 +32,7 @@ import {
   getCobblemonDefaultResourceIndex,
   type CobblemonDefaultResourceIndex,
 } from "./cobblemon-default-index";
+import { validateAbilityJsFile } from "./ability-validation";
 import { validateMoveJsFile } from "./move-validation";
 import {
   createMissingPackMcmetaDiagnostic,
@@ -61,6 +62,14 @@ export async function runWorkspaceValidation(
   );
   const moveTsFiles = await vscode.workspace.findFiles(
     "**/data/*/moves/**/*.ts",
+    DATA_ROOT_EXCLUDE,
+  );
+  const abilityFiles = await vscode.workspace.findFiles(
+    "**/data/*/abilities/**/*.js",
+    DATA_ROOT_EXCLUDE,
+  );
+  const abilityTsFiles = await vscode.workspace.findFiles(
+    "**/data/*/abilities/**/*.ts",
     DATA_ROOT_EXCLUDE,
   );
   const textureFiles = await vscode.workspace.findFiles(
@@ -266,6 +275,11 @@ export async function runWorkspaceValidation(
       uri,
       await validateMoveLangRequirements(uri, langKeys, cobblemonDefaults),
     );
+  }
+
+  for (const uri of [...abilityFiles, ...abilityTsFiles]) {
+    const diags = await validateAbilityJsFile(uri);
+    addDiagnostics(byUri, uri, diags);
   }
 
   for (const record of dexEntryRecords) {

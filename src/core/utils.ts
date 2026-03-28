@@ -105,6 +105,21 @@ export function isMoveFilePath(filePath: string): boolean {
   return /\/data\/[^/]+\/moves\/.+\.(js|ts)$/i.test(normalized);
 }
 
+export function useTypescriptForAbilities(): boolean {
+  return vscode.workspace
+    .getConfiguration('cobblemonSchemaTools')
+    .get<boolean>('useTypescriptForAbilities', false);
+}
+
+export function abilityFileExtension(): 'js' | 'ts' {
+  return useTypescriptForAbilities() ? 'ts' : 'js';
+}
+
+export function isAbilityFilePath(filePath: string): boolean {
+  const normalized = normalizePath(filePath);
+  return /\/data\/[^/]+\/abilities\/.+\.(js|ts)$/i.test(normalized);
+}
+
 export function isPokemonAssetFolderNamingWarningEnabled(): boolean {
   return vscode.workspace.getConfiguration('cobblemonSchemaTools').get<boolean>('warnOnPokemonAssetFolderNaming', true);
 }

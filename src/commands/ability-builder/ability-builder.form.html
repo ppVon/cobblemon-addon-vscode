@@ -1,0 +1,432 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'none'; img-src __CSP_SOURCE__ https: data:; style-src 'unsafe-inline'; script-src 'nonce-__NONCE__';"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cobblemon Ability Builder</title>
+    <style>
+      :root {
+        color-scheme: light dark;
+      }
+      body {
+        font-family: var(--vscode-font-family);
+        color: var(--vscode-foreground);
+        background:
+          linear-gradient(
+            180deg,
+            color-mix(in srgb, var(--vscode-editor-background) 90%, var(--vscode-textBlockQuote-background) 10%),
+            var(--vscode-editor-background)
+          );
+        margin: 0;
+        padding: 18px;
+      }
+      form {
+        display: grid;
+        gap: 14px;
+        max-width: 980px;
+      }
+      .section {
+        border: 1px solid var(--vscode-editorWidget-border);
+        border-radius: 10px;
+        padding: 14px;
+        display: grid;
+        gap: 12px;
+        background: color-mix(
+          in srgb,
+          var(--vscode-sideBar-background) 28%,
+          var(--vscode-editor-background)
+        );
+      }
+      .section-header {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        align-items: baseline;
+        justify-content: space-between;
+      }
+      .section-title {
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+      }
+      .pill-note {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        border-radius: 999px;
+        padding: 4px 10px;
+        font-size: 11px;
+        border: 1px solid color-mix(in srgb, var(--vscode-focusBorder) 40%, transparent);
+        background: color-mix(
+          in srgb,
+          var(--vscode-textBlockQuote-background) 82%,
+          transparent
+        );
+      }
+      .helper {
+        font-size: 11px;
+        color: var(--vscode-descriptionForeground);
+        line-height: 1.45;
+      }
+      .grid {
+        display: grid;
+        gap: 12px;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      }
+      .field {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+      label {
+        font-size: 12px;
+        font-weight: 600;
+      }
+      input[type="text"],
+      select {
+        border: 1px solid var(--vscode-input-border);
+        color: var(--vscode-input-foreground);
+        background: var(--vscode-input-background);
+        padding: 8px 10px;
+        border-radius: 6px;
+        outline: none;
+      }
+      input[type="text"]:focus,
+      select:focus {
+        border-color: var(--vscode-focusBorder);
+      }
+      .flag-grid {
+        display: grid;
+        gap: 8px 12px;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      }
+      .check {
+        display: flex;
+        gap: 8px;
+        align-items: start;
+        font-size: 12px;
+      }
+      .path-preview {
+        margin: 0;
+        padding-left: 18px;
+        display: grid;
+        gap: 4px;
+        font-size: 12px;
+        font-family: var(--vscode-editor-font-family, var(--vscode-font-family));
+      }
+      .actions {
+        display: flex;
+        gap: 8px;
+        justify-content: flex-end;
+        margin-top: 8px;
+      }
+      button {
+        border: 1px solid transparent;
+        border-radius: 6px;
+        padding: 7px 14px;
+        cursor: pointer;
+        color: var(--vscode-button-foreground);
+        background: var(--vscode-button-background);
+      }
+      button.secondary {
+        color: var(--vscode-button-secondaryForeground);
+        background: var(--vscode-button-secondaryBackground);
+      }
+      #error {
+        min-height: 18px;
+        color: var(--vscode-errorForeground);
+        font-size: 12px;
+        font-weight: 600;
+      }
+    </style>
+  </head>
+  <body>
+    <form id="builder-form">
+      <div class="section">
+        <div class="section-header">
+          <div class="section-title">Ability Identity</div>
+          <div class="pill-note">
+            Creates <code id="abilityFilePattern">data/&lt;namespace&gt;/abilities/&lt;file&gt;.js</code>
+          </div>
+        </div>
+        <div class="helper">
+          The file id becomes the ability file name. It fills in from the ability name, and you can change it if needed.
+        </div>
+        <div class="grid">
+          <div class="field">
+            <label for="namespace">Namespace</label>
+            <input id="namespace" type="text" />
+          </div>
+          <div class="field">
+            <label for="abilityName">Ability Name</label>
+            <input id="abilityName" type="text" />
+          </div>
+          <div class="field">
+            <label for="fileId">File Id</label>
+            <input id="fileId" type="text" />
+          </div>
+          <div class="field">
+            <label for="abilityNumber">Ability Number (Optional)</label>
+            <input id="abilityNumber" type="text" />
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-header">
+          <div class="section-title">Core Fields</div>
+        </div>
+        <div class="grid">
+          <div class="field">
+            <label for="rating">Rating</label>
+            <input id="rating" type="text" />
+          </div>
+          <div class="field">
+            <label for="isNonstandard">isNonstandard</label>
+            <select id="isNonstandard"></select>
+          </div>
+          <div class="field">
+            <label class="check"><input id="suppressWeather" type="checkbox" /> suppressWeather</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-header">
+          <div class="section-title">Flags</div>
+        </div>
+        <div class="helper">
+          Pick the flags that match how this ability behaves in battle.
+        </div>
+        <div id="flagChecks" class="flag-grid"></div>
+      </div>
+
+      <div class="section">
+        <div class="section-header">
+          <div class="section-title">Generated File</div>
+        </div>
+        <div class="helper">This is the ability file the builder will create.</div>
+        <ul id="generatedFiles" class="path-preview"></ul>
+      </div>
+
+      <div id="error"></div>
+      <div class="actions">
+        <button id="cancel" type="button" class="secondary">Cancel</button>
+        <button type="submit">Generate Ability File</button>
+      </div>
+    </form>
+
+    <script nonce="__NONCE__">
+      const vscode = acquireVsCodeApi();
+      const initial = __INITIAL_DATA__;
+      const abilityFlags = __ABILITY_FLAGS__;
+      const abilityNonstandardValues = __ABILITY_NONSTANDARD_VALUES__;
+      const useTypescriptForAbilities = __USE_TYPESCRIPT_FOR_ABILITIES__;
+      const abilityFileExtension = useTypescriptForAbilities ? "ts" : "js";
+      const flagSet = new Set(abilityFlags);
+      const nonstandardSet = new Set(abilityNonstandardValues);
+      let fileIdEdited = false;
+
+      const fields = {
+        namespace: document.getElementById("namespace"),
+        abilityName: document.getElementById("abilityName"),
+        fileId: document.getElementById("fileId"),
+        abilityNumber: document.getElementById("abilityNumber"),
+        rating: document.getElementById("rating"),
+        isNonstandard: document.getElementById("isNonstandard"),
+        suppressWeather: document.getElementById("suppressWeather"),
+      };
+
+      const generatedFilesEl = document.getElementById("generatedFiles");
+      const errorEl = document.getElementById("error");
+      const flagChecksEl = document.getElementById("flagChecks");
+      const abilityFilePatternEl = document.getElementById("abilityFilePattern");
+
+      function setError(message) {
+        errorEl.textContent = message || "";
+      }
+
+      function sanitizeFileId(raw) {
+        const sanitized = raw
+          .trim()
+          .toLowerCase()
+          .replace(/[^a-z0-9_.-]+/g, "_")
+          .replace(/^_+|_+$/g, "");
+        return sanitized || "custom_ability";
+      }
+
+      function populateSelect(selectEl, values, emptyLabel) {
+        const fragment = document.createDocumentFragment();
+        if (emptyLabel !== undefined) {
+          const emptyOption = document.createElement("option");
+          emptyOption.value = "";
+          emptyOption.textContent = emptyLabel;
+          fragment.appendChild(emptyOption);
+        }
+        for (const value of values) {
+          const option = document.createElement("option");
+          option.value = value;
+          option.textContent = value;
+          fragment.appendChild(option);
+        }
+        selectEl.replaceChildren(fragment);
+      }
+
+      function populateFlagChecks(values) {
+        flagChecksEl.replaceChildren(
+          ...values.map((flag) => {
+            const label = document.createElement("label");
+            label.className = "check";
+
+            const input = document.createElement("input");
+            input.type = "checkbox";
+            input.dataset.flag = flag;
+
+            label.appendChild(input);
+            label.appendChild(document.createTextNode(flag));
+            return label;
+          }),
+        );
+      }
+
+      function selectedFlags() {
+        return [...document.querySelectorAll("input[data-flag]:checked")]
+          .map((input) => input.dataset.flag)
+          .filter(Boolean);
+      }
+
+      function collectData() {
+        return {
+          namespace: fields.namespace.value.trim().toLowerCase(),
+          abilityName: fields.abilityName.value.trim(),
+          fileId: fields.fileId.value.trim().toLowerCase(),
+          abilityNumber: fields.abilityNumber.value.trim(),
+          rating: fields.rating.value.trim(),
+          isNonstandard: fields.isNonstandard.value,
+          suppressWeather: !!fields.suppressWeather.checked,
+          selectedFlags: selectedFlags(),
+        };
+      }
+
+      function renderGeneratedFile(data) {
+        const namespace = data.namespace || "cobblemon";
+        const fileId = data.fileId || "custom_ability";
+        generatedFilesEl.replaceChildren(
+          (() => {
+            const item = document.createElement("li");
+            item.textContent = `data/${namespace}/abilities/${fileId}.${abilityFileExtension}`;
+            return item;
+          })(),
+        );
+        abilityFilePatternEl.textContent = `data/<namespace>/abilities/<file>.${abilityFileExtension}`;
+      }
+
+      function validate(data) {
+        if (!/^[a-z0-9_.-]+$/.test(data.namespace)) {
+          return "Namespace must use lowercase id characters.";
+        }
+        if (!data.abilityName) {
+          return "Ability name is required.";
+        }
+        if (!/^[a-z0-9_.-]+$/.test(data.fileId)) {
+          return "File id must use lowercase id characters.";
+        }
+        if (
+          data.abilityNumber &&
+          (!/^[0-9]+$/.test(data.abilityNumber) ||
+            Number.parseInt(data.abilityNumber, 10) < 1)
+        ) {
+          return "Ability number must be a positive integer when provided.";
+        }
+        const rating = Number.parseFloat(data.rating);
+        if (!data.rating || Number.isNaN(rating)) {
+          return "Rating must be a number between -1 and 5.";
+        }
+        if (rating < -1 || rating > 5) {
+          return "Rating must be between -1 and 5.";
+        }
+        if (!data.selectedFlags.every((flag) => flagSet.has(flag))) {
+          return "One or more selected flags are not supported.";
+        }
+        if (data.isNonstandard && !nonstandardSet.has(data.isNonstandard)) {
+          return "Nonstandard must be empty or one of the supported values.";
+        }
+        return undefined;
+      }
+
+      function applyInitialValues(data) {
+        fields.namespace.value = data.namespace || "";
+        fields.abilityName.value = data.abilityName || "";
+        fields.fileId.value = data.fileId || "";
+        fields.abilityNumber.value = data.abilityNumber || "";
+        fields.rating.value = data.rating || "";
+        fields.isNonstandard.value = data.isNonstandard || "";
+        fields.suppressWeather.checked = !!data.suppressWeather;
+
+        const selected = new Set(
+          Array.isArray(data.selectedFlags) ? data.selectedFlags : [],
+        );
+        for (const input of document.querySelectorAll("input[data-flag]")) {
+          input.checked = selected.has(input.dataset.flag);
+        }
+      }
+
+      populateSelect(fields.isNonstandard, abilityNonstandardValues, "(none)");
+      populateFlagChecks(abilityFlags);
+      applyInitialValues(initial);
+      renderGeneratedFile(collectData());
+
+      fields.abilityName.addEventListener("input", () => {
+        if (!fileIdEdited) {
+          fields.fileId.value = sanitizeFileId(fields.abilityName.value);
+        }
+        renderGeneratedFile(collectData());
+      });
+
+      fields.fileId.addEventListener("input", () => {
+        fileIdEdited = true;
+        renderGeneratedFile(collectData());
+      });
+
+      fields.namespace.addEventListener("input", () => {
+        renderGeneratedFile(collectData());
+      });
+
+      fields.rating.addEventListener("input", () => {
+        setError("");
+      });
+
+      flagChecksEl.addEventListener("change", () => {
+        setError("");
+      });
+
+      window.addEventListener("message", (event) => {
+        const message = event.data;
+        if (message && message.type === "error") {
+          setError(message.message || "Unable to generate ability file.");
+        }
+      });
+
+      document.getElementById("cancel").addEventListener("click", () => {
+        vscode.postMessage({ type: "cancel" });
+      });
+
+      document.getElementById("builder-form").addEventListener("submit", (event) => {
+        event.preventDefault();
+        const data = collectData();
+        const error = validate(data);
+        if (error) {
+          setError(error);
+          return;
+        }
+        setError("");
+        vscode.postMessage({ type: "submit", data });
+      });
+    </script>
+  </body>
+</html>

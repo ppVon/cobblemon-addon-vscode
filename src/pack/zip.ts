@@ -182,7 +182,7 @@ async function toZipEntry(
   content: Uint8Array,
   modifiedAt: Date,
 ): Promise<ZipEntry> {
-  if (!isMoveTypescriptFile(relativePath)) {
+  if (!isMoveTypescriptFile(relativePath) && !isAbilityTypescriptFile(relativePath)) {
     return {
       relativePath,
       content,
@@ -190,7 +190,7 @@ async function toZipEntry(
     };
   }
 
-  const transpiled = transpileMoveTypescriptToJavascript(uri, content);
+  const transpiled = transpileTypescriptObjectFileToJavascript(uri, content);
   return {
     relativePath: relativePath.replace(/\.ts$/i, '.js'),
     content: Buffer.from(transpiled, 'utf8'),
@@ -202,7 +202,11 @@ function isMoveTypescriptFile(relativePath: string): boolean {
   return /^data\/[^/]+\/moves\/.+\.ts$/i.test(normalizeZipPath(relativePath));
 }
 
-function transpileMoveTypescriptToJavascript(
+function isAbilityTypescriptFile(relativePath: string): boolean {
+  return /^data\/[^/]+\/abilities\/.+\.ts$/i.test(normalizeZipPath(relativePath));
+}
+
+function transpileTypescriptObjectFileToJavascript(
   uri: vscode.Uri,
   content: Uint8Array,
 ): string {
@@ -227,7 +231,7 @@ function transpileMoveTypescriptToJavascript(
 
   if (!parsed.root) {
     throw new Error(
-      `Could not package move file '${uri.fsPath}' as JavaScript. The transpiled output was not a single move object.`,
+      `Could not package '${uri.fsPath}' as JavaScript. The transpiled output was not a single object literal.`,
     );
   }
 
