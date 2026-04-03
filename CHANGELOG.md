@@ -1,3 +1,10 @@
+# 0.10.0
+
+- Add Ability support to mirror moves
+  - Same typescript caveats as moves (use the package command to convert to js for cobblemon)
+  - Typescript setting for Abilities must be enabled for types and autocompletes
+- Add Ability builder form
+
 # 0.9.0
 
 - Add icon
