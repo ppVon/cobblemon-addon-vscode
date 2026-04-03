@@ -7,7 +7,7 @@
     "url": "https://github.com/ppVon/cobblemon-addon-vscode"
   },
   "icon": "cobblemon-schema-tools.png",
-  "version": "0.9.0",
+  "version": "0.9.1",
   "publisher": "ppVon",
   "license": "MIT",
   "engines": {
