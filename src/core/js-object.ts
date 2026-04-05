@@ -116,7 +116,7 @@ export function parseJsObjectText(
   if (!expression) {
     parseErrors.push({
       message:
-        'Move file must contain a single object expression like ({ ... }).',
+        'File must contain a single top-level object literal expression.',
       start: 0,
       length: Math.max(1, text.length),
     });

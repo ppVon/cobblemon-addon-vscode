@@ -20,7 +20,7 @@ export function buildAbilityTemplate(
   if (options.abilityDataImportPath) {
     return `// This ability uses Typescript-only typing helpers.\n// You MUST use "Cobblemon: Package Addon Zip" before putting this addon into the game.\nimport type { AbilityData } from ${JSON.stringify(options.abilityDataImportPath)};\n\n(${objectBody} satisfies AbilityData);\n`;
   }
-  return `(${objectBody})\n`;
+  return `${objectBody}\n`;
 }
 
 function buildAbilityDefinition(

@@ -190,7 +190,11 @@ async function toZipEntry(
     };
   }
 
-  const transpiled = transpileTypescriptObjectFileToJavascript(uri, content);
+  const transpiled = transpileTypescriptObjectFileToJavascript(
+    uri,
+    content,
+    isAbilityTypescriptFile(relativePath),
+  );
   return {
     relativePath: relativePath.replace(/\.ts$/i, '.js'),
     content: Buffer.from(transpiled, 'utf8'),
@@ -209,6 +213,7 @@ function isAbilityTypescriptFile(relativePath: string): boolean {
 function transpileTypescriptObjectFileToJavascript(
   uri: vscode.Uri,
   content: Uint8Array,
+  isAbility: boolean,
 ): string {
   const sourceText = Buffer.from(content).toString('utf8');
   const transpiled = ts.transpileModule(sourceText, {
@@ -237,6 +242,9 @@ function transpileTypescriptObjectFileToJavascript(
 
   const objectStart = parsed.root.node.getStart(parsed.sourceFile, false);
   const objectText = withoutModuleArtifacts.slice(objectStart, parsed.root.node.end);
+  if (isAbility) {
+    return `${objectText}\n`;
+  }
   return `(${objectText})\n`;
 }
 
