@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { parseJsObjectText } from '../core/js-object';
+import { parseJsObjectTextBareSafe } from '../core/js-object';
 import { isAbilityFilePath } from '../core/utils';
 import {
   ABILITY_CALLBACK_SNIPPETS,
@@ -78,10 +78,10 @@ class AbilityFileCompletionProvider implements vscode.CompletionItemProvider {
       return [];
     }
 
-    const parsed = parseJsObjectText(document.uri, document.getText());
+    const parsed = parseJsObjectTextBareSafe(document.uri, document.getText());
     const objectContext = findAbilityObjectContext(
       parsed,
-      document.offsetAt(position),
+      document.offsetAt(position) + (parsed._wrapOffset ?? 0),
     );
     if (!objectContext) {
       return [];

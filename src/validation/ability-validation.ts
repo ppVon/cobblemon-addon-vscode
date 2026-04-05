@@ -6,6 +6,7 @@ import {
   type JsPropertyMember,
   type JsValueNode,
   parseWorkspaceJsObject,
+  parseWorkspaceJsObjectBareSafe,
   rangeForJsNode,
   rangeForJsSpan,
 } from '../core/js-object';
@@ -39,7 +40,7 @@ const REQUIRED_ABILITY_KEYS = ['name', 'num', 'rating', 'flags'] as const;
 export async function validateAbilityJsFile(
   uri: vscode.Uri,
 ): Promise<vscode.Diagnostic[]> {
-  const parsed = await parseWorkspaceJsObject(uri);
+  const parsed = await parseWorkspaceJsObjectBareSafe(uri);
   const diagnostics: vscode.Diagnostic[] = [];
 
   for (const error of parsed.parseErrors) {
@@ -67,7 +68,7 @@ export async function validateAbilityLangRequirements(
   langKeys: Set<string>,
   cobblemonDefaults: CobblemonDefaultResourceIndex,
 ): Promise<vscode.Diagnostic[]> {
-  const parsed = await parseWorkspaceJsObject(uri);
+  const parsed = await parseWorkspaceJsObjectBareSafe(uri);
   if (parsed.parseErrors.length > 0 || !parsed.root) {
     return [];
   }

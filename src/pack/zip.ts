@@ -3,7 +3,7 @@ import * as ts from 'typescript';
 import * as zlib from 'zlib';
 import * as vscode from 'vscode';
 import { normalizePath } from '../core/utils';
-import { parseJsObjectText } from '../core/js-object';
+import { parseJsObjectText, parseJsObjectTextBareSafe } from '../core/js-object';
 
 export interface ZipEntry {
   relativePath: string;
@@ -232,7 +232,9 @@ function transpileTypescriptObjectFileToJavascript(
   const jsUri = uri.with({
     path: uri.path.replace(/\.ts$/i, '.js'),
   });
-  const parsed = parseJsObjectText(jsUri, withoutModuleArtifacts);
+  const parsed = isAbility
+    ? parseJsObjectTextBareSafe(jsUri, withoutModuleArtifacts)
+    : parseJsObjectText(jsUri, withoutModuleArtifacts);
 
   if (!parsed.root) {
     throw new Error(
@@ -240,8 +242,11 @@ function transpileTypescriptObjectFileToJavascript(
     );
   }
 
-  const objectStart = parsed.root.node.getStart(parsed.sourceFile, false);
-  const objectText = withoutModuleArtifacts.slice(objectStart, parsed.root.node.end);
+  const wrapOffset = parsed._wrapOffset ?? 0;
+  const objectStart =
+    parsed.root.node.getStart(parsed.sourceFile, false) - wrapOffset;
+  const objectEnd = parsed.root.node.end - wrapOffset;
+  const objectText = withoutModuleArtifacts.slice(objectStart, objectEnd);
   if (isAbility) {
     return `${objectText}\n`;
   }

@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { parseJsObjectText } from '../core/js-object';
+import { parseJsObjectTextBareSafe } from '../core/js-object';
 import { isAbilityFilePath } from '../core/utils';
 import {
   ABILITY_CALLBACK_SNIPPETS,
@@ -26,7 +26,7 @@ async function insertAbilityCallback(): Promise<void> {
   }
 
   const document = editor.document;
-  const parsed = parseJsObjectText(document.uri, document.getText());
+  const parsed = parseJsObjectTextBareSafe(document.uri, document.getText());
   if (!parsed.root) {
     void vscode.window.showErrorMessage(
       'The current ability file could not be parsed.',
@@ -35,7 +35,8 @@ async function insertAbilityCallback(): Promise<void> {
   }
 
   const offset = document.offsetAt(editor.selection.active);
-  const objectContext = findAbilityObjectContext(parsed, offset);
+  const wrapOffset = parsed._wrapOffset ?? 0;
+  const objectContext = findAbilityObjectContext(parsed, offset + wrapOffset);
   if (!objectContext) {
     void vscode.window.showErrorMessage(
       'Place the cursor inside the ability object or its condition block.',
@@ -77,13 +78,14 @@ async function insertAbilityCallback(): Promise<void> {
     return;
   }
 
-  const insertPosition = document.positionAt(objectContext.object.node.end - 1);
+  const objectEnd = objectContext.object.node.end - wrapOffset;
+  const insertPosition = document.positionAt(objectEnd - 1);
   const closeLineText = document.lineAt(insertPosition.line).text;
   const baseIndent = closeLineText.match(/^\s*/)?.[0] ?? '';
   const memberIndent = `${baseIndent}${indentUnit(editor.options)}`;
   const insertionPrefix = buildInsertionPrefix(
     document.getText(),
-    objectContext.object.node.end - 1,
+    objectEnd - 1,
   );
   const snippetText =
     insertionPrefix

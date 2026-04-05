@@ -14,6 +14,7 @@ export interface ParsedJsObjectFile {
   parseErrors: JsParseIssue[];
   root: JsObjectNode | undefined;
   lineOffsets: number[];
+  _wrapOffset?: number;
 }
 
 export type JsValueNode =
@@ -87,6 +88,14 @@ export async function parseWorkspaceJsObject(
   return parseJsObjectText(uri, text);
 }
 
+export async function parseWorkspaceJsObjectBareSafe(
+  uri: vscode.Uri,
+): Promise<ParsedJsObjectFile> {
+  const raw = await vscode.workspace.fs.readFile(uri);
+  const text = Buffer.from(raw).toString('utf8');
+  return parseJsObjectTextBareSafe(uri, text);
+}
+
 export function parseJsObjectText(
   uri: vscode.Uri,
   text: string,
@@ -134,13 +143,32 @@ export function parseJsObjectText(
   };
 }
 
+export function parseJsObjectTextBareSafe(
+  uri: vscode.Uri,
+  text: string,
+): ParsedJsObjectFile {
+  const parsed = parseJsObjectText(uri, `(${text})`);
+  parsed.text = text;
+  parsed.lineOffsets = computeLineOffsets(text);
+  parsed._wrapOffset = 1;
+  parsed.parseErrors = parsed.parseErrors.map((error) => ({
+    ...error,
+    start: clampOffset(error.start - 1, text.length),
+  }));
+  return parsed;
+}
+
 export function rangeForJsNode(
   parsed: ParsedJsObjectFile,
   node: ts.Node,
 ): vscode.Range {
+  const start = clampOffset(
+    node.getStart(parsed.sourceFile, false) - (parsed._wrapOffset ?? 0),
+    parsed.text.length,
+  );
   return rangeForJsSpan(
     parsed,
-    node.getStart(parsed.sourceFile, false),
+    start,
     Math.max(node.getWidth(parsed.sourceFile), 1),
   );
 }
@@ -152,11 +180,11 @@ export function rangeForJsSpan(
 ): vscode.Range {
   const startPos = offsetToPosition(
     parsed.lineOffsets,
-    Math.max(0, Math.min(start, parsed.text.length)),
+    clampOffset(start, parsed.text.length),
   );
   const endPos = offsetToPosition(
     parsed.lineOffsets,
-    Math.max(0, Math.min(start + length, parsed.text.length)),
+    clampOffset(start + length, parsed.text.length),
   );
   return new vscode.Range(startPos, endPos);
 }
@@ -396,6 +424,10 @@ function computeLineOffsets(text: string): number[] {
     }
   }
   return result;
+}
+
+function clampOffset(offset: number, textLength: number): number {
+  return Math.max(0, Math.min(offset, textLength));
 }
 
 function offsetToPosition(lineOffsets: number[], offset: number): vscode.Position {
