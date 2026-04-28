@@ -166,6 +166,10 @@ const ABILITY_CALLBACK_DETAILS: Readonly<
     detail: 'Modify weather-based damage',
     parameters: ['damage', 'attacker', 'defender', 'move'],
   },
+  onSourceModifyDamage: {
+    detail: 'Modify damage dealt by this Pokemon as the source',
+    parameters: ['damage', 'source', 'target', 'move'],
+  },
 };
 
 const ABILITY_CONDITION_CALLBACK_DETAILS: Readonly<

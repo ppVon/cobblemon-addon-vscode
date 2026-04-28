@@ -77,6 +77,7 @@ export const ABILITY_CALLBACK_KEYS = [
   'onAllyBasePower',
   'onAnyBasePower',
   'onWeatherModifyDamage',
+  'onSourceModifyDamage',
 ] as const;
 export const ABILITY_CALLBACK_KEY_SET = new Set<string>(ABILITY_CALLBACK_KEYS);
 
