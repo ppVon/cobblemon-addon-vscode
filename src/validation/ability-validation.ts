@@ -10,6 +10,12 @@ import {
   rangeForJsNode,
   rangeForJsSpan,
 } from '../core/js-object';
+
+function parseAbilityFile(uri: vscode.Uri) {
+  return uri.fsPath.endsWith('.ts')
+    ? parseWorkspaceJsObject(uri)
+    : parseWorkspaceJsObjectBareSafe(uri);
+}
 import {
   inferNamespaceFromPath,
   normalizePath,
@@ -40,7 +46,7 @@ const REQUIRED_ABILITY_KEYS = ['name', 'num', 'rating', 'flags'] as const;
 export async function validateAbilityJsFile(
   uri: vscode.Uri,
 ): Promise<vscode.Diagnostic[]> {
-  const parsed = await parseWorkspaceJsObjectBareSafe(uri);
+  const parsed = await parseAbilityFile(uri);
   const diagnostics: vscode.Diagnostic[] = [];
 
   for (const error of parsed.parseErrors) {
@@ -68,7 +74,7 @@ export async function validateAbilityLangRequirements(
   langKeys: Set<string>,
   cobblemonDefaults: CobblemonDefaultResourceIndex,
 ): Promise<vscode.Diagnostic[]> {
-  const parsed = await parseWorkspaceJsObjectBareSafe(uri);
+  const parsed = await parseAbilityFile(uri);
   if (parsed.parseErrors.length > 0 || !parsed.root) {
     return [];
   }
