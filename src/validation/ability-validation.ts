@@ -5,17 +5,12 @@ import {
   type JsObjectNode,
   type JsPropertyMember,
   type JsValueNode,
-  parseWorkspaceJsObject,
-  parseWorkspaceJsObjectBareSafe,
+  type ParsedJsObjectFile,
+  parseJsObjectText,
+  parseJsObjectTextBareSafe,
   rangeForJsNode,
   rangeForJsSpan,
 } from '../core/js-object';
-
-function parseAbilityFile(uri: vscode.Uri) {
-  return uri.fsPath.endsWith('.ts')
-    ? parseWorkspaceJsObject(uri)
-    : parseWorkspaceJsObjectBareSafe(uri);
-}
 import {
   inferNamespaceFromPath,
   normalizePath,
@@ -33,6 +28,16 @@ import {
   isAbilityNumericCallbackKey,
 } from '../abilities/spec';
 import { type CobblemonDefaultResourceIndex } from './cobblemon-default-index';
+
+async function parseAbilityFile(uri: vscode.Uri) {
+  const raw = await vscode.workspace.fs.readFile(uri);
+  const text = Buffer.from(raw).toString('utf8');
+  const parsed = parseJsObjectText(uri, text);
+  if (parsed.root) {
+    return parsed;
+  }
+  return parseJsObjectTextBareSafe(uri, text);
+}
 
 interface IndexedObjectMembers {
   readonly all: Map<string, SupportedJsObjectMember[]>;
@@ -125,7 +130,7 @@ export async function validateAbilityLangRequirements(
 }
 
 function validateObjectStructure(
-  parsed: Awaited<ReturnType<typeof parseWorkspaceJsObject>>,
+  parsed: ParsedJsObjectFile,
   objectNode: JsObjectNode,
 ): vscode.Diagnostic[] {
   const diagnostics: vscode.Diagnostic[] = [];
@@ -165,7 +170,7 @@ function validateObjectStructure(
 }
 
 function validateValueStructure(
-  parsed: Awaited<ReturnType<typeof parseWorkspaceJsObject>>,
+  parsed: ParsedJsObjectFile,
   value: JsValueNode,
 ): vscode.Diagnostic[] {
   if (value.kind === 'unsupported') {
@@ -192,7 +197,7 @@ function validateValueStructure(
 }
 
 function validateAbilityTopLevel(
-  parsed: Awaited<ReturnType<typeof parseWorkspaceJsObject>>,
+  parsed: ParsedJsObjectFile,
   root: JsObjectNode,
 ): vscode.Diagnostic[] {
   const diagnostics: vscode.Diagnostic[] = [];
@@ -287,7 +292,7 @@ function validateAbilityTopLevel(
 }
 
 function validateFlagsProperty(
-  parsed: Awaited<ReturnType<typeof parseWorkspaceJsObject>>,
+  parsed: ParsedJsObjectFile,
   member: JsObjectMember | undefined,
 ): vscode.Diagnostic[] {
   if (!member) {
@@ -349,7 +354,7 @@ function validateFlagsProperty(
 }
 
 function validateConditionProperty(
-  parsed: Awaited<ReturnType<typeof parseWorkspaceJsObject>>,
+  parsed: ParsedJsObjectFile,
   member: JsObjectMember | undefined,
 ): vscode.Diagnostic[] {
   if (!member) {
@@ -415,7 +420,7 @@ function validateConditionProperty(
 }
 
 function validateKnownConditionCallbackMember(
-  parsed: Awaited<ReturnType<typeof parseWorkspaceJsObject>>,
+  parsed: ParsedJsObjectFile,
   member: SupportedJsObjectMember,
 ): vscode.Diagnostic[] {
   if (isAbilityNumericCallbackKey(member.key)) {
@@ -426,7 +431,7 @@ function validateKnownConditionCallbackMember(
 }
 
 function validateAbilityCallbackMember(
-  parsed: Awaited<ReturnType<typeof parseWorkspaceJsObject>>,
+  parsed: ParsedJsObjectFile,
   member: SupportedJsObjectMember,
 ): vscode.Diagnostic[] {
   if (isAbilityNumericCallbackKey(member.key)) {
@@ -437,7 +442,7 @@ function validateAbilityCallbackMember(
 }
 
 function validateLooseCallbackLikeMember(
-  parsed: Awaited<ReturnType<typeof parseWorkspaceJsObject>>,
+  parsed: ParsedJsObjectFile,
   member: SupportedJsObjectMember,
 ): vscode.Diagnostic[] {
   if (isNumericCallbackLikeKey(member.key)) {
@@ -448,7 +453,7 @@ function validateLooseCallbackLikeMember(
 }
 
 function validateNumericCallbackMember(
-  parsed: Awaited<ReturnType<typeof parseWorkspaceJsObject>>,
+  parsed: ParsedJsObjectFile,
   member: SupportedJsObjectMember,
 ): vscode.Diagnostic[] {
   const property = asPropertyMember(member);
@@ -468,7 +473,7 @@ function validateNumericCallbackMember(
 }
 
 function validateFunctionCallbackMember(
-  parsed: Awaited<ReturnType<typeof parseWorkspaceJsObject>>,
+  parsed: ParsedJsObjectFile,
   member: SupportedJsObjectMember,
 ): vscode.Diagnostic[] {
   if (member.kind === 'method') {
@@ -490,7 +495,7 @@ function validateFunctionCallbackMember(
 }
 
 function validateStringProperty(
-  parsed: Awaited<ReturnType<typeof parseWorkspaceJsObject>>,
+  parsed: ParsedJsObjectFile,
   member: JsObjectMember | undefined,
   options: {
     label: string;
@@ -519,7 +524,7 @@ function validateStringProperty(
 }
 
 function validateBooleanProperty(
-  parsed: Awaited<ReturnType<typeof parseWorkspaceJsObject>>,
+  parsed: ParsedJsObjectFile,
   member: JsObjectMember | undefined,
   options: {
     label: string;
@@ -548,7 +553,7 @@ function validateBooleanProperty(
 }
 
 function validateNumberProperty(
-  parsed: Awaited<ReturnType<typeof parseWorkspaceJsObject>>,
+  parsed: ParsedJsObjectFile,
   member: JsObjectMember | undefined,
   options: {
     allowFloat: boolean;
@@ -611,7 +616,7 @@ function validateNumberProperty(
 }
 
 function validateStringEnumProperty(
-  parsed: Awaited<ReturnType<typeof parseWorkspaceJsObject>>,
+  parsed: ParsedJsObjectFile,
   member: JsObjectMember | undefined,
   options: {
     allowed: ReadonlySet<string>;
@@ -687,7 +692,7 @@ function isNumericCallbackLikeKey(key: string): boolean {
 }
 
 function rangeForMember(
-  parsed: Awaited<ReturnType<typeof parseWorkspaceJsObject>>,
+  parsed: ParsedJsObjectFile,
   member: JsObjectMember | undefined,
 ): vscode.Range {
   if (!member) {
@@ -698,7 +703,7 @@ function rangeForMember(
 }
 
 function rangeForMemberKey(
-  parsed: Awaited<ReturnType<typeof parseWorkspaceJsObject>>,
+  parsed: ParsedJsObjectFile,
   member: JsObjectMember,
 ): vscode.Range {
   if (member.kind === 'unsupported-member') {
