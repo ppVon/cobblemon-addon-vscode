@@ -78,6 +78,18 @@ export const ABILITY_CALLBACK_KEYS = [
   'onAnyBasePower',
   'onWeatherModifyDamage',
   'onSourceModifyDamage',
+  'onSourceModifyAtk',
+  'onSourceModifyAtkPriority',
+  'onSourceModifyDef',
+  'onSourceModifyDefPriority',
+  'onSourceModifySpA',
+  'onSourceModifySpAPriority',
+  'onSourceModifySpD',
+  'onSourceModifySpDPriority',
+  'onSourceModifySpe',
+  'onSourceModifySpePriority',
+  'onSourceModifyHP',
+  'onSourceModifyHPPriority',
 ] as const;
 export const ABILITY_CALLBACK_KEY_SET = new Set<string>(ABILITY_CALLBACK_KEYS);
 
@@ -89,6 +101,12 @@ export const ABILITY_NUMERIC_CALLBACK_KEYS = [
   'onModifySTABPriority',
   'onModifyTypePriority',
   'onBasePowerPriority',
+  'onSourceModifyAtkPriority',
+  'onSourceModifyDefPriority',
+  'onSourceModifySpAPriority',
+  'onSourceModifySpDPriority',
+  'onSourceModifySpePriority',
+  'onSourceModifyHPPriority',
 ] as const;
 export const ABILITY_NUMERIC_CALLBACK_KEY_SET = new Set<string>(
   ABILITY_NUMERIC_CALLBACK_KEYS,

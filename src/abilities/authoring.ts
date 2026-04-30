@@ -170,6 +170,54 @@ const ABILITY_CALLBACK_DETAILS: Readonly<
     detail: 'Modify damage dealt by this Pokemon as the source',
     parameters: ['damage', 'source', 'target', 'move'],
   },
+  onSourceModifyAtk: {
+    detail: 'Modify Attack of the source Pokemon',
+    parameters: ['atk', 'attacker', 'defender', 'move'],
+  },
+  onSourceModifyAtkPriority: {
+    detail: 'Set source Attack modifier event priority',
+    numericPlaceholder: '5',
+  },
+  onSourceModifyDef: {
+    detail: 'Modify Defense of the source Pokemon',
+    parameters: ['def', 'pokemon'],
+  },
+  onSourceModifyDefPriority: {
+    detail: 'Set source Defense modifier event priority',
+    numericPlaceholder: '5',
+  },
+  onSourceModifySpA: {
+    detail: 'Modify Special Attack of the source Pokemon',
+    parameters: ['spa', 'attacker', 'defender', 'move'],
+  },
+  onSourceModifySpAPriority: {
+    detail: 'Set source Special Attack modifier event priority',
+    numericPlaceholder: '5',
+  },
+  onSourceModifySpD: {
+    detail: 'Modify Special Defense of the source Pokemon',
+    parameters: ['spd', 'pokemon'],
+  },
+  onSourceModifySpDPriority: {
+    detail: 'Set source Special Defense modifier event priority',
+    numericPlaceholder: '5',
+  },
+  onSourceModifySpe: {
+    detail: 'Modify Speed of the source Pokemon',
+    parameters: ['spe', 'pokemon'],
+  },
+  onSourceModifySpePriority: {
+    detail: 'Set source Speed modifier event priority',
+    numericPlaceholder: '5',
+  },
+  onSourceModifyHP: {
+    detail: 'Modify HP of the source Pokemon',
+    parameters: ['hp', 'pokemon'],
+  },
+  onSourceModifyHPPriority: {
+    detail: 'Set source HP modifier event priority',
+    numericPlaceholder: '5',
+  },
 };
 
 const ABILITY_CONDITION_CALLBACK_DETAILS: Readonly<
