@@ -3,6 +3,7 @@ import { scaffoldAbilityFileCommand } from './ability-builder.command';
 import { generatePackMcmetaCommand } from './generate-pack-mcmeta.command';
 import { generateSpawnPoolWorldCommand } from './generate-spawn-pool-world.command';
 import { insertAbilityCallbackCommand } from './insert-ability-callback.command';
+import { installTypesCommand } from './install-types.command';
 import { insertMoveCallbackCommand } from './insert-move-callback.command';
 import { scaffoldMoveFileCommand } from './move-builder.command';
 import { packageAddonCommand } from './package-addon.command';
@@ -16,6 +17,7 @@ const COMMAND_DEFINITIONS: CommandDefinition[] = [
   insertMoveCallbackCommand,
   insertAbilityCallbackCommand,
   generatePackMcmetaCommand,
+  installTypesCommand,
   scaffoldMoveFileCommand,
   scaffoldAbilityFileCommand,
   scaffoldPokemonAssetsCommand,

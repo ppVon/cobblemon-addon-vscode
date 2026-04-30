@@ -32,7 +32,8 @@
     "onCommand:cobblemonSchemaTools.scaffoldMoveFile",
     "onCommand:cobblemonSchemaTools.scaffoldPokemonAssets",
     "onCommand:cobblemonSchemaTools.scaffoldDataFile",
-    "onCommand:cobblemonSchemaTools.generateSpawnPoolWorld"
+    "onCommand:cobblemonSchemaTools.generateSpawnPoolWorld",
+    "onCommand:cobblemonSchemaTools.installTypes"
   ],
   "main": "./dist/extension.js",
   "contributes": {
@@ -52,6 +53,10 @@
       {
         "command": "cobblemonSchemaTools.generatePackMcmeta",
         "title": "Cobblemon: Generate pack.mcmeta"
+      },
+      {
+        "command": "cobblemonSchemaTools.installTypes",
+        "title": "Cobblemon: Install TypeScript Type Definitions"
       },
       {
         "command": "cobblemonSchemaTools.packageAddon",

@@ -1,8 +1,9 @@
 # 0.10.0
 
-- Add Ability support to mirror moves
+- Add Ability typescript validation support
   - Same typescript caveats as moves (use the package command to convert to js for cobblemon)
   - Typescript setting for Abilities must be enabled for types and autocompletes
+  - VSCode will always scream at any .js ability because it isn't technically in proper js format
 - Add Ability builder form
 
 # 0.9.0
