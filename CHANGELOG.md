@@ -1,11 +1,17 @@
 # 0.10.0
 
-- Add Ability typescript validation support
-  - Same typescript caveats as moves (use the package command to convert to js for cobblemon)
-  - Typescript setting for Abilities must be enabled for types and autocompletes
-  - VSCode will always scream at any .js ability because it isn't technically in proper js format
 - Add Ability builder form
-- Add command for installing types without generating a type/move
+- Add Ability TypeScript validation support
+  - Enable via the `useTypescriptForAbilities` setting to get types and autocomplete
+  - Use "Package Addon Zip" to convert TS abilities to JS before loading into Cobblemon
+  - `.js` ability files will show VSCode errors since the bare object format isn't valid JS syntax
+- Add "Convert to TypeScript" command for JS ability and move files
+  - Rewrites the active `.js` file to a `.ts` file with the correct import and `satisfies` wrapper
+  - Automatically creates the workspace type definitions file if it doesn't exist
+- Add command for installing types without generating a move or ability
+- `num` is now optional on both moves and abilities
+- Add quick fix code action for missing lang key diagnostics
+  - Adds the missing key (with an empty value) to all existing `assets/*/lang/*.json` files
 
 # 0.9.0
 
