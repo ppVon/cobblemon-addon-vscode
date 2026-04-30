@@ -92,15 +92,15 @@
       "commandPalette": [
         {
           "command": "cobblemonSchemaTools.insertAbilityCallback",
-          "when": "editorTextFocus && cobblemonSchemaTools.inAbilityFile"
+          "when": "cobblemonSchemaTools.inAbilityFile"
         },
         {
           "command": "cobblemonSchemaTools.insertMoveCallback",
-          "when": "editorTextFocus && cobblemonSchemaTools.inMoveFile"
+          "when": "cobblemonSchemaTools.inMoveFile"
         },
         {
           "command": "cobblemonSchemaTools.convertToTs",
-          "when": "editorTextFocus && (cobblemonSchemaTools.inAbilityFile || cobblemonSchemaTools.inMoveFile) && resourceExtname == .js"
+          "when": "(cobblemonSchemaTools.inAbilityFile || cobblemonSchemaTools.inMoveFile) && resourceExtname == .js"
         }
       ],
       "editor/context": [
