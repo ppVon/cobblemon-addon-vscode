@@ -63,8 +63,11 @@ async function convertToTs(): Promise<void> {
   const typeName = isAbility ? 'AbilityData' : 'MoveData';
   const typeLabel = isAbility ? 'ability' : 'move';
 
-  // Move JS files wrap their object in parens: ({...}) — strip them before re-wrapping
+  // Move JS files wrap their object in parens: ({...}) or ({...}); — strip before re-wrapping
   let objectContent = jsContent.trimEnd();
+  if (objectContent.endsWith(';')) {
+    objectContent = objectContent.slice(0, -1).trimEnd();
+  }
   if (objectContent.startsWith('(') && objectContent.endsWith(')')) {
     objectContent = objectContent.slice(1, -1).trimEnd();
   }

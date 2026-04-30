@@ -228,6 +228,8 @@ export const MOVE_FLAGS = [
   'snatch',
   'sound',
   'wind',
+  'explosive',
+  'sdexplosion',
 ] as const;
 export const MOVE_FLAG_SET = new Set<string>(MOVE_FLAGS);
 

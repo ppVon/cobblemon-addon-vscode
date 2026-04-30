@@ -7,6 +7,7 @@ const ADD_LANG_KEY_COMMAND = 'cobblemonSchemaTools.addLangKey';
 
 export function registerLangQuickFixProvider(
   context: vscode.ExtensionContext,
+  scheduleValidation: () => void,
 ): void {
   context.subscriptions.push(
     vscode.languages.registerCodeActionsProvider(
@@ -19,7 +20,10 @@ export function registerLangQuickFixProvider(
       new LangQuickFixProvider(),
       { providedCodeActionKinds: [vscode.CodeActionKind.QuickFix] },
     ),
-    vscode.commands.registerCommand(ADD_LANG_KEY_COMMAND, addLangKeyToAllFiles),
+    vscode.commands.registerCommand(ADD_LANG_KEY_COMMAND, async (langKey: string) => {
+      await addLangKeyToAllFiles(langKey);
+      scheduleValidation();
+    }),
   );
 }
 

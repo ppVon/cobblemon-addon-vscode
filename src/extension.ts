@@ -17,7 +17,6 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
   registerJsonSchemaAssistProviders(context, engine);
   registerMoveFileAssistProviders(context);
   registerAbilityFileAssistProviders(context);
-  registerLangQuickFixProvider(context);
 
   let timeoutHandle: NodeJS.Timeout | undefined;
   const scheduleValidation = (): void => {
@@ -34,6 +33,8 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
       void runWorkspaceValidation(engine, diagnosticCollection, context.extensionUri);
     }, 350);
   };
+
+  registerLangQuickFixProvider(context, scheduleValidation);
 
   context.subscriptions.push(
     vscode.workspace.onDidSaveTextDocument(() => scheduleValidation()),
