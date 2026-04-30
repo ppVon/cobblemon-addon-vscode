@@ -170,6 +170,14 @@ const ABILITY_CALLBACK_DETAILS: Readonly<
     detail: 'Modify damage dealt by this Pokemon as the source',
     parameters: ['damage', 'source', 'target', 'move'],
   },
+  onAfterBoost: {
+    detail: 'Run after this Pokemon receives stat boosts',
+    parameters: ['boost', 'target', 'source', 'effect'],
+  },
+  onAfterEachBoost: {
+    detail: 'Run after each individual stat boost is applied to this Pokemon',
+    parameters: ['boost', 'target', 'source', 'effect'],
+  },
   onSourceModifyAtk: {
     detail: 'Modify Attack of the source Pokemon',
     parameters: ['atk', 'attacker', 'defender', 'move'],
@@ -217,6 +225,390 @@ const ABILITY_CALLBACK_DETAILS: Readonly<
   onSourceModifyHPPriority: {
     detail: 'Set source HP modifier event priority',
     numericPlaceholder: '5',
+  },
+  onAfterMoveSecondarySelf: {
+    detail: 'Run after secondary effects resolve for the attacker',
+    parameters: ['source', 'target', 'move'],
+  },
+  onAfterSetStatus: {
+    detail: 'Run after a status condition is set on this Pokemon',
+    parameters: ['status', 'target', 'source', 'effect'],
+  },
+  onAfterTerastallization: {
+    detail: 'Run after this Pokemon Terastallizes',
+    parameters: ['pokemon'],
+  },
+  onAfterUseItem: {
+    detail: 'Run after this Pokemon uses an item',
+    parameters: ['item', 'pokemon'],
+  },
+  onAllyAfterUseItem: {
+    detail: 'Run after an ally uses an item',
+    parameters: ['item', 'pokemon'],
+  },
+  onAllyFaint: {
+    detail: 'Run when an ally faints',
+    parameters: ['target'],
+  },
+  onAllyModifyAtk: {
+    detail: 'Modify an ally\'s Attack stat',
+    parameters: ['atk', 'pokemon'],
+  },
+  onAllyModifySpD: {
+    detail: 'Modify an ally\'s Special Defense stat',
+    parameters: ['spd', 'pokemon'],
+  },
+  onAllySetStatus: {
+    detail: 'Run when a status condition is set on an ally',
+    parameters: ['status', 'target', 'source', 'effect'],
+  },
+  onAllySideConditionStart: {
+    detail: 'Run when a side condition starts on this side',
+    parameters: ['target', 'source', 'sideCondition'],
+  },
+  onAllySwitchIn: {
+    detail: 'Run when an ally switches in',
+    parameters: ['pokemon'],
+  },
+  onAllyTryAddVolatile: {
+    detail: 'Run when a volatile status is about to be added to an ally',
+    parameters: ['status', 'target', 'source', 'effect'],
+  },
+  onAllyTryBoost: {
+    detail: 'Run when an ally\'s stats are about to be boosted',
+    parameters: ['boost', 'target', 'source', 'effect'],
+  },
+  onAllyTryHitSide: {
+    detail: 'Run when a side-targeting move is about to hit the ally\'s side',
+    parameters: ['target', 'source', 'move'],
+  },
+  onAnyAccuracy: {
+    detail: 'Modify accuracy for any move in the battle',
+    parameters: ['accuracy', 'target', 'source', 'move'],
+  },
+  onAnyAfterMove: {
+    detail: 'Run after any move resolves in the battle',
+  },
+  onAnyAfterSetStatus: {
+    detail: 'Run after any status condition is set in the battle',
+    parameters: ['status', 'target', 'source', 'effect'],
+  },
+  onAnyDamage: {
+    detail: 'Modify any damage dealt in the battle',
+    parameters: ['damage', 'target', 'source', 'effect'],
+  },
+  onAnyFaint: {
+    detail: 'Run when any Pokemon faints',
+  },
+  onAnyInvulnerability: {
+    detail: 'Run when any Pokemon is invulnerable to a move',
+    parameters: ['target', 'source', 'move'],
+  },
+  onAnyModifyAccuracy: {
+    detail: 'Modify accuracy for any move in the battle',
+    parameters: ['accuracy', 'target', 'source'],
+  },
+  onAnyModifyAtk: {
+    detail: 'Modify any Pokemon\'s Attack stat',
+    parameters: ['atk', 'source', 'target', 'move'],
+  },
+  onAnyModifyBoost: {
+    detail: 'Modify any incoming stat boosts in the battle',
+    parameters: ['boosts', 'pokemon'],
+  },
+  onAnyModifyDamage: {
+    detail: 'Modify any damage dealt in the battle',
+    parameters: ['damage', 'source', 'target', 'move'],
+  },
+  onAnyModifyDef: {
+    detail: 'Modify any Pokemon\'s Defense stat',
+    parameters: ['def', 'target', 'source', 'move'],
+  },
+  onAnyModifySpA: {
+    detail: 'Modify any Pokemon\'s Special Attack stat',
+    parameters: ['spa', 'source', 'target', 'move'],
+  },
+  onAnyModifySpD: {
+    detail: 'Modify any Pokemon\'s Special Defense stat',
+    parameters: ['spd', 'target', 'source', 'move'],
+  },
+  onAnyRedirectTarget: {
+    detail: 'Redirect any move to a different target',
+    parameters: ['target', 'source', 'source2', 'move'],
+  },
+  onAnySetWeather: {
+    detail: 'Run when weather is set anywhere in the battle',
+    parameters: ['target', 'source', 'weather'],
+  },
+  onAnyTryMove: {
+    detail: 'Run before any move is used in the battle',
+    parameters: ['target', 'source', 'effect'],
+  },
+  onAnyTryPrimaryHit: {
+    detail: 'Run before a primary hit lands on any target',
+    parameters: ['target', 'source', 'move'],
+  },
+  onBeforeMove: {
+    detail: 'Run before this Pokemon uses a move',
+    parameters: ['pokemon', 'target', 'move'],
+  },
+  onBeforeSwitchIn: {
+    detail: 'Run before this Pokemon switches in',
+    parameters: ['pokemon'],
+  },
+  onChangeBoost: {
+    detail: 'Run when a stat boost change is applied to this Pokemon',
+    parameters: ['boost', 'target', 'source', 'effect'],
+  },
+  onCheckShow: {
+    detail: 'Determine whether this Pokemon\'s species is revealed',
+    parameters: ['pokemon'],
+  },
+  onCriticalHit: {
+    detail: 'Run when a critical hit lands on this Pokemon',
+    parameters: ['target', 'source', 'move'],
+  },
+  onDeductPP: {
+    detail: 'Run when PP is deducted from a move',
+    parameters: ['target', 'source'],
+  },
+  onDisableMove: {
+    detail: 'Disable moves for this Pokemon each turn',
+    parameters: ['pokemon'],
+  },
+  onDragOut: {
+    detail: 'Run when this Pokemon is being dragged out',
+    parameters: ['pokemon'],
+  },
+  onEatItem: {
+    detail: 'Run when this Pokemon eats a berry or item',
+    parameters: ['item', 'pokemon'],
+  },
+  onEffectiveness: {
+    detail: 'Modify type effectiveness against this Pokemon',
+    parameters: ['typeMod', 'target', 'type', 'move'],
+  },
+  onEmergencyExit: {
+    detail: 'Run when Emergency Exit triggers for this Pokemon',
+    parameters: ['target'],
+  },
+  onFaint: {
+    detail: 'Run when this Pokemon faints',
+    parameters: ['pokemon'],
+  },
+  onFlinch: {
+    detail: 'Run when this Pokemon flinches',
+    parameters: ['pokemon'],
+  },
+  onFoeAfterBoost: {
+    detail: 'Run after a foe receives stat boosts',
+    parameters: ['boost', 'target', 'source', 'effect'],
+  },
+  onFoeMaybeTrapPokemon: {
+    detail: 'Run when a foe might trap this Pokemon',
+    parameters: ['pokemon', 'source'],
+  },
+  onFoeTrapPokemon: {
+    detail: 'Run when a foe traps this Pokemon',
+    parameters: ['pokemon'],
+  },
+  onFoeTryEatItem: {
+    detail: 'Run when a foe tries to eat an item',
+  },
+  onFoeTryMove: {
+    detail: 'Run before a foe uses a move',
+    parameters: ['target', 'source', 'move'],
+  },
+  onFractionalPriority: {
+    detail: 'Modify action priority with a fractional value',
+    parameters: ['priority', 'pokemon', 'target', 'move'],
+  },
+  onModifyAccuracy: {
+    detail: 'Modify move accuracy',
+    parameters: ['accuracy', 'target', 'source', 'move'],
+  },
+  onModifyCritRatio: {
+    detail: 'Modify critical hit ratio',
+    parameters: ['critRatio', 'source', 'target'],
+  },
+  onModifyDamage: {
+    detail: 'Modify final damage dealt',
+    parameters: ['damage', 'source', 'target', 'move'],
+  },
+  onModifySecondaries: {
+    detail: 'Modify secondary effects of a move',
+    parameters: ['secondaries'],
+  },
+  onModifyWeight: {
+    detail: 'Modify this Pokemon\'s weight',
+    parameters: ['weighthg'],
+  },
+  onPrepareHit: {
+    detail: 'Run when a move is about to hit',
+    parameters: ['source', 'target', 'move'],
+  },
+  onRestart: {
+    detail: 'Run when the ability is reapplied while already active',
+  },
+  onSetStatus: {
+    detail: 'Run when a status condition is about to be set on this Pokemon',
+    parameters: ['status', 'target', 'source', 'effect'],
+  },
+  onSourceAfterFaint: {
+    detail: 'Run after this Pokemon KOs a target',
+    parameters: ['length', 'target', 'source', 'effect'],
+  },
+  onSourceBasePower: {
+    detail: 'Modify base power of moves used by this Pokemon as the source',
+    parameters: ['basePower', 'attacker', 'defender', 'move'],
+  },
+  onSourceDamagingHit: {
+    detail: 'Run after this Pokemon lands a damaging hit',
+    parameters: ['damage', 'target', 'source', 'move'],
+  },
+  onSourceModifyAccuracy: {
+    detail: 'Modify accuracy of moves used by this Pokemon as the source',
+    parameters: ['accuracy', 'target', 'source', 'move'],
+  },
+  onSourceModifySecondaries: {
+    detail: 'Modify secondary effects of moves used by this Pokemon as the source',
+    parameters: ['secondaries', 'target', 'source', 'move'],
+  },
+  onSourceTryHeal: {
+    detail: 'Run when this Pokemon as the source tries to heal a target',
+    parameters: ['damage', 'target', 'source', 'effect'],
+  },
+  onSourceTryPrimaryHit: {
+    detail: 'Run before a primary hit from this Pokemon as the source lands',
+    parameters: ['target', 'source', 'effect'],
+  },
+  onTakeItem: {
+    detail: 'Run when this Pokemon\'s item is taken',
+    parameters: ['item', 'pokemon', 'source'],
+  },
+  onTerrainChange: {
+    detail: 'Run when terrain changes',
+    parameters: ['pokemon'],
+  },
+  onTryAddVolatile: {
+    detail: 'Run when a volatile status is about to be added to this Pokemon',
+    parameters: ['status', 'target', 'source', 'effect'],
+  },
+  onTryBoost: {
+    detail: 'Run when this Pokemon\'s stats are about to be boosted',
+    parameters: ['boost', 'target', 'source', 'effect'],
+  },
+  onTryEatItem: {
+    detail: 'Run when this Pokemon tries to eat an item',
+    parameters: ['item', 'pokemon'],
+  },
+  onTryHeal: {
+    detail: 'Run when this Pokemon tries to heal',
+    parameters: ['damage', 'target', 'source', 'effect'],
+  },
+  onUpdate: {
+    detail: 'Run at the end of each turn for this Pokemon',
+    parameters: ['pokemon'],
+  },
+  onWeather: {
+    detail: 'Run during weather residual for this Pokemon',
+    parameters: ['target', 'source', 'effect'],
+  },
+  onWeatherChange: {
+    detail: 'Run when weather changes',
+    parameters: ['pokemon'],
+  },
+  onAllyBasePowerPriority: {
+    detail: 'Set ally base power event priority',
+    numericPlaceholder: '22',
+  },
+  onAllyModifyAtkPriority: {
+    detail: 'Set ally Attack modifier event priority',
+    numericPlaceholder: '5',
+  },
+  onAllyModifySpDPriority: {
+    detail: 'Set ally Special Defense modifier event priority',
+    numericPlaceholder: '5',
+  },
+  onAnyBasePowerPriority: {
+    detail: 'Set any base power event priority',
+    numericPlaceholder: '22',
+  },
+  onAnyFaintPriority: {
+    detail: 'Set any faint event priority',
+    numericPlaceholder: '0',
+  },
+  onAnyInvulnerabilityPriority: {
+    detail: 'Set any invulnerability event priority',
+    numericPlaceholder: '0',
+  },
+  onAnyModifyAccuracyPriority: {
+    detail: 'Set any accuracy modifier event priority',
+    numericPlaceholder: '0',
+  },
+  onBeforeMovePriority: {
+    detail: 'Set before-move event priority',
+    numericPlaceholder: '0',
+  },
+  onDamagePriority: {
+    detail: 'Set damage event priority',
+    numericPlaceholder: '0',
+  },
+  onDragOutPriority: {
+    detail: 'Set drag-out event priority',
+    numericPlaceholder: '0',
+  },
+  onFractionalPriorityPriority: {
+    detail: 'Set fractional priority event priority',
+    numericPlaceholder: '0',
+  },
+  onModifyAccuracyPriority: {
+    detail: 'Set accuracy modifier event priority',
+    numericPlaceholder: '0',
+  },
+  onModifyAtkPriority: {
+    detail: 'Set Attack modifier event priority',
+    numericPlaceholder: '5',
+  },
+  onModifyDefPriority: {
+    detail: 'Set Defense modifier event priority',
+    numericPlaceholder: '5',
+  },
+  onModifyMovePriority: {
+    detail: 'Set modify-move event priority',
+    numericPlaceholder: '0',
+  },
+  onModifySpAPriority: {
+    detail: 'Set Special Attack modifier event priority',
+    numericPlaceholder: '5',
+  },
+  onModifySpDPriority: {
+    detail: 'Set Special Defense modifier event priority',
+    numericPlaceholder: '5',
+  },
+  onModifyWeightPriority: {
+    detail: 'Set weight modifier event priority',
+    numericPlaceholder: '0',
+  },
+  onSourceBasePowerPriority: {
+    detail: 'Set source base power event priority',
+    numericPlaceholder: '22',
+  },
+  onSourceModifyAccuracyPriority: {
+    detail: 'Set source accuracy modifier event priority',
+    numericPlaceholder: '0',
+  },
+  onSourceModifyDamagePriority: {
+    detail: 'Set source damage modifier event priority',
+    numericPlaceholder: '0',
+  },
+  onTryEatItemPriority: {
+    detail: 'Set try-eat-item event priority',
+    numericPlaceholder: '0',
+  },
+  onTryHitPriority: {
+    detail: 'Set try-hit event priority',
+    numericPlaceholder: '0',
   },
 };
 
