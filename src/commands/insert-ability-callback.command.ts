@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { parseJsObjectTextBareSafe } from '../core/js-object';
+import { parseJsObjectText, parseJsObjectTextBareSafe } from '../core/js-object';
 import { isAbilityFilePath } from '../core/utils';
 import {
   ABILITY_CALLBACK_SNIPPETS,
@@ -26,7 +26,10 @@ async function insertAbilityCallback(): Promise<void> {
   }
 
   const document = editor.document;
-  const parsed = parseJsObjectTextBareSafe(document.uri, document.getText());
+  const isTsFile = document.uri.fsPath.endsWith('.ts');
+  const parsed = isTsFile
+    ? parseJsObjectText(document.uri, document.getText())
+    : parseJsObjectTextBareSafe(document.uri, document.getText());
   if (!parsed.root) {
     void vscode.window.showErrorMessage(
       'The current ability file could not be parsed.',
