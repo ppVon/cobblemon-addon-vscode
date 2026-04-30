@@ -46,7 +46,7 @@ interface IndexedObjectMembers {
 
 type SupportedJsObjectMember = Exclude<JsObjectMember, { kind: 'unsupported-member' }>;
 
-const REQUIRED_ABILITY_KEYS = ['name', 'num', 'rating', 'flags'] as const;
+const REQUIRED_ABILITY_KEYS = ['name', 'rating', 'flags'] as const;
 
 export async function validateAbilityJsFile(
   uri: vscode.Uri,
@@ -258,7 +258,7 @@ function validateAbilityTopLevel(
       allowFloat: false,
       label: 'num',
       min: 0,
-      optional: false,
+      optional: true,
     }),
   );
   diagnostics.push(

@@ -138,7 +138,7 @@ export const ABILITY_TEMPLATE_FIELD_ORDER = [
 ] as const;
 
 export interface AbilityTemplateDefinition {
-  num: number;
+  num?: number;
   name: string;
   rating: number;
   flags: Record<string, 1>;
