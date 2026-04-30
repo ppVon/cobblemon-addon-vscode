@@ -33,7 +33,8 @@
     "onCommand:cobblemonSchemaTools.scaffoldPokemonAssets",
     "onCommand:cobblemonSchemaTools.scaffoldDataFile",
     "onCommand:cobblemonSchemaTools.generateSpawnPoolWorld",
-    "onCommand:cobblemonSchemaTools.installTypes"
+    "onCommand:cobblemonSchemaTools.installTypes",
+    "onCommand:cobblemonSchemaTools.convertToTs"
   ],
   "main": "./dist/extension.js",
   "contributes": {
@@ -81,6 +82,10 @@
       {
         "command": "cobblemonSchemaTools.generateSpawnPoolWorld",
         "title": "Cobblemon: Generate Spawn Pool World"
+      },
+      {
+        "command": "cobblemonSchemaTools.convertToTs",
+        "title": "Cobblemon: Convert to TypeScript"
       }
     ],
     "menus": {
@@ -92,6 +97,10 @@
         {
           "command": "cobblemonSchemaTools.insertMoveCallback",
           "when": "editorTextFocus && cobblemonSchemaTools.inMoveFile"
+        },
+        {
+          "command": "cobblemonSchemaTools.convertToTs",
+          "when": "editorTextFocus && (cobblemonSchemaTools.inAbilityFile || cobblemonSchemaTools.inMoveFile) && resourceExtname == .js"
         }
       ],
       "editor/context": [
@@ -104,6 +113,11 @@
           "command": "cobblemonSchemaTools.insertMoveCallback",
           "when": "editorTextFocus && cobblemonSchemaTools.inMoveFile",
           "group": "cobblemon@10"
+        },
+        {
+          "command": "cobblemonSchemaTools.convertToTs",
+          "when": "editorTextFocus && (cobblemonSchemaTools.inAbilityFile || cobblemonSchemaTools.inMoveFile) && resourceExtname == .js",
+          "group": "cobblemon@12"
         }
       ]
     },

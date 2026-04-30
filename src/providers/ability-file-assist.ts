@@ -19,7 +19,7 @@ import {
 
 export const ABILITY_FILE_CONTEXT_KEY = 'cobblemonSchemaTools.inAbilityFile';
 
-const REQUIRED_ABILITY_KEYS = new Set<string>(['name', 'num', 'rating', 'flags']);
+const REQUIRED_ABILITY_KEYS = new Set<string>(['name', 'rating', 'flags']);
 
 export function registerAbilityFileAssistProviders(
   context: vscode.ExtensionContext,

@@ -1,5 +1,6 @@
 import * as vscode from 'vscode';
 import { scaffoldAbilityFileCommand } from './ability-builder.command';
+import { convertToTsCommand } from './convert-to-ts.command';
 import { generatePackMcmetaCommand } from './generate-pack-mcmeta.command';
 import { generateSpawnPoolWorldCommand } from './generate-spawn-pool-world.command';
 import { insertAbilityCallbackCommand } from './insert-ability-callback.command';
@@ -18,6 +19,7 @@ const COMMAND_DEFINITIONS: CommandDefinition[] = [
   insertAbilityCallbackCommand,
   generatePackMcmetaCommand,
   installTypesCommand,
+  convertToTsCommand,
   scaffoldMoveFileCommand,
   scaffoldAbilityFileCommand,
   scaffoldPokemonAssetsCommand,
