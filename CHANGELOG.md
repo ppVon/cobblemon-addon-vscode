@@ -5,6 +5,7 @@
   - Typescript setting for Abilities must be enabled for types and autocompletes
   - VSCode will always scream at any .js ability because it isn't technically in proper js format
 - Add Ability builder form
+- Add command for installing types without generating a type/move
 
 # 0.9.0
 
