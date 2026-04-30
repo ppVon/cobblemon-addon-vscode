@@ -3,6 +3,7 @@ import { registerCommands } from './commands';
 import { isValidationEnabled } from './core/utils';
 import { registerAbilityFileAssistProviders } from './providers/ability-file-assist';
 import { registerJsonSchemaAssistProviders } from './providers/json-schema-assist';
+import { registerLangQuickFixProvider } from './providers/lang-quick-fix';
 import { registerMoveFileAssistProviders } from './providers/move-file-assist';
 import { CobblemonSchemaEngine } from './schema/schema-engine';
 import { runWorkspaceValidation } from './validation/workspace-validation';
@@ -16,6 +17,7 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
   registerJsonSchemaAssistProviders(context, engine);
   registerMoveFileAssistProviders(context);
   registerAbilityFileAssistProviders(context);
+  registerLangQuickFixProvider(context);
 
   let timeoutHandle: NodeJS.Timeout | undefined;
   const scheduleValidation = (): void => {
