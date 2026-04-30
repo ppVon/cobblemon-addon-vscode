@@ -29,7 +29,7 @@ export type AbilityConditionData = {
 
 export type AbilityData = {
   name: string;
-  num: number;
+  num?: number;
   rating: number;
   flags: AbilityFlags;
   suppressWeather?: true;
