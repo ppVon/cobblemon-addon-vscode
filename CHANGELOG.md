@@ -1,3 +1,7 @@
+# 0.10.1
+
+- Update dialogue schema to support expressions in input option text
+
 # 0.10.0
 
 - Add Ability builder form
