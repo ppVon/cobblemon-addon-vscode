@@ -1,0 +1,94 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cobblemon-schema.local/party_pools/schema.json",
+  "title": "Cobblemon Party Pool",
+  "type": "object",
+  "properties": {
+    "id": {
+      "$ref": "../_shared/defs/identifiers.schema.json#/$defs/identifier"
+    },
+    "displayName": {
+      "type": "string"
+    },
+    "entries": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/poolEntry"
+      }
+    }
+  },
+  "required": [
+    "entries"
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "poolEntry": {
+      "type": "object",
+      "properties": {
+        "pokemon": {
+          "$ref": "../_shared/defs/pokemon.schema.json#/$defs/pokemonProperties"
+        },
+        "labels": {
+          "$ref": "../_shared/defs/collections.schema.json#/$defs/stringList"
+        },
+        "npcAspects": {
+          "$ref": "../_shared/defs/collections.schema.json#/$defs/stringList"
+        },
+        "required": {
+          "$ref": "../_shared/defs/collections.schema.json#/$defs/stringList"
+        },
+        "excluded": {
+          "$ref": "../_shared/defs/collections.schema.json#/$defs/stringList"
+        },
+        "maxSelectableTimes": {
+          "$ref": "../_shared/defs/expressions.schema.json#/$defs/expressionLike"
+        },
+        "levelVariation": {
+          "$ref": "#/$defs/scriptableIntRange"
+        },
+        "npcLevels": {
+          "$ref": "#/$defs/scriptableIntRange"
+        },
+        "movesetBuilders": {
+          "type": "array",
+          "items": {
+            "$ref": "../_shared/defs/identifiers.schema.json#/$defs/identifier"
+          }
+        },
+        "weight": {
+          "$ref": "../_shared/defs/expressions.schema.json#/$defs/expressionLike"
+        }
+      },
+      "required": [
+        "pokemon"
+      ],
+      "additionalProperties": false
+    },
+    "scriptableIntRange": {
+      "oneOf": [
+        {
+          "type": "integer"
+        },
+        {
+          "$ref": "../_shared/defs/ranges.schema.json#/$defs/intRangeString"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "min": {
+              "$ref": "../_shared/defs/expressions.schema.json#/$defs/expressionLike"
+            },
+            "max": {
+              "$ref": "../_shared/defs/expressions.schema.json#/$defs/expressionLike"
+            }
+          },
+          "required": [
+            "min",
+            "max"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    }
+  }
+}

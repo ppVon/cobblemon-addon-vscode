@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cobblemon-schema.local/party_compositions/schema.json",
+  "title": "Cobblemon Party Composition",
+  "type": "object",
+  "properties": {
+    "id": {
+      "$ref": "../_shared/defs/identifiers.schema.json#/$defs/identifier"
+    },
+    "scrambleOrder": {
+      "type": "boolean"
+    },
+    "slot1": {
+      "$ref": "../_shared/defs/collections.schema.json#/$defs/stringList"
+    },
+    "slot2": {
+      "$ref": "../_shared/defs/collections.schema.json#/$defs/stringList"
+    },
+    "slot3": {
+      "$ref": "../_shared/defs/collections.schema.json#/$defs/stringList"
+    },
+    "slot4": {
+      "$ref": "../_shared/defs/collections.schema.json#/$defs/stringList"
+    },
+    "slot5": {
+      "$ref": "../_shared/defs/collections.schema.json#/$defs/stringList"
+    },
+    "slot6": {
+      "$ref": "../_shared/defs/collections.schema.json#/$defs/stringList"
+    }
+  },
+  "additionalProperties": false
+}

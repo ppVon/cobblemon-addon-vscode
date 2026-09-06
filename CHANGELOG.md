@@ -10,6 +10,12 @@
   - Marks support `aspects` and `sortOrder`
   - NPC parties support the `composed_pool` provider, and provider types may be namespaced
   - Action effect keyframes accept a list of locators
+- Add schemas for the data folders introduced in Cobblemon 1.8.0
+  - `tms`
+  - `habitat_pools`
+  - `moveset_builders`
+  - `party_pools` and `party_compositions`, used by the new `composed_pool` NPC party provider
+  - `move_weights.json`
 
 # 0.10.1
 

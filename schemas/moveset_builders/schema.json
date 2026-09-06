@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cobblemon-schema.local/moveset_builders/schema.json",
+  "title": "Cobblemon Moveset Builder",
+  "type": "object",
+  "properties": {
+    "type": {
+      "type": "string",
+      "enum": [
+        "default",
+        "cobblemon:default"
+      ]
+    },
+    "slot1": {
+      "$ref": "#/$defs/moveSelectors"
+    },
+    "slot2": {
+      "$ref": "#/$defs/moveSelectors"
+    },
+    "slot3": {
+      "$ref": "#/$defs/moveSelectors"
+    },
+    "slot4": {
+      "$ref": "#/$defs/moveSelectors"
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "moveSelectors": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "none",
+          "last_levelup",
+          "last_offensive",
+          "last_suitable_offensive",
+          "last_status",
+          "levelup",
+          "stab",
+          "stab_physical",
+          "stab_special",
+          "physical",
+          "special",
+          "offensive",
+          "status",
+          "tm",
+          "stab_tm",
+          "egg"
+        ]
+      }
+    }
+  }
+}

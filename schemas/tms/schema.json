@@ -1,0 +1,131 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cobblemon-schema.local/tms/schema.json",
+  "title": "Cobblemon Technical Machine",
+  "type": "object",
+  "properties": {
+    "moveName": {
+      "$ref": "../_shared/defs/identifiers.schema.json#/$defs/nonEmptyString"
+    },
+    "type": {
+      "$ref": "../_shared/defs/identifiers.schema.json#/$defs/nonEmptyString"
+    },
+    "obtainMethods": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/obtainMethod"
+      }
+    },
+    "recipe": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/recipeEntry"
+      }
+    }
+  },
+  "required": [
+    "moveName",
+    "type"
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "obtainMethod": {
+      "type": "object",
+      "properties": {
+        "variant": {
+          "type": "string",
+          "enum": [
+            "cobblemon:default",
+            "cobblemon:unlockable",
+            "cobblemon:impossible",
+            "cobblemon:advancement",
+            "cobblemon:y_level"
+          ]
+        },
+        "advancement": {
+          "$ref": "../_shared/defs/identifiers.schema.json#/$defs/identifier"
+        },
+        "yLevel": {
+          "type": "integer"
+        },
+        "operator": {
+          "type": "string",
+          "enum": [
+            "equals",
+            "less",
+            "greater"
+          ]
+        }
+      },
+      "required": [
+        "variant"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "variant": {
+                "const": "cobblemon:advancement"
+              }
+            },
+            "required": [
+              "variant"
+            ]
+          },
+          "then": {
+            "required": [
+              "advancement"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "variant": {
+                "const": "cobblemon:y_level"
+              }
+            },
+            "required": [
+              "variant"
+            ]
+          },
+          "then": {
+            "required": [
+              "yLevel",
+              "operator"
+            ]
+          }
+        }
+      ]
+    },
+    "recipeEntry": {
+      "type": "object",
+      "properties": {
+        "item": {
+          "$ref": "../_shared/defs/identifiers.schema.json#/$defs/identifier"
+        },
+        "tag": {
+          "$ref": "../_shared/defs/identifiers.schema.json#/$defs/identifier"
+        },
+        "count": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "oneOf": [
+        {
+          "required": [
+            "item"
+          ]
+        },
+        {
+          "required": [
+            "tag"
+          ]
+        }
+      ],
+      "additionalProperties": false
+    }
+  }
+}
