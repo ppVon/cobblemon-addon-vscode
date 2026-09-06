@@ -16,7 +16,6 @@
     - Removed `walking` and `sleepChance`, which are not real fields
     - `_comment` is allowed on every behaviour block
   - Bait effects now require `value`, which Cobblemon has always required
-  - Added `COBBLEMON_DATA_ISSUES.md` documenting the issues these rules found in Cobblemon's own data
 - Add schemas for the data folders introduced in Cobblemon 1.8.0
   - `tms`
   - `habitat_pools`
