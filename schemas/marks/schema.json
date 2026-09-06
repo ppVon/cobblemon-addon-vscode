@@ -38,6 +38,15 @@
     "indexNumber": {
       "type": "integer",
       "minimum": 0
+    },
+    "aspects": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "sortOrder": {
+      "type": "integer"
     }
   },
   "required": [

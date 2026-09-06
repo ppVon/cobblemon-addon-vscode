@@ -1,8 +1,9 @@
 {
   "schemaVersion": 1,
   "namespace": "cobblemon",
-  "generatedAt": "2026-03-17T17:56:49.849Z",
+  "generatedAt": "2026-09-06T03:11:27.893Z",
   "sourceRoot": "../cobblemon/common/src/main/resources",
+  "sourceRevision": "b33536e8721c9419d664fee15aa9e35cbf1900a8",
   "speciesIds": [
     "cobblemon:abomasnow",
     "cobblemon:abra",

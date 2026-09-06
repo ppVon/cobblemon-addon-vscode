@@ -160,8 +160,7 @@
       "required": [
         "grouping",
         "requirements",
-        "effects",
-        "cooldown"
+        "effects"
       ],
       "additionalProperties": false
     }

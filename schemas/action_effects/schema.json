@@ -103,7 +103,17 @@
               "$ref": "../_shared/defs/expressions.schema.json#/$defs/expressionLike"
             },
             "locator": {
-              "type": "string"
+              "oneOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              ]
             },
             "keyframes": {
               "type": "array",
