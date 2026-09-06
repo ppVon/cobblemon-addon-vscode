@@ -107,6 +107,9 @@
         "markers": {
           "$ref": "./collections.schema.json#/$defs/stringList"
         },
+        "isPokeSnack": {
+          "type": "boolean"
+        },
         "minHeight": {
           "type": "integer"
         },

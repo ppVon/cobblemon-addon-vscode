@@ -17,6 +17,15 @@
       ]
     },
     {
+      "name": "best_spawner_config",
+      "path": "schemas/best_spawner_config/schema.json",
+      "$id": "https://cobblemon-schema.local/best_spawner_config/schema.json",
+      "dataPath": "spawning/best-spawner-config.json",
+      "sourceGlobs": [
+        "../cobblemon/common/src/main/resources/data/cobblemon/spawning/best-spawner-config.json"
+      ]
+    },
+    {
       "name": "berries",
       "path": "schemas/berries/schema.json",
       "$id": "https://cobblemon-schema.local/berries/schema.json",

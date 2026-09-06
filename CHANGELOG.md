@@ -10,12 +10,20 @@
   - Marks support `aspects` and `sortOrder`
   - NPC parties support the `composed_pool` provider, and provider types may be namespaced
   - Action effect keyframes accept a list of locators
+  - Spawning conditions support `isPokeSnack`
+  - Species behaviour supports `freezeImmune`, and `blockInteract` now documents its fields, including `immuneToCobwebBlock`
+  - Species behaviour blocks now reject unknown keys, which Cobblemon silently ignores
+    - Removed `walking` and `sleepChance`, which are not real fields
+    - `_comment` is allowed on every behaviour block
+  - Bait effects now require `value`, which Cobblemon has always required
+  - Added `COBBLEMON_DATA_ISSUES.md` documenting the issues these rules found in Cobblemon's own data
 - Add schemas for the data folders introduced in Cobblemon 1.8.0
   - `tms`
   - `habitat_pools`
   - `moveset_builders`
   - `party_pools` and `party_compositions`, used by the new `composed_pool` NPC party provider
   - `move_weights.json`
+- Add a schema for `spawning/best-spawner-config.json`, which replaced its `buckets` list with separate world, fishing, habitat, and poke snack bucket weights
 
 # 0.10.1
 
