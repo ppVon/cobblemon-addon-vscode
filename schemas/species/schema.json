@@ -430,11 +430,9 @@
             "willSleepOnBed": {
               "type": "boolean"
             },
-            "sleepChance": {
-              "$ref": "../_shared/defs/expressions.schema.json#/$defs/expressionLike"
-            }
+            "_comment": {}
           },
-          "additionalProperties": true
+          "additionalProperties": false
         },
         "moving": {
           "type": "object",
@@ -450,13 +448,10 @@
                 },
                 "walkSpeed": {
                   "$ref": "../_shared/defs/expressions.schema.json#/$defs/expressionLike"
-                }
+                },
+                "_comment": {}
               },
-              "additionalProperties": true
-            },
-            "walking": {
-              "type": "object",
-              "additionalProperties": true
+              "additionalProperties": false
             },
             "swim": {
               "type": "object",
@@ -484,9 +479,10 @@
                 },
                 "canWalkOnLava": {
                   "type": "boolean"
-                }
+                },
+                "_comment": {}
               },
-              "additionalProperties": true
+              "additionalProperties": false
             },
             "fly": {
               "type": "object",
@@ -496,9 +492,10 @@
                 },
                 "flySpeedHorizontal": {
                   "$ref": "../_shared/defs/expressions.schema.json#/$defs/expressionLike"
-                }
+                },
+                "_comment": {}
               },
-              "additionalProperties": true
+              "additionalProperties": false
             },
             "stepHeight": {
               "type": "number"
@@ -511,15 +508,22 @@
             },
             "canLook": {
               "type": "boolean"
-            }
+            },
+            "_comment": {}
           },
-          "additionalProperties": true
+          "additionalProperties": false
         },
         "idle": {
           "type": "object",
-          "additionalProperties": true
+          "properties": {
+            "_comment": {}
+          },
+          "additionalProperties": false
         },
         "fireImmune": {
+          "type": "boolean"
+        },
+        "freezeImmune": {
           "type": "boolean"
         },
         "dampensVibrations": {
@@ -539,9 +543,10 @@
             },
             "avoidedBySkeleton": {
               "type": "boolean"
-            }
+            },
+            "_comment": {}
           },
-          "additionalProperties": true
+          "additionalProperties": false
         },
         "lightningHit": {
           "type": "object",
@@ -567,13 +572,29 @@
                 ],
                 "additionalProperties": false
               }
-            }
+            },
+            "_comment": {}
           },
-          "additionalProperties": true
+          "additionalProperties": false
         },
         "blockInteract": {
           "type": "object",
-          "additionalProperties": true
+          "properties": {
+            "immuneToSweetBerryBushBlock": {
+              "type": "boolean"
+            },
+            "canStandOnPowderSnow": {
+              "type": "boolean"
+            },
+            "canPathThroughSaccLeaves": {
+              "type": "boolean"
+            },
+            "immuneToCobwebBlock": {
+              "type": "boolean"
+            },
+            "_comment": {}
+          },
+          "additionalProperties": false
         },
         "combat": {
           "type": "object",
@@ -589,9 +610,10 @@
             },
             "fightsMelee": {
               "type": "boolean"
-            }
+            },
+            "_comment": {}
           },
-          "additionalProperties": true
+          "additionalProperties": false
         },
         "herd": {
           "type": "object",
@@ -626,9 +648,10 @@
             },
             "followDistance": {
               "$ref": "../_shared/defs/ranges.schema.json#/$defs/intRange"
-            }
+            },
+            "_comment": {}
           },
-          "additionalProperties": true
+          "additionalProperties": false
         },
         "characteristicRainbow": {
           "type": "boolean"
@@ -663,17 +686,20 @@
                   },
                   "onUseEffect": {
                     "$ref": "../_shared/defs/expressions.schema.json#/$defs/expressionLike"
-                  }
+                  },
+                  "_comment": {}
                 },
-                "additionalProperties": true
+                "additionalProperties": false
               }
-            }
+            },
+            "_comment": {}
           },
-          "additionalProperties": true
-        }
+          "additionalProperties": false
+        },
+        "_comment": {}
       },
       "required": [],
-      "additionalProperties": true
+      "additionalProperties": false
     },
     "riding": {
       "type": "object",

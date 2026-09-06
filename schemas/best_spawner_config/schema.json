@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cobblemon-schema.local/best_spawner_config/schema.json",
+  "title": "Cobblemon Best Spawner Config",
+  "type": "object",
+  "properties": {
+    "version": {
+      "type": "integer"
+    },
+    "replaceWithNewVersion": {
+      "type": "boolean"
+    },
+    "spawnablePositionTypeWeights": {
+      "$ref": "#/$defs/weightMap"
+    },
+    "contextWeights": {
+      "$ref": "#/$defs/weightMap"
+    },
+    "worldBuckets": {
+      "$ref": "#/$defs/weightMap"
+    },
+    "fishingBuckets": {
+      "$ref": "#/$defs/weightMap"
+    },
+    "activatedHabitatBuckets": {
+      "$ref": "#/$defs/weightMap"
+    },
+    "pokeSnackBuckets": {
+      "$ref": "#/$defs/weightMap"
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "weightMap": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "number",
+        "minimum": 0
+      }
+    }
+  }
+}

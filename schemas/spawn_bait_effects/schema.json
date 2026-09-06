@@ -28,7 +28,8 @@
         },
         "required": [
           "type",
-          "chance"
+          "chance",
+          "value"
         ],
         "additionalProperties": false
       }
