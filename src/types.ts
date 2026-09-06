@@ -5,6 +5,7 @@ export interface SchemaIndexEntry {
   name: string;
   path: string;
   $id?: string;
+  dataPath?: string;
 }
 
 export interface ParsedJsonFile {

@@ -1,0 +1,118 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cobblemon-schema.local/habitat_pools/schema.json",
+  "title": "Cobblemon Habitat Pool",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "type": {
+      "$ref": "../_shared/defs/identifiers.schema.json#/$defs/identifier"
+    },
+    "spawns": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/habitatSpawn"
+      }
+    }
+  },
+  "required": [
+    "name",
+    "spawns"
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "habitatSpawn": {
+      "type": "object",
+      "properties": {
+        "species": {
+          "$ref": "../_shared/defs/identifiers.schema.json#/$defs/nonEmptyString"
+        },
+        "spawnablePositionType": {
+          "type": "string",
+          "enum": [
+            "grounded",
+            "seafloor",
+            "lavafloor",
+            "submerged",
+            "surface",
+            "fishing"
+          ]
+        },
+        "bucket": {
+          "type": "string"
+        },
+        "weight": {
+          "type": "number"
+        },
+        "levelRange": {
+          "$ref": "../_shared/defs/ranges.schema.json#/$defs/intRange"
+        },
+        "modifiers": {
+          "$ref": "../_shared/defs/pokemon.schema.json#/$defs/pokemonProperties"
+        },
+        "phases": {
+          "$ref": "#/$defs/intRanges"
+        },
+        "timeRange": {
+          "anyOf": [
+            {
+              "$ref": "../_shared/defs/ranges.schema.json#/$defs/intRange"
+            },
+            {
+              "type": "string",
+              "enum": [
+                "any",
+                "day",
+                "night",
+                "morning",
+                "noon",
+                "afternoon",
+                "evening",
+                "midnight",
+                "predawn",
+                "dawn",
+                "dusk",
+                "twilight"
+              ]
+            }
+          ]
+        },
+        "minLight": {
+          "$ref": "#/$defs/lightLevel"
+        },
+        "maxLight": {
+          "$ref": "#/$defs/lightLevel"
+        }
+      },
+      "required": [
+        "species",
+        "spawnablePositionType"
+      ],
+      "additionalProperties": false
+    },
+    "intRanges": {
+      "oneOf": [
+        {
+          "type": "integer"
+        },
+        {
+          "type": "string",
+          "pattern": "^-?\\d+(?:--?\\d+)?(?:\\s*,\\s*-?\\d+(?:--?\\d+)?)*$"
+        }
+      ]
+    },
+    "lightLevel": {
+      "oneOf": [
+        {
+          "type": "integer"
+        },
+        {
+          "type": "string",
+          "pattern": "^-?\\d+$"
+        }
+      ]
+    }
+  }
+}

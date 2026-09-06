@@ -1,0 +1,10 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cobblemon-schema.local/move_weights/schema.json",
+  "title": "Cobblemon Move Weights",
+  "type": "object",
+  "additionalProperties": {
+    "type": "number",
+    "minimum": 0
+  }
+}

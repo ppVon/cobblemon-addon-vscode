@@ -31,6 +31,7 @@ export class CobblemonSchemaEngine {
 
   private readonly folderSchemas = new Map<string, string>();
   private readonly fixedDataSchemas = new Map<string, Map<string, string>>();
+  private readonly dataPathSchemas = new Map<string, string>();
 
   async initialize(context: vscode.ExtensionContext): Promise<void> {
     const schemaRoot = vscode.Uri.joinPath(context.extensionUri, 'schemas');
@@ -47,7 +48,7 @@ export class CobblemonSchemaEngine {
       }
 
       this.schemaNameByPath.set(entry.path, entry.name);
-      this.indexSchemaMatcher(entry.path);
+      this.indexSchemaMatcher(entry);
 
       const validate = this.resolveValidator(entry);
       if (validate) {
@@ -69,13 +70,25 @@ export class CobblemonSchemaEngine {
       return this.wrapResolution(schemaPath);
     }
 
-    const dataMatch = normalized.match(/\/data\/[^/]+\/([^/]+)\/(.+\.json)$/);
+    const dataMatch = normalized.match(/\/data\/[^/]+\/(.+\.json)$/);
     if (!dataMatch) {
       return undefined;
     }
 
-    const folder = dataMatch[1];
-    const tail = dataMatch[2];
+    const relativePath = dataMatch[1];
+
+    const byDataPath = this.dataPathSchemas.get(relativePath);
+    if (byDataPath) {
+      return this.wrapResolution(byDataPath);
+    }
+
+    const separatorIndex = relativePath.indexOf('/');
+    if (separatorIndex === -1) {
+      return undefined;
+    }
+
+    const folder = relativePath.slice(0, separatorIndex);
+    const tail = relativePath.slice(separatorIndex + 1);
     const fileName = path.basename(tail);
 
     const fixed = this.fixedDataSchemas.get(folder)?.get(fileName);
@@ -236,7 +249,14 @@ export class CobblemonSchemaEngine {
     return this.ajv.compile(schemaObj);
   }
 
-  private indexSchemaMatcher(schemaPath: string): void {
+  private indexSchemaMatcher(entry: SchemaIndexEntry): void {
+    const schemaPath = entry.path;
+
+    if (entry.dataPath) {
+      this.dataPathSchemas.set(normalizePath(entry.dataPath), schemaPath);
+      return;
+    }
+
     const mechanicsMatch = schemaPath.match(/^schemas\/mechanics\/([^.]+)\.schema\.json$/);
     if (mechanicsMatch) {
       this.addFixedSchema('mechanics', `${mechanicsMatch[1]}.json`, schemaPath);

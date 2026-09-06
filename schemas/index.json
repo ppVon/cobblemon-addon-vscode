@@ -73,6 +73,14 @@
       ]
     },
     {
+      "name": "habitat_pools",
+      "path": "schemas/habitat_pools/schema.json",
+      "$id": "https://cobblemon-schema.local/habitat_pools/schema.json",
+      "sourceGlobs": [
+        "../cobblemon/common/src/main/resources/data/cobblemon/habitat_pools/**/*.json"
+      ]
+    },
+    {
       "name": "marks",
       "path": "schemas/marks/schema.json",
       "$id": "https://cobblemon-schema.local/marks/schema.json",
@@ -121,6 +129,23 @@
       ]
     },
     {
+      "name": "move_weights",
+      "path": "schemas/move_weights/schema.json",
+      "$id": "https://cobblemon-schema.local/move_weights/schema.json",
+      "dataPath": "move_weights.json",
+      "sourceGlobs": [
+        "../cobblemon/common/src/main/resources/data/cobblemon/move_weights.json"
+      ]
+    },
+    {
+      "name": "moveset_builders",
+      "path": "schemas/moveset_builders/schema.json",
+      "$id": "https://cobblemon-schema.local/moveset_builders/schema.json",
+      "sourceGlobs": [
+        "../cobblemon/common/src/main/resources/data/cobblemon/moveset_builders/**/*.json"
+      ]
+    },
+    {
       "name": "natural_materials",
       "path": "schemas/natural_materials/schema.json",
       "$id": "https://cobblemon-schema.local/natural_materials/schema.json",
@@ -143,6 +168,18 @@
       "sourceGlobs": [
         "../cobblemon/common/src/main/resources/data/cobblemon/npcs/**/*.json"
       ]
+    },
+    {
+      "name": "party_compositions",
+      "path": "schemas/party_compositions/schema.json",
+      "$id": "https://cobblemon-schema.local/party_compositions/schema.json",
+      "sourceGlobs": []
+    },
+    {
+      "name": "party_pools",
+      "path": "schemas/party_pools/schema.json",
+      "$id": "https://cobblemon-schema.local/party_pools/schema.json",
+      "sourceGlobs": []
     },
     {
       "name": "pokemon_interactions",
@@ -326,6 +363,14 @@
       "$id": "https://cobblemon-schema.local/species_features/schema.json",
       "sourceGlobs": [
         "../cobblemon/common/src/main/resources/data/cobblemon/species_features/**/*.json"
+      ]
+    },
+    {
+      "name": "tms",
+      "path": "schemas/tms/schema.json",
+      "$id": "https://cobblemon-schema.local/tms/schema.json",
+      "sourceGlobs": [
+        "../cobblemon/common/src/main/resources/data/cobblemon/tms/**/*.json"
       ]
     },
     {
