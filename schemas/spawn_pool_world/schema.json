@@ -30,7 +30,6 @@
     }
   },
   "required": [
-    "enabled",
     "neededInstalledMods",
     "neededUninstalledMods",
     "spawns"
@@ -324,10 +323,19 @@
                   "levelRangeOffset": {
                     "$ref": "../_shared/defs/ranges.schema.json#/$defs/intRange"
                   },
+                  "herdLevelRange": {
+                    "$ref": "../_shared/defs/ranges.schema.json#/$defs/intRange"
+                  },
                   "dropTable": {
                     "$ref": "../_shared/defs/drops.schema.json#/$defs/dropTable"
                   },
+                  "heldItem": {
+                    "$ref": "../_shared/defs/identifiers.schema.json#/$defs/identifier"
+                  },
                   "isLeader": {
+                    "type": "boolean"
+                  },
+                  "isFollower": {
                     "type": "boolean"
                   },
                   "weight": {

@@ -8,6 +8,7 @@
       "type": "string",
       "enum": [
         "choice",
+        "weighted_choice",
         "flag",
         "integer"
       ]
@@ -39,10 +40,20 @@
       "type": "boolean"
     },
     "choices": {
-      "type": "array",
-      "items": {
-        "type": "string"
-      }
+      "oneOf": [
+        {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": {
+            "type": "integer"
+          }
+        }
+      ]
     },
     "isAspect": {
       "type": "boolean"
@@ -113,7 +124,34 @@
       "then": {
         "required": [
           "choices"
+        ],
+        "properties": {
+          "choices": {
+            "type": "array"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "type": {
+            "const": "weighted_choice"
+          }
+        },
+        "required": [
+          "type"
         ]
+      },
+      "then": {
+        "required": [
+          "choices"
+        ],
+        "properties": {
+          "choices": {
+            "type": "object"
+          }
+        }
       }
     },
     {

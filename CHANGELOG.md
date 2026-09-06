@@ -1,3 +1,16 @@
+# 0.11.0
+
+- Update schemas for Cobblemon 1.8.0
+  - Species and forms support `signatureMoves` and `defaultWildMovesetBuilder`
+  - Riding seats support `condition`, and no longer accept the removed `offset` and `poseOffsets`
+  - Spawn pool files no longer require `enabled`
+  - Herd spawns support `isFollower`, `herdLevelRange`, and `heldItem`
+  - Pokemon interactions no longer require `cooldown`
+  - Species features support the `weighted_choice` type, where `choices` maps each choice to a weight
+  - Marks support `aspects` and `sortOrder`
+  - NPC parties support the `composed_pool` provider, and provider types may be namespaced
+  - Action effect keyframes accept a list of locators
+
 # 0.10.1
 
 - Update dialogue schema to support expressions in input option text

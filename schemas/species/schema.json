@@ -148,6 +148,15 @@
         "type": "string"
       }
     },
+    "signatureMoves": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "defaultWildMovesetBuilder": {
+      "$ref": "../_shared/defs/identifiers.schema.json#/$defs/identifier"
+    },
     "features": {
       "type": "array",
       "items": {
@@ -904,6 +913,15 @@
           "items": {
             "type": "string"
           }
+        },
+        "signatureMoves": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "defaultWildMovesetBuilder": {
+          "$ref": "../_shared/defs/identifiers.schema.json#/$defs/identifier"
         },
         "evolutions": {
           "type": "array",
