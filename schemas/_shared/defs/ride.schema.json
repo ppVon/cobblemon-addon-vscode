@@ -44,6 +44,946 @@
         }
       },
       "additionalProperties": false
+    },
+    "ridingStats": {
+      "type": "object",
+      "properties": {
+        "ACCELERATION": {
+          "$ref": "./ranges.schema.json#/$defs/intRange"
+        },
+        "SKILL": {
+          "$ref": "./ranges.schema.json#/$defs/intRange"
+        },
+        "SPEED": {
+          "$ref": "./ranges.schema.json#/$defs/intRange"
+        },
+        "STAMINA": {
+          "$ref": "./ranges.schema.json#/$defs/intRange"
+        },
+        "JUMP": {
+          "$ref": "./ranges.schema.json#/$defs/intRange"
+        }
+      },
+      "additionalProperties": false
+    },
+    "rideSound": {
+      "type": "object",
+      "properties": {
+        "soundLocation": {
+          "$ref": "./identifiers.schema.json#/$defs/identifier"
+        },
+        "volumeExpr": {
+          "$ref": "./expressions.schema.json#/$defs/expressionLike"
+        },
+        "pitchExpr": {
+          "$ref": "./expressions.schema.json#/$defs/expressionLike"
+        },
+        "playForPassengers": {
+          "type": "boolean"
+        },
+        "playForNonPassengers": {
+          "type": "boolean"
+        },
+        "submerged": {
+          "type": "boolean"
+        },
+        "muffleEnabled": {
+          "type": "boolean"
+        },
+        "attenuationModel": {
+          "type": "string",
+          "enum": [
+            "NONE",
+            "LINEAR",
+            "EXPONENTIAL"
+          ]
+        }
+      },
+      "required": [
+        "soundLocation"
+      ],
+      "additionalProperties": false
+    },
+    "rideSounds": {
+      "oneOf": [
+        {
+          "$ref": "./ride.schema.json#/$defs/rideSound"
+        },
+        {
+          "type": "array",
+          "items": {
+            "$ref": "./ride.schema.json#/$defs/rideSound"
+          }
+        }
+      ]
+    },
+    "behaviourSettings": {
+      "type": "object",
+      "properties": {
+        "key": {
+          "type": "string",
+          "enum": [
+            "air/bird",
+            "air/glider",
+            "air/helicopter",
+            "air/hover",
+            "air/jet",
+            "air/rocket",
+            "land/horse",
+            "land/minekart",
+            "land/vehicle",
+            "liquid/boat",
+            "liquid/burst",
+            "liquid/dolphin",
+            "liquid/submarine",
+            "composite",
+            "cobblemon:air/bird",
+            "cobblemon:air/glider",
+            "cobblemon:air/helicopter",
+            "cobblemon:air/hover",
+            "cobblemon:air/jet",
+            "cobblemon:air/rocket",
+            "cobblemon:land/horse",
+            "cobblemon:land/minekart",
+            "cobblemon:land/vehicle",
+            "cobblemon:liquid/boat",
+            "cobblemon:liquid/burst",
+            "cobblemon:liquid/dolphin",
+            "cobblemon:liquid/submarine",
+            "cobblemon:composite"
+          ]
+        }
+      },
+      "required": [
+        "key"
+      ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "key": {
+                "enum": [
+                  "air/bird",
+                  "cobblemon:air/bird"
+                ]
+              }
+            },
+            "required": [
+              "key"
+            ]
+          },
+          "then": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "enum": [
+                  "air/bird",
+                  "cobblemon:air/bird"
+                ]
+              },
+              "stats": {
+                "$ref": "./ride.schema.json#/$defs/ridingStats"
+              },
+              "rideSounds": {
+                "$ref": "./ride.schema.json#/$defs/rideSounds"
+              },
+              "_comment": {},
+              "infiniteAltitude": {
+                "$ref": "./expressions.schema.json#/$defs/expressionLike"
+              },
+              "infiniteStamina": {
+                "$ref": "./expressions.schema.json#/$defs/expressionLike"
+              },
+              "timeToRollCorrect": {
+                "$ref": "./expressions.schema.json#/$defs/expressionLike"
+              },
+              "handlingExpr": {
+                "$ref": "./expressions.schema.json#/$defs/expressionLike"
+              },
+              "horizontalPitchExpr": {
+                "$ref": "./expressions.schema.json#/$defs/expressionLike"
+              },
+              "mouseInputMult": {
+                "$ref": "./expressions.schema.json#/$defs/expressionLike"
+              },
+              "speedExpr": {
+                "$ref": "./expressions.schema.json#/$defs/expressionLike"
+              },
+              "accelerationExpr": {
+                "$ref": "./expressions.schema.json#/$defs/expressionLike"
+              },
+              "staminaExpr": {
+                "$ref": "./expressions.schema.json#/$defs/expressionLike"
+              },
+              "stamDrainHorzMod": {
+                "$ref": "./expressions.schema.json#/$defs/expressionLike"
+              },
+              "stamDrainPercRateGlide": {
+                "$ref": "./expressions.schema.json#/$defs/expressionLike"
+              },
+              "stamDrainPerRateDive": {
+                "$ref": "./expressions.schema.json#/$defs/expressionLike"
+              },
+              "glideSpeedExpr": {
+                "$ref": "./expressions.schema.json#/$defs/expressionLike"
+              }
+            },
+            "required": [
+              "key"
+            ],
+            "additionalProperties": false
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "key": {
+                "enum": [
+                  "air/glider",
+                  "cobblemon:air/glider"
+                ]
+              }
+            },
+            "required": [
+              "key"
+            ]
+          },
+          "then": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "enum": [
+                  "air/glider",
+                  "cobblemon:air/glider"
+                ]
+              },
+              "stats": {
+                "$ref": "./ride.schema.json#/$defs/ridingStats"
+              },
+              "rideSounds": {
+                "$ref": "./ride.schema.json#/$defs/rideSounds"
+              },
+              "_comment": {},
+              "glideSpeed": {
+                "$ref": "./expressions.schema.json#/$defs/expressionLike"
+              },
+              "speed": {
+                "$ref": "./expressions.schema.json#/$defs/expressionLike"
+              },
+              "canStrafe": {
+                "$ref": "./expressions.schema.json#/$defs/expressionLike"
+              }
+            },
+            "required": [
+              "key"
+            ],
+            "additionalProperties": false
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "key": {
+                "enum": [
+                  "air/helicopter",
+                  "cobblemon:air/helicopter"
+                ]
+              }
+            },
+            "required": [
+              "key"
+            ]
+          },
+          "then": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "enum": [
+                  "air/helicopter",
+                  "cobblemon:air/helicopter"
+                ]
+              },
+              "stats": {
+                "$ref": "./ride.schema.json#/$defs/ridingStats"
+              },
+              "rideSounds": {
+                "$ref": "./ride.schema.json#/$defs/rideSounds"
+              },
+              "_comment": {},
+              "gravity": {
+                "$ref": "./expressions.schema.json#/$defs/expressionLike"
+              },
+              "horizontalAcceleration": {
+                "$ref": "./expressions.schema.json#/$defs/expressionLike"
+              },
+              "verticalVelocity": {
+                "$ref": "./expressions.schema.json#/$defs/expressionLike"
+              },
+              "speed": {
+                "$ref": "./expressions.schema.json#/$defs/expressionLike"
+              }
+            },
+            "required": [
+              "key"
+            ],
+            "additionalProperties": false
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "key": {
+                "enum": [
+                  "air/hover",
+                  "cobblemon:air/hover"
+                ]
+              }
+            },
+            "required": [
+              "key"
+            ]
+          },
+          "then": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "enum": [
+                  "air/hover",
+                  "cobblemon:air/hover"
+                ]
+              },
+              "stats": {
+                "$ref": "./ride.schema.json#/$defs/ridingStats"
+              },
+              "rideSounds": {
+                "$ref": "./ride.schema.json#/$defs/rideSounds"
+              },
+              "_comment": {},
+              "infiniteStamina": {
+                "$ref": "./expressions.schema.json#/$defs/expressionLike"
+              },
+              "canJump": {
+                "$ref": "./expressions.schema.json#/$defs/expressionLike"
+              },
+              "stamReplenishTimeSeconds": {
+                "$ref": "./expressions.schema.json#/$defs/expressionLike"
+              },
+              "speedExpr": {
+                "$ref": "./expressions.schema.json#/$defs/expressionLike"
+              },
+              "accelerationExpr": {
+                "$ref": "./expressions.schema.json#/$defs/expressionLike"
+              },
+              "staminaExpr": {
+                "$ref": "./expressions.schema.json#/$defs/expressionLike"
+              },
+              "jumpExpr": {
+                "$ref": "./expressions.schema.json#/$defs/expressionLike"
+              },
+              "handlingExpr": {
+                "$ref": "./expressions.schema.json#/$defs/expressionLike"
+              }
+            },
+            "required": [
+              "key"
+            ],
+            "additionalProperties": false
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "key": {
+                "enum": [
+                  "air/jet",
+                  "cobblemon:air/jet"
+                ]
+              }
+            },
+            "required": [
+              "key"
+            ]
+          },
+          "then": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "enum": [
+                  "air/jet",
+                  "cobblemon:air/jet"
+                ]
+              },
+              "stats": {
+                "$ref": "./ride.schema.json#/$defs/ridingStats"
+              },
+              "rideSounds": {
+                "$ref": "./ride.schema.json#/$defs/rideSounds"
+              },
+              "_comment": {},
+              "infiniteStamina": {
+                "$ref": "./expressions.schema.json#/$defs/expressionLike"
+              },
+              "gravity": {
+                "$ref": "./expressions.schema.json#/$defs/expressionLike"
+              },
+              "deccelRate": {
+                "$ref": "./expressions.schema.json#/$defs/expressionLike"
+              },
+              "minSpeedFactor": {
+                "$ref": "./expressions.schema.json#/$defs/expressionLike"
+              },
+              "handlingYawExpr": {
+                "$ref": "./expressions.schema.json#/$defs/expressionLike"
+              },
+              "handlingExpr": {
+                "$ref": "./expressions.schema.json#/$defs/expressionLike"
+              },
+              "speedExpr": {
+                "$ref": "./expressions.schema.json#/$defs/expressionLike"
+              },
+              "accelerationExpr": {
+                "$ref": "./expressions.schema.json#/$defs/expressionLike"
+              },
+              "jumpExpr": {
+                "$ref": "./expressions.schema.json#/$defs/expressionLike"
+              },
+              "staminaExpr": {
+                "$ref": "./expressions.schema.json#/$defs/expressionLike"
+              },
+              "maxDownwardForceSeconds": {
+                "$ref": "./expressions.schema.json#/$defs/expressionLike"
+              }
+            },
+            "required": [
+              "key"
+            ],
+            "additionalProperties": false
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "key": {
+                "enum": [
+                  "air/rocket",
+                  "cobblemon:air/rocket"
+                ]
+              }
+            },
+            "required": [
+              "key"
+            ]
+          },
+          "then": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "enum": [
+                  "air/rocket",
+                  "cobblemon:air/rocket"
+                ]
+              },
+              "stats": {
+                "$ref": "./ride.schema.json#/$defs/ridingStats"
+              },
+              "rideSounds": {
+                "$ref": "./ride.schema.json#/$defs/rideSounds"
+              },
+              "_comment": {},
+              "infiniteStamina": {
+                "$ref": "./expressions.schema.json#/$defs/expressionLike"
+              },
+              "boostSpeedMod": {
+                "$ref": "./expressions.schema.json#/$defs/expressionLike"
+              },
+              "boostHandlingMod": {
+                "$ref": "./expressions.schema.json#/$defs/expressionLike"
+              },
+              "maxTurnRate": {
+                "$ref": "./expressions.schema.json#/$defs/expressionLike"
+              },
+              "speedExpr": {
+                "$ref": "./expressions.schema.json#/$defs/expressionLike"
+              },
+              "accelerationExpr": {
+                "$ref": "./expressions.schema.json#/$defs/expressionLike"
+              },
+              "staminaExpr": {
+                "$ref": "./expressions.schema.json#/$defs/expressionLike"
+              },
+              "jumpExpr": {
+                "$ref": "./expressions.schema.json#/$defs/expressionLike"
+              },
+              "handlingExpr": {
+                "$ref": "./expressions.schema.json#/$defs/expressionLike"
+              }
+            },
+            "required": [
+              "key"
+            ],
+            "additionalProperties": false
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "key": {
+                "enum": [
+                  "land/horse",
+                  "cobblemon:land/horse"
+                ]
+              }
+            },
+            "required": [
+              "key"
+            ]
+          },
+          "then": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "enum": [
+                  "land/horse",
+                  "cobblemon:land/horse"
+                ]
+              },
+              "stats": {
+                "$ref": "./ride.schema.json#/$defs/ridingStats"
+              },
+              "rideSounds": {
+                "$ref": "./ride.schema.json#/$defs/rideSounds"
+              },
+              "_comment": {},
+              "infiniteStamina": {
+                "$ref": "./expressions.schema.json#/$defs/expressionLike"
+              },
+              "canJump": {
+                "$ref": "./expressions.schema.json#/$defs/expressionLike"
+              },
+              "canSprint": {
+                "$ref": "./expressions.schema.json#/$defs/expressionLike"
+              },
+              "lookYawLimit": {
+                "$ref": "./expressions.schema.json#/$defs/expressionLike"
+              },
+              "speedExpr": {
+                "$ref": "./expressions.schema.json#/$defs/expressionLike"
+              },
+              "accelerationExpr": {
+                "$ref": "./expressions.schema.json#/$defs/expressionLike"
+              },
+              "staminaExpr": {
+                "$ref": "./expressions.schema.json#/$defs/expressionLike"
+              },
+              "jumpExpr": {
+                "$ref": "./expressions.schema.json#/$defs/expressionLike"
+              },
+              "handlingExpr": {
+                "$ref": "./expressions.schema.json#/$defs/expressionLike"
+              }
+            },
+            "required": [
+              "key"
+            ],
+            "additionalProperties": false
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "key": {
+                "enum": [
+                  "land/minekart",
+                  "cobblemon:land/minekart"
+                ]
+              }
+            },
+            "required": [
+              "key"
+            ]
+          },
+          "then": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "enum": [
+                  "land/minekart",
+                  "cobblemon:land/minekart"
+                ]
+              },
+              "stats": {
+                "$ref": "./ride.schema.json#/$defs/ridingStats"
+              },
+              "rideSounds": {
+                "$ref": "./ride.schema.json#/$defs/rideSounds"
+              },
+              "_comment": {},
+              "infiniteStamina": {
+                "$ref": "./expressions.schema.json#/$defs/expressionLike"
+              },
+              "canJump": {
+                "$ref": "./expressions.schema.json#/$defs/expressionLike"
+              },
+              "boostLimit": {
+                "$ref": "./expressions.schema.json#/$defs/expressionLike"
+              },
+              "speedExpr": {
+                "$ref": "./expressions.schema.json#/$defs/expressionLike"
+              },
+              "accelerationExpr": {
+                "$ref": "./expressions.schema.json#/$defs/expressionLike"
+              },
+              "staminaExpr": {
+                "$ref": "./expressions.schema.json#/$defs/expressionLike"
+              },
+              "jumpExpr": {
+                "$ref": "./expressions.schema.json#/$defs/expressionLike"
+              },
+              "handlingExpr": {
+                "$ref": "./expressions.schema.json#/$defs/expressionLike"
+              }
+            },
+            "required": [
+              "key"
+            ],
+            "additionalProperties": false
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "key": {
+                "enum": [
+                  "land/vehicle",
+                  "cobblemon:land/vehicle"
+                ]
+              }
+            },
+            "required": [
+              "key"
+            ]
+          },
+          "then": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "enum": [
+                  "land/vehicle",
+                  "cobblemon:land/vehicle"
+                ]
+              },
+              "stats": {
+                "$ref": "./ride.schema.json#/$defs/ridingStats"
+              },
+              "rideSounds": {
+                "$ref": "./ride.schema.json#/$defs/rideSounds"
+              },
+              "_comment": {},
+              "infiniteStamina": {
+                "$ref": "./expressions.schema.json#/$defs/expressionLike"
+              },
+              "canJump": {
+                "$ref": "./expressions.schema.json#/$defs/expressionLike"
+              },
+              "speed": {
+                "$ref": "./expressions.schema.json#/$defs/expressionLike"
+              },
+              "driveFactor": {
+                "$ref": "./expressions.schema.json#/$defs/expressionLike"
+              },
+              "reverseDriveFactor": {
+                "$ref": "./expressions.schema.json#/$defs/expressionLike"
+              },
+              "rotationSpeed": {
+                "$ref": "./expressions.schema.json#/$defs/expressionLike"
+              },
+              "lookYawLimit": {
+                "$ref": "./expressions.schema.json#/$defs/expressionLike"
+              },
+              "speedExpr": {
+                "$ref": "./expressions.schema.json#/$defs/expressionLike"
+              },
+              "accelerationExpr": {
+                "$ref": "./expressions.schema.json#/$defs/expressionLike"
+              },
+              "staminaExpr": {
+                "$ref": "./expressions.schema.json#/$defs/expressionLike"
+              },
+              "jumpExpr": {
+                "$ref": "./expressions.schema.json#/$defs/expressionLike"
+              },
+              "handlingExpr": {
+                "$ref": "./expressions.schema.json#/$defs/expressionLike"
+              }
+            },
+            "required": [
+              "key"
+            ],
+            "additionalProperties": false
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "key": {
+                "enum": [
+                  "liquid/boat",
+                  "cobblemon:liquid/boat"
+                ]
+              }
+            },
+            "required": [
+              "key"
+            ]
+          },
+          "then": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "enum": [
+                  "liquid/boat",
+                  "cobblemon:liquid/boat"
+                ]
+              },
+              "stats": {
+                "$ref": "./ride.schema.json#/$defs/ridingStats"
+              },
+              "rideSounds": {
+                "$ref": "./ride.schema.json#/$defs/rideSounds"
+              },
+              "_comment": {},
+              "infiniteStamina": {
+                "$ref": "./expressions.schema.json#/$defs/expressionLike"
+              },
+              "terminalVelocity": {
+                "$ref": "./expressions.schema.json#/$defs/expressionLike"
+              },
+              "rotatePokemonHead": {
+                "$ref": "./expressions.schema.json#/$defs/expressionLike"
+              },
+              "stamReplenishTimeSeconds": {
+                "$ref": "./expressions.schema.json#/$defs/expressionLike"
+              },
+              "staminaExpr": {
+                "$ref": "./expressions.schema.json#/$defs/expressionLike"
+              },
+              "rotationSpeedModifierExpr": {
+                "$ref": "./expressions.schema.json#/$defs/expressionLike"
+              },
+              "jumpStrengthExpr": {
+                "$ref": "./expressions.schema.json#/$defs/expressionLike"
+              },
+              "speedExpr": {
+                "$ref": "./expressions.schema.json#/$defs/expressionLike"
+              },
+              "accelerationExpr": {
+                "$ref": "./expressions.schema.json#/$defs/expressionLike"
+              },
+              "sprintSpeedModifier": {
+                "$ref": "./expressions.schema.json#/$defs/expressionLike"
+              },
+              "sprintFovModifier": {
+                "$ref": "./expressions.schema.json#/$defs/expressionLike"
+              },
+              "surfaceLevelOffset": {
+                "$ref": "./expressions.schema.json#/$defs/expressionLike"
+              }
+            },
+            "required": [
+              "key"
+            ],
+            "additionalProperties": false
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "key": {
+                "enum": [
+                  "liquid/burst",
+                  "cobblemon:liquid/burst"
+                ]
+              }
+            },
+            "required": [
+              "key"
+            ]
+          },
+          "then": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "enum": [
+                  "liquid/burst",
+                  "cobblemon:liquid/burst"
+                ]
+              },
+              "stats": {
+                "$ref": "./ride.schema.json#/$defs/ridingStats"
+              },
+              "rideSounds": {
+                "$ref": "./ride.schema.json#/$defs/rideSounds"
+              },
+              "_comment": {},
+              "dashSpeed": {
+                "type": "integer"
+              }
+            },
+            "required": [
+              "dashSpeed",
+              "key"
+            ],
+            "additionalProperties": false
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "key": {
+                "enum": [
+                  "liquid/dolphin",
+                  "cobblemon:liquid/dolphin"
+                ]
+              }
+            },
+            "required": [
+              "key"
+            ]
+          },
+          "then": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "enum": [
+                  "liquid/dolphin",
+                  "cobblemon:liquid/dolphin"
+                ]
+              },
+              "stats": {
+                "$ref": "./ride.schema.json#/$defs/ridingStats"
+              },
+              "rideSounds": {
+                "$ref": "./ride.schema.json#/$defs/rideSounds"
+              },
+              "_comment": {},
+              "infiniteStamina": {
+                "$ref": "./expressions.schema.json#/$defs/expressionLike"
+              },
+              "canJump": {
+                "$ref": "./expressions.schema.json#/$defs/expressionLike"
+              },
+              "reverseDriveFactor": {
+                "$ref": "./expressions.schema.json#/$defs/expressionLike"
+              },
+              "strafeFactor": {
+                "$ref": "./expressions.schema.json#/$defs/expressionLike"
+              },
+              "timeToRollCorrect": {
+                "$ref": "./expressions.schema.json#/$defs/expressionLike"
+              },
+              "jumpExpr": {
+                "$ref": "./expressions.schema.json#/$defs/expressionLike"
+              },
+              "handlingExpr": {
+                "$ref": "./expressions.schema.json#/$defs/expressionLike"
+              },
+              "horizontalPitchExpr": {
+                "$ref": "./expressions.schema.json#/$defs/expressionLike"
+              },
+              "mouseInputMult": {
+                "$ref": "./expressions.schema.json#/$defs/expressionLike"
+              },
+              "speedExpr": {
+                "$ref": "./expressions.schema.json#/$defs/expressionLike"
+              },
+              "accelerationExpr": {
+                "$ref": "./expressions.schema.json#/$defs/expressionLike"
+              },
+              "staminaExpr": {
+                "$ref": "./expressions.schema.json#/$defs/expressionLike"
+              }
+            },
+            "required": [
+              "key"
+            ],
+            "additionalProperties": false
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "key": {
+                "enum": [
+                  "liquid/submarine",
+                  "cobblemon:liquid/submarine"
+                ]
+              }
+            },
+            "required": [
+              "key"
+            ]
+          },
+          "then": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "enum": [
+                  "liquid/submarine",
+                  "cobblemon:liquid/submarine"
+                ]
+              },
+              "stats": {
+                "$ref": "./ride.schema.json#/$defs/ridingStats"
+              },
+              "rideSounds": {
+                "$ref": "./ride.schema.json#/$defs/rideSounds"
+              },
+              "_comment": {},
+              "infiniteStamina": {
+                "$ref": "./expressions.schema.json#/$defs/expressionLike"
+              },
+              "staminaRegenTime": {
+                "$ref": "./expressions.schema.json#/$defs/expressionLike"
+              },
+              "hitboxBreachPercentage": {
+                "$ref": "./expressions.schema.json#/$defs/expressionLike"
+              },
+              "jumpExpr": {
+                "$ref": "./expressions.schema.json#/$defs/expressionLike"
+              },
+              "handlingExpr": {
+                "$ref": "./expressions.schema.json#/$defs/expressionLike"
+              },
+              "speedExpr": {
+                "$ref": "./expressions.schema.json#/$defs/expressionLike"
+              },
+              "accelerationExpr": {
+                "$ref": "./expressions.schema.json#/$defs/expressionLike"
+              },
+              "staminaExpr": {
+                "$ref": "./expressions.schema.json#/$defs/expressionLike"
+              }
+            },
+            "required": [
+              "key"
+            ],
+            "additionalProperties": false
+          }
+        }
+      ]
     }
   }
 }

@@ -750,19 +750,16 @@
           "type": "object",
           "properties": {
             "LAND": {
-              "type": "object",
-              "additionalProperties": true
-            },
-            "AIR": {
-              "type": "object",
-              "additionalProperties": true
+              "$ref": "../_shared/defs/ride.schema.json#/$defs/behaviourSettings"
             },
             "LIQUID": {
-              "type": "object",
-              "additionalProperties": true
+              "$ref": "../_shared/defs/ride.schema.json#/$defs/behaviourSettings"
+            },
+            "AIR": {
+              "$ref": "../_shared/defs/ride.schema.json#/$defs/behaviourSettings"
             }
           },
-          "additionalProperties": true
+          "additionalProperties": false
         },
         "stats": {
           "type": "object",

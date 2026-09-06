@@ -16,6 +16,9 @@
     - Removed `walking` and `sleepChance`, which are not real fields
     - `_comment` is allowed on every behaviour block
   - Bait effects now require `value`, which Cobblemon has always required
+  - Species `riding.behaviours` blocks are now validated against the behaviour named by their `key`, instead of accepting anything
+    - Documents `stats`, `rideSounds`, and the per-behaviour settings fields
+    - Only `LAND`, `LIQUID` and `AIR` are accepted as riding styles
 - Add schemas for the data folders introduced in Cobblemon 1.8.0
   - `tms`
   - `habitat_pools`
