@@ -39,7 +39,7 @@ async function scaffoldDataFile(engine: import('../schema/schema-engine').Cobble
   }
 
   const schemaPath = selected.entry.schemaPath;
-  const targetUri = await resolveTargetDataFileUri(folder.uri, schemaPath, namespace);
+  const targetUri = await resolveTargetDataFileUri(folder.uri, schemaPath, namespace, selected.entry.dataPath);
   if (!targetUri) {
     return;
   }
@@ -52,7 +52,19 @@ async function scaffoldDataFile(engine: import('../schema/schema-engine').Cobble
   await vscode.window.showTextDocument(doc);
 }
 
-async function resolveTargetDataFileUri(workspaceRoot: vscode.Uri, schemaPath: string, namespace: string): Promise<vscode.Uri | undefined> {
+async function resolveTargetDataFileUri(
+  workspaceRoot: vscode.Uri,
+  schemaPath: string,
+  namespace: string,
+  dataPath?: string
+): Promise<vscode.Uri | undefined> {
+  // Single-file schemas (e.g. move_weights.json) live at a fixed path, not <folder>/<id>.json.
+  if (dataPath) {
+    const target = vscode.Uri.joinPath(workspaceRoot, 'data', namespace, ...dataPath.split('/'));
+    await vscode.workspace.fs.createDirectory(vscode.Uri.joinPath(target, '..'));
+    return target;
+  }
+
   const mechanics = schemaPath.match(/^schemas\/mechanics\/([^.]+)\.schema\.json$/);
   if (mechanics) {
     const dir = vscode.Uri.joinPath(workspaceRoot, 'data', namespace, 'mechanics');

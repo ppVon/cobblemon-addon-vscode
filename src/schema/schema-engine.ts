@@ -130,8 +130,13 @@ export class CobblemonSchemaEngine {
     return diagnostics;
   }
 
-  getDataSchemaOptions(): Array<{ label: string; schemaPath: string }> {
-    const out: Array<{ label: string; schemaPath: string }> = [];
+  getDataSchemaOptions(): Array<{ label: string; schemaPath: string; dataPath?: string }> {
+    const dataPathBySchema = new Map<string, string>();
+    for (const [dataPath, schemaPath] of this.dataPathSchemas.entries()) {
+      dataPathBySchema.set(schemaPath, dataPath);
+    }
+
+    const out: Array<{ label: string; schemaPath: string; dataPath?: string }> = [];
     for (const [schemaPath, name] of this.schemaNameByPath.entries()) {
       if (schemaPath.includes('/_shared/')) {
         continue;
@@ -139,7 +144,7 @@ export class CobblemonSchemaEngine {
       if (schemaPath.includes('/bedrock_')) {
         continue;
       }
-      out.push({ label: name, schemaPath });
+      out.push({ label: name, schemaPath, dataPath: dataPathBySchema.get(schemaPath) });
     }
     return out.sort((a, b) => a.label.localeCompare(b.label));
   }
