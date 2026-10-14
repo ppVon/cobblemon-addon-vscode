@@ -1,5 +1,9 @@
 # 0.11.0
 
+## NOTE
+
+This version is intended for use with cobblemon 1.8._, if you need it for 1.7._, please use addon version 0.10.0
+
 - Update schemas for Cobblemon 1.8.0
   - Species and forms support `signatureMoves` and `defaultWildMovesetBuilder`
   - Riding seats support `condition`, and no longer accept the removed `offset` and `poseOffsets`
