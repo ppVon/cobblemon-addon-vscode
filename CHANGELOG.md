@@ -26,7 +26,6 @@ This version is intended for use with cobblemon 1.8._, if you need it for 1.7._,
   - `moveset_builders`
   - `party_pools` and `party_compositions`, used by the new `composed_pool` NPC party provider
   - `move_weights.json`
-- Add a schema for `spawning/best-spawner-config.json`, which replaced its `buckets` list with separate world, fishing, habitat, and poke snack bucket weights
 
 # 0.10.1
 
